@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+
+  /* Colors — Slate & Sage */
+  --color-background: #121416;
+  --color-surface: #121416;
+  --color-surface-low: #1a1c1e;
+  --color-surface-mid: #1e2022;
+  --color-surface-high: #282a2c;
+  --color-surface-highest: #333537;
+  --color-surface-bright: #37393b;
+
+  --color-on-surface: #e2e2e5;
+  --color-on-surface-muted: #c2c8c0;
+  --color-outline: #8c928b;
+  --color-outline-subtle: #424842;
+
+  --color-primary: #abcfb2;
+  --color-primary-brand: #8fb397;
+  --color-on-primary: #163722;
+  --color-secondary: #f0bd8b;
+  --color-secondary-brand: #d4a373;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-default: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --spacing-unit: 8px;
+  --spacing-gutter: 24px;
+  --spacing-margin-mobile: 16px;
+  --spacing-margin-desktop: 48px;
+  --spacing-container-max: 1280px;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-on-surface antialiased;
+  }
+}
+
+@layer utilities {
+  .animate-shimmer-text {
+    background: linear-gradient(to right, var(--color-primary-brand) 20%, var(--color-primary) 40%, var(--color-primary) 60%, var(--color-primary-brand) 80%);
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+  }
+}
+
+@keyframes shimmer {
+  to { background-position: 200% center; }
+}

@@ -1,0 +1,373 @@
+﻿<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Create Build Log | Wheely Bits</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#282a2c",
+                    "surface-dim": "#121416",
+                    "tertiary-container": "#a8aaae",
+                    "secondary-fixed-dim": "#f0bd8b",
+                    "on-primary-fixed-variant": "#2d4e37",
+                    "tertiary": "#c5c6ca",
+                    "on-error-container": "#ffdad6",
+                    "surface-variant": "#333537",
+                    "inverse-on-surface": "#2f3133",
+                    "background": "#121416",
+                    "on-secondary": "#482904",
+                    "error-container": "#93000a",
+                    "on-primary": "#163722",
+                    "on-error": "#690005",
+                    "on-secondary-container": "#e1af7e",
+                    "tertiary-fixed": "#e1e2e6",
+                    "surface-container": "#1e2022",
+                    "secondary-fixed": "#ffdcbd",
+                    "primary": "#abcfb2",
+                    "on-tertiary-fixed": "#191c1f",
+                    "on-background": "#e2e2e5",
+                    "surface-tint": "#abcfb2",
+                    "surface-container-lowest": "#0c0e10",
+                    "primary-container": "#8fb397",
+                    "on-secondary-fixed-variant": "#623f18",
+                    "on-surface": "#e2e2e5",
+                    "surface-container-low": "#1a1c1e",
+                    "outline": "#8c928b",
+                    "on-secondary-fixed": "#2c1600",
+                    "on-primary-container": "#254630",
+                    "surface-bright": "#37393b",
+                    "secondary-container": "#65411a",
+                    "on-primary-fixed": "#00210f",
+                    "surface": "#121416",
+                    "on-tertiary-container": "#3c3f42",
+                    "error": "#ffb4ab",
+                    "on-tertiary": "#2e3134",
+                    "tertiary-fixed-dim": "#c5c6ca",
+                    "inverse-surface": "#e2e2e5",
+                    "primary-fixed-dim": "#abcfb2",
+                    "primary-fixed": "#c6eccd",
+                    "on-surface-variant": "#c2c8c0",
+                    "on-tertiary-fixed-variant": "#44474a",
+                    "inverse-primary": "#44664e",
+                    "surface-container-highest": "#333537",
+                    "outline-variant": "#424842",
+                    "secondary": "#f0bd8b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "stack-xl": "64px",
+                    "container-max": "1280px",
+                    "unit": "8px",
+                    "margin-mobile": "16px",
+                    "stack-lg": "32px",
+                    "margin-desktop": "48px",
+                    "stack-xs": "4px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-sm": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-xl-mobile": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "headline-xl-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #121416;
+            color: #e2e2e5;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-input {
+            background: rgba(37, 40, 43, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-input:focus {
+            border-color: #8fb397;
+            box-shadow: 0 0 0 1px rgba(143, 179, 151, 0.2);
+            outline: none;
+        }
+        .step-transition {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .hidden-step {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        .active-step {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-body-md text-body-md overflow-x-hidden selection:bg-primary/30">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface-dim/80 backdrop-blur-md border-b border-white/5 shadow-xl shadow-surface-lowest/20">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-primary tracking-tight">Wheely Bits</div>
+<nav class="hidden md:flex items-center gap-stack-lg">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Discover</a>
+<a class="text-primary border-b-2 border-primary pb-1" href="#">Builds</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Community</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Shop</a>
+</nav>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-white/5 p-2 rounded-full transition-all duration-300">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-white/5 p-2 rounded-full transition-all duration-300">settings</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a professional automotive designer with short dark hair and a focused expression, wearing a minimalist black turtleneck. The lighting is dramatic and moody, reflecting a high-end luxury garage environment with soft sage green reflections on a polished slate background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUeT74UzTmQ4y3DdnIRP-VWO9UlOEyycSLafUO5iiabqo6ymH7yitAUZTuZu45tHT1BgPLlgPSVQBMCews3xv1jMFSYc7hhEpJcyXJtVsbowh0QVd9kDvdeqlpiMrMiMShAnKhljioGEe7H79MV9tI4f1z-xKuF6EG9D5zbTt_2YHMRYzsAQbqCbewpWz2--f1XoMP4cfQJJo1nJlDDGzDx_2_DyyT47nWTCTjblod2Wi0_nGSapohT6yEoU6dyp62pNDBhmzfPpOw">
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-32 pb-stack-xl px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto w-full">
+<!-- Header Section -->
+<div class="mb-stack-xl text-center md:text-left">
+<h1 class="font-headline-xl text-headline-xl-mobile md:text-headline-xl text-on-surface mb-stack-sm">Initiate New Build Log</h1>
+<p class="text-on-surface-variant max-w-2xl">Document every precision adjustment and performance upgrade. Share your journey with the Wheely Bits engineering community.</p>
+</div>
+<!-- Progress Indicator -->
+<div class="mb-stack-xl relative">
+<div class="flex justify-between items-center relative z-10">
+<!-- Step 1 -->
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold transition-all duration-500 shadow-[0_0_15px_rgba(171,207,178,0.4)]" id="p-dot-1">1</div>
+<span class="font-label-sm text-label-sm text-primary">Basic Info</span>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold transition-all duration-500" id="p-dot-2">2</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Media</span>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold transition-all duration-500" id="p-dot-3">3</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Modifications</span>
+</div>
+</div>
+<!-- Progress Line -->
+<div class="absolute top-5 left-0 w-full h-[2px] bg-surface-container-highest -z-0">
+<div class="h-full bg-primary transition-all duration-500" id="p-line" style="width: 0%;"></div>
+</div>
+</div>
+<!-- Wizard Steps Container -->
+<div class="bg-surface-container-low rounded-xl p-stack-lg md:p-stack-xl border border-white/5 relative overflow-hidden">
+<!-- Background Decorative element -->
+
+<form class="relative z-10" id="build-log-form">
+<!-- STEP 1: BASIC INFO -->
+<div class="step-transition active-step" id="step-1">
+<div class="space-y-stack-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">Project Title</label>
+<input class="glass-input p-4 rounded-lg text-on-surface w-full" placeholder="e.g. Midnight Slate GT" type="text">
+</div>
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">Base Vehicle</label>
+<input class="glass-input p-4 rounded-lg text-on-surface w-full" placeholder="e.g. 2024 Porsche 911 GT3" type="text">
+</div>
+</div>
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">Build Objective</label>
+<textarea class="glass-input p-4 rounded-lg text-on-surface w-full resize-none" placeholder="Describe your vision for this performance build..." rows="4"></textarea>
+</div>
+</div>
+<div class="mt-stack-xl flex justify-end">
+<button class="bg-primary hover:bg-primary-container text-on-primary-container font-bold px-stack-lg py-4 rounded-lg transition-all active:scale-95 flex items-center gap-2 min-w-[140px] justify-center" onclick="nextStep(2)" type="button">
+                            Next Stage <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- STEP 2: UPLOAD MEDIA -->
+<div class="step-transition hidden-step" id="step-2">
+<div class="space-y-stack-lg">
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-stack-xl flex flex-col items-center justify-center text-center bg-surface-container-lowest/50 hover:bg-surface-container-lowest transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-primary text-5xl mb-stack-md group-hover:scale-110 transition-transform">cloud_upload</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Upload Visual Assets</h3>
+<p class="text-on-surface-variant text-body-md max-w-sm">Drag and drop high-resolution imagery or engineering blueprints. (JPG, PNG, MP4 up to 500MB)</p>
+<input class="hidden" id="media-upload" multiple="" type="file">
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-stack-md">
+<!-- Placeholder Uploaded Item -->
+<div class="aspect-video bg-surface-container-high rounded-lg overflow-hidden border border-white/10 relative group">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A cinematic, high-angle shot of a sleek, dark metallic sports car parked in a minimalist, dimly lit architectural space. Soft sage green neon lights reflect off the polished floor and the car's curves. The overall aesthetic is clean, professional, and luxury automotive, with deep shadows and refined textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQJptYgd_riCkgP0g2IZfXXqRN9m25Qc2nElPNvKdBhQM51jjsar7xeq0sXcbA5aeUheYwUOeUrpqrYojEmBTKp7wiPrQqG5Xv5QLonxlMvdW0hL18rjOsmtteAfIuG_7VQxpNdhSurJ3zY6YKUszbCIPHgayOGC7oKZNwsM4Epu9PquYC8ff_4jhUXcGdkHGXbN9KkjkcTtXMaIjdSMgtJXgGpbv07zyexeKEz0TsB2QFILazAnDTv2uXoQjwEnW7aIKlg5fh20hb">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+<button class="material-symbols-outlined text-error">delete</button>
+</div>
+</div>
+<div class="aspect-video bg-surface-container rounded-lg border border-dashed border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">add</span>
+</div>
+</div>
+</div>
+<div class="mt-stack-xl flex justify-between items-center">
+<button class="text-on-surface-variant hover:text-on-surface font-bold px-stack-lg py-4 transition-all" onclick="nextStep(1)" type="button">Back</button>
+<button class="bg-primary hover:bg-primary-container text-on-primary-container font-bold px-stack-lg py-4 rounded-lg transition-all active:scale-95 flex items-center gap-2 min-w-[140px] justify-center" onclick="nextStep(3)" type="button">
+                            Tag Mods <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- STEP 3: TAG MODIFICATIONS -->
+<div class="step-transition hidden-step" id="step-3">
+<div class="space-y-stack-lg">
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">Search Parts Catalog</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="glass-input p-4 pl-12 rounded-lg text-on-surface w-full" placeholder="Search for ECU tuners, suspension kits, aero components..." type="text">
+</div>
+</div>
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant mb-stack-md block">Common Categories</label>
+<div class="flex flex-wrap gap-stack-sm">
+<button class="px-4 py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all text-label-md font-label-md" type="button">Engine &amp; ECU</button>
+<button class="px-4 py-2 rounded-full border border-primary bg-primary/10 text-primary transition-all text-label-md font-label-md flex items-center gap-1" type="button">Suspension <span class="material-symbols-outlined text-sm">check</span></button>
+<button class="px-4 py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all text-label-md font-label-md" type="button">Aesthetics</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all text-label-md font-label-md" type="button">Wheels &amp; Tires</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all text-label-md font-label-md" type="button">Interior</button>
+</div>
+</div>
+<div class="space-y-stack-md">
+<div class="bg-surface-container-high/40 p-4 rounded-xl flex justify-between items-center border border-white/5">
+<div class="flex items-center gap-stack-md">
+<div class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">build_circle</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">KW V3 Coilover Kit</h4>
+<p class="text-label-sm text-on-surface-variant">Performance Suspension</p>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-error">close</button>
+</div>
+</div>
+</div>
+<div class="mt-stack-xl flex justify-between items-center">
+<button class="text-on-surface-variant hover:text-on-surface font-bold px-stack-lg py-4 transition-all" onclick="nextStep(2)" type="button">Back</button>
+<button class="bg-primary hover:bg-primary-container text-on-primary-container font-bold px-stack-lg py-4 rounded-lg shadow-lg shadow-primary/20 transition-all active:scale-95 flex items-center gap-2 min-w-[140px] justify-center" type="submit">
+                            Publish Log <span class="material-symbols-outlined">rocket_launch</span>
+</button>
+</div>
+</div>
+</form>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center p-stack-sm pb-safe bg-surface-container/90 backdrop-blur-xl border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.3)] z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-primary-container/20 rounded-xl px-4 py-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">build_circle</span>
+<span class="font-label-sm text-label-sm">Logs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-sm text-label-sm">Forum</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="w-full py-stack-xl mt-auto bg-surface-container-lowest bg-surface-dim border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop gap-stack-md max-w-container-max mx-auto w-full">
+<div class="text-primary font-headline-lg font-bold">Wheely Bits</div>
+<div class="flex gap-stack-lg">
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#">About Us</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#">Technical Specs</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#">Support</a>
+</div>
+<div class="font-body-md text-body-md text-tertiary">Â© 2024 Wheely Bits. Precision Engineered.</div>
+</div>
+</footer>
+<script>
+        function nextStep(step) {
+            // Update Progress Dots
+            const dots = [1, 2, 3];
+            dots.forEach(d => {
+                const el = document.getElementById(`p-dot-${d}`);
+                if (d === step) {
+                    el.classList.remove('bg-surface-container-highest', 'text-on-surface-variant');
+                    el.classList.add('bg-primary', 'text-on-primary', 'shadow-[0_0_15px_rgba(171,207,178,0.4)]');
+                } else if (d < step) {
+                    el.classList.remove('bg-surface-container-highest', 'text-on-surface-variant', 'bg-primary');
+                    el.classList.add('bg-primary', 'text-on-primary');
+                } else {
+                    el.classList.add('bg-surface-container-highest', 'text-on-surface-variant');
+                    el.classList.remove('bg-primary', 'text-on-primary', 'shadow-[0_0_15px_rgba(171,207,178,0.4)]');
+                }
+            });
+
+            // Update Progress Line
+            const line = document.getElementById('p-line');
+            if (step === 1) line.style.width = '0%';
+            if (step === 2) line.style.width = '50%';
+            if (step === 3) line.style.width = '100%';
+
+            // Update Active Step View
+            const steps = [1, 2, 3];
+            steps.forEach(s => {
+                const el = document.getElementById(`step-${s}`);
+                if (s === step) {
+                    el.classList.remove('hidden-step');
+                    el.classList.add('active-step');
+                } else {
+                    el.classList.add('hidden-step');
+                    el.classList.remove('active-step');
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Form submission preventer for demo
+        document.getElementById('build-log-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Build log published successfully!');
+        });
+    </script>
+</body></html>

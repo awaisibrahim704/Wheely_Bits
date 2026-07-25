@@ -1,0 +1,391 @@
+﻿<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Wheely Bits - FAQ</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#690005",
+                    "tertiary": "#c5c6ca",
+                    "inverse-primary": "#44664e",
+                    "surface-bright": "#37393b",
+                    "primary-fixed": "#c6eccd",
+                    "on-primary-container": "#254630",
+                    "outline": "#8c928b",
+                    "on-surface": "#e2e2e5",
+                    "on-secondary-fixed-variant": "#623f18",
+                    "on-primary-fixed": "#00210f",
+                    "primary-fixed-dim": "#abcfb2",
+                    "primary": "#abcfb2",
+                    "on-secondary-fixed": "#2c1600",
+                    "surface": "#121416",
+                    "on-tertiary-fixed-variant": "#44474a",
+                    "on-secondary": "#482904",
+                    "primary-container": "#8fb397",
+                    "on-primary": "#163722",
+                    "on-background": "#e2e2e5",
+                    "secondary-fixed-dim": "#f0bd8b",
+                    "error-container": "#93000a",
+                    "outline-variant": "#424842",
+                    "surface-container-high": "#282a2c",
+                    "background": "#121416",
+                    "surface-container-highest": "#333537",
+                    "surface-container-lowest": "#0c0e10",
+                    "surface-container": "#1e2022",
+                    "tertiary-fixed-dim": "#c5c6ca",
+                    "tertiary-container": "#a8aaae",
+                    "on-secondary-container": "#e1af7e",
+                    "inverse-surface": "#e2e2e5",
+                    "surface-container-low": "#1a1c1e",
+                    "on-tertiary": "#2e3134",
+                    "tertiary-fixed": "#e1e2e6",
+                    "on-surface-variant": "#c2c8c0",
+                    "secondary-fixed": "#ffdcbd",
+                    "surface-dim": "#121416",
+                    "on-tertiary-fixed": "#191c1f",
+                    "on-tertiary-container": "#3c3f42",
+                    "on-primary-fixed-variant": "#2d4e37",
+                    "on-error-container": "#ffdad6",
+                    "inverse-on-surface": "#2f3133",
+                    "secondary-container": "#65411a",
+                    "error": "#ffb4ab",
+                    "surface-variant": "#333537",
+                    "secondary": "#f0bd8b",
+                    "surface-tint": "#abcfb2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-xs": "4px",
+                    "stack-sm": "8px",
+                    "margin-desktop": "48px",
+                    "unit": "8px",
+                    "margin-mobile": "16px",
+                    "stack-md": "16px",
+                    "stack-xl": "64px",
+                    "stack-lg": "32px",
+                    "container-max": "1280px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "body-lg": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-lg": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "label-md": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-md": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "label-sm": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-xl-mobile": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-md": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-xl": [
+                            "Plus Jakarta Sans"
+                    ]
+            },
+            "fontSize": {
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "letterSpacing": "0em",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "letterSpacing": "0.01em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "letterSpacing": "0em",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-xl-mobile": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "0.02em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "letterSpacing": "0.01em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-xl": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "0.02em",
+                                    "fontWeight": "500"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        /* Custom styles for accordion animations and glassmorphism fine-tuning */
+        .glass-nav {
+            background-color: rgba(26, 28, 30, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .faq-accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+        
+        .faq-accordion-item.active .faq-accordion-content {
+            max-height: 500px; /* Arbitrary large max-height */
+            opacity: 1;
+        }
+
+        .faq-accordion-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-accordion-item.active .faq-accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Subtle glow on focus for inputs */
+        .focus-glow:focus {
+            box-shadow: 0 0 0 1px #8fb397;
+            border-color: #8fb397;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex flex-col pt-32 selection:bg-primary selection:text-on-primary overflow-y-auto">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 px-gutter py-unit mt-margin-mobile md:mt-margin-desktop w-full max-w-container-max mx-auto pointer-events-none">
+<div class="pointer-events-auto flex justify-between items-center px-gutter py-unit bg-surface/60 backdrop-blur-xl border border-white/5 shadow-xl rounded-full w-full">
+<!-- Brand Logo -->
+<a class="font-headline-md text-headline-md font-bold text-primary shrink-0 scale-95 transition-transform duration-200 hover:scale-100 flex items-center gap-2" href="#">
+                Wheely Bits
+            </a>
+<!-- Navigation Links (Hidden on Mobile) -->
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Rim</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Wrap</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Tint</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Vendors</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Community</a>
+<a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1" href="#">FAQ</a>
+</nav>
+<!-- Trailing Action -->
+<div class="flex items-center gap-4 shrink-0">
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300 scale-95 hover:scale-100 transition-transform hidden sm:block">Sign In</button>
+<!-- Mobile Menu Toggle -->
+<button aria-label="Open menu" class="md:hidden text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-xl flex flex-col items-center">
+<!-- Header Section -->
+<div class="w-full max-w-3xl text-center mb-stack-xl">
+<h1 class="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-on-surface font-medium mb-stack-md">Frequently Asked Questions</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Find answers to common questions about fitment, materials, orders, and our community.</p>
+</div>
+<!-- Search Bar Section -->
+<div class="w-full max-w-2xl mb-stack-xl relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">search</span>
+</div>
+<input class="w-full bg-surface-container-high border border-outline-variant text-on-surface font-body-md rounded-lg py-4 pl-12 pr-4 focus-glow transition-all outline-none placeholder-outline placeholder:font-body-md block" placeholder="Search FAQ (e.g., 'offset', 'shipping')" type="text">
+</div>
+<!-- FAQ Categories & Accordions -->
+<div class="w-full max-w-3xl flex flex-col gap-stack-lg">
+<!-- Category: General -->
+<section>
+<h2 class="font-headline-md text-headline-md text-primary-container mb-stack-md border-b border-white/5 pb-2">General</h2>
+<div class="flex flex-col gap-stack-sm">
+<!-- FAQ Item 1 -->
+<div class="faq-accordion-item bg-surface-container-high rounded-lg border border-white/5 overflow-hidden transition-all hover:bg-surface-variant group">
+<button class="w-full text-left px-6 py-4 flex justify-between items-center focus:outline-none" onclick="toggleAccordion(this)">
+<span class="font-label-md text-label-md text-on-surface font-medium pr-4">What is Wheely Bits?</span>
+<span class="material-symbols-outlined text-on-surface-variant faq-accordion-icon shrink-0 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">expand_more</span>
+</button>
+<div class="faq-accordion-content px-6 pb-0">
+<p class="font-body-md text-body-md text-on-surface-variant pb-4 pt-2 border-t border-outline-variant/30">Wheely Bits is a premium community and marketplace dedicated to automotive aesthetics, specifically focusing on rims, wraps, and tints. We connect enthusiasts with top-tier vendors and provide tools for perfect fitment and styling.</p>
+</div>
+</div>
+<!-- FAQ Item 2 -->
+<div class="faq-accordion-item bg-surface-container-high rounded-lg border border-white/5 overflow-hidden transition-all hover:bg-surface-variant group">
+<button class="w-full text-left px-6 py-4 flex justify-between items-center focus:outline-none" onclick="toggleAccordion(this)">
+<span class="font-label-md text-label-md text-on-surface font-medium pr-4">How do I verify a vendor?</span>
+<span class="material-symbols-outlined text-on-surface-variant faq-accordion-icon shrink-0 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">expand_more</span>
+</button>
+<div class="faq-accordion-content px-6 pb-0">
+<p class="font-body-md text-body-md text-on-surface-variant pb-4 pt-2 border-t border-outline-variant/30">Vendors on our platform go through a rigorous vetting process. Look for the 'Verified Vendor' badge on their profile, which indicates they have met our quality, authenticity, and customer service standards.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Category: Rim & Fitment -->
+<section>
+<h2 class="font-headline-md text-headline-md text-primary-container mb-stack-md border-b border-white/5 pb-2">Rim &amp; Fitment</h2>
+<div class="flex flex-col gap-stack-sm">
+<!-- FAQ Item 3 -->
+<div class="faq-accordion-item bg-surface-container-high rounded-lg border border-white/5 overflow-hidden transition-all hover:bg-surface-variant group">
+<button class="w-full text-left px-6 py-4 flex justify-between items-center focus:outline-none" onclick="toggleAccordion(this)">
+<span class="font-label-md text-label-md text-on-surface font-medium pr-4">How do I know if a rim will fit my car?</span>
+<span class="material-symbols-outlined text-on-surface-variant faq-accordion-icon shrink-0 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">expand_more</span>
+</button>
+<div class="faq-accordion-content px-6 pb-0">
+<p class="font-body-md text-body-md text-on-surface-variant pb-4 pt-2 border-t border-outline-variant/30">Use our Fitment Calculator tool. You'll need to input your vehicle's make, model, and year, along with the rim's diameter, width, offset (ET), and bolt pattern. The tool will simulate the clearance and provide a fitment rating.</p>
+</div>
+</div>
+<!-- FAQ Item 4 -->
+<div class="faq-accordion-item bg-surface-container-high rounded-lg border border-white/5 overflow-hidden transition-all hover:bg-surface-variant group">
+<button class="w-full text-left px-6 py-4 flex justify-between items-center focus:outline-none" onclick="toggleAccordion(this)">
+<span class="font-label-md text-label-md text-on-surface font-medium pr-4">What does offset mean?</span>
+<span class="material-symbols-outlined text-on-surface-variant faq-accordion-icon shrink-0 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">expand_more</span>
+</button>
+<div class="faq-accordion-content px-6 pb-0">
+<p class="font-body-md text-body-md text-on-surface-variant pb-4 pt-2 border-t border-outline-variant/30">Offset is the distance from the hub mounting surface to the centerline of the wheel. Positive offset means the hub is closer to the street side, common in newer cars. Negative offset pushes the wheel outwards for a deeper dish look.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Category: Wrap & Tint -->
+<section>
+<h2 class="font-headline-md text-headline-md text-primary-container mb-stack-md border-b border-white/5 pb-2">Wrap &amp; Tint</h2>
+<div class="flex flex-col gap-stack-sm">
+<!-- FAQ Item 5 -->
+<div class="faq-accordion-item bg-surface-container-high rounded-lg border border-white/5 overflow-hidden transition-all hover:bg-surface-variant group">
+<button class="w-full text-left px-6 py-4 flex justify-between items-center focus:outline-none" onclick="toggleAccordion(this)">
+<span class="font-label-md text-label-md text-on-surface font-medium pr-4">How long does a vinyl wrap last?</span>
+<span class="material-symbols-outlined text-on-surface-variant faq-accordion-icon shrink-0 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">expand_more</span>
+</button>
+<div class="faq-accordion-content px-6 pb-0">
+<p class="font-body-md text-body-md text-on-surface-variant pb-4 pt-2 border-t border-outline-variant/30">A high-quality vinyl wrap professionally installed typically lasts between 3 to 5 years, depending on environmental factors and how well it is maintained (e.g., garaged vs. parked outside).</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Support CTA Section -->
+<div class="w-full max-w-3xl mt-stack-xl pt-stack-lg border-t border-outline-variant text-center bg-surface-container/30 rounded-xl p-8 backdrop-blur-sm border border-white/5 relative overflow-hidden group">
+<!-- Decorative background element -->
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-stack-sm relative z-10">Still need help?</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md max-w-md mx-auto relative z-10">Our support team is ready to assist you with specific fitment queries or order issues.</p>
+<button class="relative z-10 bg-primary-container text-on-primary-container font-label-md text-label-md px-8 py-4 rounded-lg hover:bg-primary transition-colors duration-300 font-medium inline-flex items-center gap-2 min-h-[48px]">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">support_agent</span>
+                Contact Support
+            </button>
+</div>
+</main>
+<!-- Footer -->
+
+<!-- Interactive Script for Accordions -->
+<script>
+        function toggleAccordion(button) {
+            const item = button.closest('.faq-accordion-item');
+            const isActive = item.classList.contains('active');
+            
+            // Close all other accordions (optional: remove this block to allow multiple open)
+            document.querySelectorAll('.faq-accordion-item').forEach(el => {
+                if(el !== item) {
+                    el.classList.remove('active');
+                }
+            });
+
+            // Toggle the clicked one
+            if (isActive) {
+                item.classList.remove('active');
+            } else {
+                item.classList.add('active');
+            }
+        }
+    </script>
+
+
+<footer class="bg-surface-container-lowest w-full py-stack-xl px-margin-mobile md:px-margin-desktop mt-stack-xl border-t border-white/5">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-stack-lg">
+<div>
+<span class="text-headline-lg font-headline-lg font-bold text-on-surface block mb-stack-sm">Wheely Bits</span>
+<p class="text-body-md font-body-md text-on-surface-variant">Â© 2024 Wheely Bits. Precision Engineering &amp; Design.</p>
+</div>
+<div class="flex flex-col md:items-end gap-stack-sm">
+<div class="flex flex-wrap gap-4 md:justify-end items-center">
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Technical Support</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Vendor Portal</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">FAQs</a>
+</div>
+<div class="flex gap-4 mt-4">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">forum</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">email</span></a>
+</div>
+</div>
+</div>
+</footer></body></html>

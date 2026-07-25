@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>My Garage | Wheely Bits</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#abcfb2",
+                    "outline": "#8c928b",
+                    "on-secondary": "#482904",
+                    "primary-container": "#8fb397",
+                    "on-tertiary-fixed": "#191c1f",
+                    "primary-fixed": "#c6eccd",
+                    "tertiary": "#c5c6ca",
+                    "on-surface": "#e2e2e5",
+                    "error-container": "#93000a",
+                    "inverse-primary": "#44664e",
+                    "secondary-fixed": "#ffdcbd",
+                    "on-background": "#e2e2e5",
+                    "secondary-fixed-dim": "#f0bd8b",
+                    "on-tertiary-fixed-variant": "#44474a",
+                    "on-primary": "#163722",
+                    "error": "#ffb4ab",
+                    "surface-container-lowest": "#0c0e10",
+                    "tertiary-fixed": "#e1e2e6",
+                    "surface-dim": "#121416",
+                    "primary": "#abcfb2",
+                    "surface-container-low": "#1a1c1e",
+                    "inverse-surface": "#e2e2e5",
+                    "surface-bright": "#37393b",
+                    "on-error": "#690005",
+                    "inverse-on-surface": "#2f3133",
+                    "on-primary-container": "#254630",
+                    "on-surface-variant": "#c2c8c0",
+                    "tertiary-container": "#a8aaae",
+                    "surface-variant": "#333537",
+                    "on-error-container": "#ffdad6",
+                    "outline-variant": "#424842",
+                    "background": "#121416",
+                    "secondary-container": "#65411a",
+                    "surface-tint": "#abcfb2",
+                    "surface-container": "#1e2022",
+                    "on-tertiary": "#2e3134",
+                    "on-secondary-fixed-variant": "#623f18",
+                    "surface-container-high": "#282a2c",
+                    "secondary": "#f0bd8b",
+                    "on-primary-fixed-variant": "#2d4e37",
+                    "on-tertiary-container": "#3c3f42",
+                    "tertiary-fixed-dim": "#c5c6ca",
+                    "on-primary-fixed": "#00210f",
+                    "on-secondary-fixed": "#2c1600",
+                    "on-secondary-container": "#e1af7e",
+                    "surface-container-highest": "#333537",
+                    "surface": "#121416"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "48px",
+                    "gutter": "24px",
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "container-max": "1280px",
+                    "stack-lg": "32px",
+                    "stack-xs": "4px",
+                    "stack-xl": "64px",
+                    "unit": "8px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "headline-xl-mobile": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "label-sm": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-xl-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(37, 40, 43, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #121416;
+            color: #e2e2e5;
+            overflow-x: hidden;
+        }
+        .car-card-hover:hover .image-overlay {
+            opacity: 1;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #424842;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Shell -->
+<header class="fixed top-0 left-0 right-0 z-50 flex justify-center items-center w-full">
+<nav class="bg-surface-container/60 dark:bg-surface-container/60 backdrop-blur-xl border border-white/10 rounded-full mt-4 mx-auto max-w-fit px-6 shadow-xl shadow-black/20 flex items-center h-14 gap-8">
+<span class="font-headline-md text-headline-md font-bold tracking-tight text-primary dark:text-primary-fixed-dim mr-4">Wheely Bits</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-container transition-colors duration-300" href="#">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-container transition-colors duration-300" href="#">Rim</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-container transition-colors duration-300" href="#">Wrap</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-container transition-colors duration-300 border-b-2 border-primary text-primary font-bold pb-1" href="#">Community</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-container transition-colors duration-300" href="#">Vendors</a>
+</div>
+<div class="flex items-center gap-4 ml-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">help</button>
+<button class="material-symbols-outlined text-primary font-bold">person</button>
+</div>
+</nav>
+</header>
+<!-- Background Atmospheric Effect -->
+<div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+
+<div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-secondary-container/5 blur-[150px] rounded-full"></div>
+</div>
+<main class="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto min-h-screen">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-gutter mb-stack-xl">
+<div>
+<h1 class="font-headline-xl text-headline-xl mb-stack-xs">My Garage</h1>
+<p class="font-body-lg text-body-lg text-outline max-w-xl">
+                    Your collection of precision-engineered builds and custom aesthetics. Continue where you left off or view your booked services.
+                </p>
+</div>
+<div class="flex gap-4">
+<button class="h-12 px-6 rounded-xl border border-outline-variant flex items-center gap-2 hover:bg-surface-variant transition-all duration-300 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface">tune</span>
+<span class="font-label-md text-label-md">Filter Builds</span>
+</button>
+<button class="h-12 px-6 rounded-xl bg-primary-container text-on-primary-container flex items-center gap-2 hover:brightness-110 transition-all active:scale-95">
+<span class="material-symbols-outlined">add</span>
+<span class="font-label-md text-label-md">New Configuration</span>
+</button>
+</div>
+</div>
+<!-- Garage Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Build Card 1: The Porsche -->
+<div class="glass-card rounded-2xl overflow-hidden group car-card-hover transition-all duration-500 hover:-translate-y-2">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="A high-end studio photograph of a Porsche 911 GT3 RS in a deep British Racing Green wrap. The lighting is dramatic and moody, highlighting the aerodynamic curves and carbon fiber accents of the vehicle. The scene is set in a minimalist concrete workshop with soft overhead spotlights creating elegant reflections on the glossy wrap. The overall aesthetic is luxurious, technical, and serene, matching a Slate and Sage color palette." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAxas52YM3vx0HVzezi--YcSELeWQK0onF4LWcGDpgNLj9H1NWQ9r-ljBWj0l39yFfhHjSwLmz0-xQb3cNmSD6rKbv81mV0dFE_h66e5SGjggztLScXgSPX1LaCZQPGBBF8dEDqR1WLE_Qps5Li6Mg2oAVPD1cLpr3Nb1noRg2u9LG1FakOjs9ro1Pe4bxeZqtNoyjQs5xhsrndLylRb_EXYXvOcT3U0ukmF-AWdaihRU4pml6Fw8LqjN_gY0CeHLes0vbZAuq7fhMI')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-60"></div>
+<div class="absolute top-4 right-4 bg-surface-container-low/90 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">Draft</span>
+</div>
+</div>
+<div class="p-stack-lg">
+<div class="flex justify-between items-start mb-stack-sm">
+<h3 class="font-headline-md text-headline-md">GT3 Precision One</h3>
+<button class="material-symbols-outlined text-outline hover:text-on-surface">more_vert</button>
+</div>
+<p class="font-body-md text-body-md text-outline mb-stack-lg">Porsche 911 GT3 RS â¢ British Racing Green â¢ Satin Black Magnesium Wheels</p>
+<div class="flex items-center justify-between gap-4">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface-container bg-primary-fixed-dim flex items-center justify-center text-[10px] font-bold text-on-primary">WRAP</div>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container bg-secondary-fixed flex items-center justify-center text-[10px] font-bold text-on-secondary">WHEEL</div>
+</div>
+<button class="h-10 px-5 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:brightness-105 transition-all">
+                            Continue Configuration
+                        </button>
+</div>
+</div>
+</div>
+<!-- Build Card 2: The Lucid -->
+<div class="glass-card rounded-2xl overflow-hidden group car-card-hover transition-all duration-500 hover:-translate-y-2">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="A Lucid Air Sapphire electric sedan in a sleek Matte Stealth Grey finish, parked in a modern architectural driveway at dusk. The warm glow from the house interiors spills onto the car's surfaces, contrasting with the cool, slate-toned exterior. The scene is captured in high resolution with shallow depth of field, emphasizing the car's minimalist design and premium stance. The lighting is soft and sophisticated, evoking a sense of calm and high-performance luxury." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC7PrXdtxO4OFvlecfasxbtmFXGBKgccOQoLksnrEPnzvKFLlzFMzZ9_3dQMA0blA52UvI6ql7QGrjbDaYBKdMjNPrTNs7H06YEZDWJyNyHYq-HQhOxVna7XFB41QMHGTHaZs0LKb06Q6_nsuGBbd_HvAmgTgEmjvRSjgM6EP3_6hNQN_qHWyZe7-tL50jBUm76bJo7ohdTciQoNWxCA8rwldjWaLUEszRZU-0SBN_lrYPIksdnByPfwjykOxVrtga6tdEKgP_fckNf')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-60"></div>
+<div class="absolute top-4 right-4 bg-secondary-container/90 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Booked</span>
+</div>
+</div>
+<div class="p-stack-lg">
+<div class="flex justify-between items-start mb-stack-sm">
+<h3 class="font-headline-md text-headline-md">Stealth Commuter</h3>
+<button class="material-symbols-outlined text-outline hover:text-on-surface">more_vert</button>
+</div>
+<p class="font-body-md text-body-md text-outline mb-stack-lg">Lucid Air Sapphire â¢ Stealth Matte Grey â¢ Ceramic Pro Gold Package</p>
+<div class="flex items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">calendar_today</span>
+<span class="font-label-sm text-label-sm text-secondary">Nov 24, 2024</span>
+</div>
+<button class="h-10 px-5 rounded-lg border border-outline-variant text-on-surface font-label-md text-label-md hover:bg-surface-variant transition-all">
+                            View Appointment
+                        </button>
+</div>
+</div>
+</div>
+<!-- Build Card 3: The Defender -->
+<div class="glass-card rounded-2xl overflow-hidden group car-card-hover transition-all duration-500 hover:-translate-y-2">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="A Land Rover Defender 110 customized for luxury overland travel, featuring a satin Sage Green wrap and heavy-duty bronze wheels. The vehicle is positioned on a misty mountain pass with soft morning light filtering through the fog. The composition is wide and cinematic, highlighting the rugged yet premium build. The colors are muted and earthy, perfectly aligning with the Sage and Slate brand identity, conveying a sense of quiet power and exploration." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBXhb1xQsa6rir7ES2U2qS9y4UsQv9r6PLFTHFpmRCgR4jL2hi_CUK88dJjTmAE_ONfJZrWoUmZ4CjeLZFGQHuCVoKA-R8Mgfx_FSRg2L2DSR84Fc2Slaineox7eRnw618WXiRN-0cuwUoNQbk0gwB-yXfFtxcfkcMyu5QsYQ3QmAJ-zPWs9x-GESTvETwFVPwVa3LqdLw9T28yUfX6mmhYvvswZonM9ecrJbXgCHUsGtMQEuvJK3avNoIzjH1rkn32gUaxAjNB3Tkn')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-60"></div>
+<div class="absolute top-4 right-4 bg-surface-container-low/90 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">Draft</span>
+</div>
+</div>
+<div class="p-stack-lg">
+<div class="flex justify-between items-start mb-stack-sm">
+<h3 class="font-headline-md text-headline-md">Overland Luxe</h3>
+<button class="material-symbols-outlined text-outline hover:text-on-surface">more_vert</button>
+</div>
+<p class="font-body-md text-body-md text-outline mb-stack-lg">Defender 110 â¢ Satin Sage â¢ Forged Bronze Off-road Package</p>
+<div class="flex items-center justify-between gap-4">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface-container bg-primary-fixed-dim flex items-center justify-center text-[10px] font-bold text-on-primary">WRAP</div>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container bg-tertiary-container flex items-center justify-center text-[10px] font-bold text-on-tertiary">TINT</div>
+</div>
+<button class="h-10 px-5 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:brightness-105 transition-all">
+                            Continue Configuration
+                        </button>
+</div>
+</div>
+</div>
+<!-- Empty State / Add Build -->
+<button class="border-2 border-dashed border-outline-variant rounded-2xl flex flex-col items-center justify-center p-stack-xl gap-stack-md group hover:border-primary-container hover:bg-primary-container/5 transition-all duration-300 h-full min-h-[400px]">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center group-hover:bg-primary-container group-hover:text-on-primary-container transition-all">
+<span class="material-symbols-outlined text-3xl">add</span>
+</div>
+<div class="text-center">
+<h4 class="font-headline-md text-headline-md mb-stack-xs">Start a New Build</h4>
+<p class="font-body-md text-body-md text-outline">Explore our catalog of parts and finishes</p>
+</div>
+</button>
+</div>
+</main>
+<!-- Footer Section -->
+<footer class="bg-surface-container-lowest w-full py-stack-xl px-margin-mobile md:px-margin-desktop mt-stack-xl border-t border-white/5">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-stack-lg">
+<div>
+<span class="text-headline-lg font-headline-lg font-bold text-on-surface block mb-stack-sm">Wheely Bits</span>
+<p class="text-body-md font-body-md text-on-surface-variant">Â© 2024 Wheely Bits. Precision Engineering &amp; Design.</p>
+</div>
+<div class="flex flex-col md:items-end gap-stack-sm">
+<div class="flex flex-wrap gap-4 md:justify-end items-center">
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Technical Support</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Vendor Portal</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">FAQs</a>
+</div>
+<div class="flex gap-4 mt-4">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">forum</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">email</span></a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for cards
+        document.querySelectorAll('.car-card-hover').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+
+
+</body></html>

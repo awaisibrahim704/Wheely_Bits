@@ -1,0 +1,335 @@
+﻿<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Wheely Bits | Project Nightfall</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(37, 40, 43, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .timeline-line {
+            background: linear-gradient(to bottom, transparent, #8fb397, transparent);
+        }
+        body {
+            background-color: #121416;
+            color: #e2e2e5;
+            overflow-x: hidden;
+        }
+        .text-glow {
+            text-shadow: 0 0 20px rgba(171, 207, 178, 0.3);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#282a2c",
+                      "surface-dim": "#121416",
+                      "tertiary-container": "#a8aaae",
+                      "secondary-fixed-dim": "#f0bd8b",
+                      "on-primary-fixed-variant": "#2d4e37",
+                      "tertiary": "#c5c6ca",
+                      "on-error-container": "#ffdad6",
+                      "surface-variant": "#333537",
+                      "inverse-on-surface": "#2f3133",
+                      "background": "#121416",
+                      "on-secondary": "#482904",
+                      "error-container": "#93000a",
+                      "on-primary": "#163722",
+                      "on-error": "#690005",
+                      "on-secondary-container": "#e1af7e",
+                      "tertiary-fixed": "#e1e2e6",
+                      "surface-container": "#1e2022",
+                      "secondary-fixed": "#ffdcbd",
+                      "primary": "#abcfb2",
+                      "on-tertiary-fixed": "#191c1f",
+                      "on-background": "#e2e2e5",
+                      "surface-tint": "#abcfb2",
+                      "surface-container-lowest": "#0c0e10",
+                      "primary-container": "#8fb397",
+                      "on-secondary-fixed-variant": "#623f18",
+                      "on-surface": "#e2e2e5",
+                      "surface-container-low": "#1a1c1e",
+                      "outline": "#8c928b",
+                      "on-secondary-fixed": "#2c1600",
+                      "on-primary-container": "#254630",
+                      "surface-bright": "#37393b",
+                      "secondary-container": "#65411a",
+                      "on-primary-fixed": "#00210f",
+                      "surface": "#121416",
+                      "on-tertiary-container": "#3c3f42",
+                      "error": "#ffb4ab",
+                      "on-tertiary": "#2e3134",
+                      "tertiary-fixed-dim": "#c5c6ca",
+                      "inverse-surface": "#e2e2e5",
+                      "primary-fixed-dim": "#abcfb2",
+                      "primary-fixed": "#c6eccd",
+                      "on-surface-variant": "#c2c8c0",
+                      "on-tertiary-fixed-variant": "#44474a",
+                      "inverse-primary": "#44664e",
+                      "surface-container-highest": "#333537",
+                      "outline-variant": "#424842",
+                      "secondary": "#f0bd8b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "stack-md": "16px",
+                      "stack-xl": "64px",
+                      "container-max": "1280px",
+                      "unit": "8px",
+                      "margin-mobile": "16px",
+                      "stack-lg": "32px",
+                      "margin-desktop": "48px",
+                      "stack-xs": "4px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Plus Jakarta Sans"],
+                      "label-sm": ["Plus Jakarta Sans"],
+                      "label-md": ["Plus Jakarta Sans"],
+                      "body-lg": ["Plus Jakarta Sans"],
+                      "headline-xl": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "headline-xl-mobile": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-xl-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface-dim/80 backdrop-blur-md border-b border-white/5 shadow-xl shadow-surface-lowest/20">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<a class="font-headline-md text-headline-md font-bold text-primary tracking-tight" href="#">Wheely Bits</a>
+<!-- Desktop Navigation -->
+<nav class="hidden md:flex items-center gap-stack-lg">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Discover</a>
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="#">Builds</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Community</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Shop</a>
+</nav>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors active:scale-95">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors active:scale-95">settings</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a refined automotive enthusiast, wearing high-end minimal apparel, set against a blurred background of a luxury garage workshop. The lighting is soft and cinematic, following the Slate and Sage aesthetic with muted tones and a premium digital feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVjneJ9AglBwrGhL1Jjdf4xllHf-279g9Rpna1H2zULDVA6Vn6LwfeaJTTZaYj0VR4I6YMxr3U9IHBHg7OHXhOI4XDzl48wANQFpZOy8ozcmjSUDrrzGmbc7BxLuos-ZoBcJTOotFDJpaNZULSVJf_yfxub8dXaVpREiLQdarkboywAV78gnvvIgCBgpb8MLSN1Ry-e2LP5ufjaNnrfIcCWmiAUPlTxlwn-1hoUP-uOqmsHXHch8K_LFgfAohNisIdvwgPMOqZL-Ub">
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow pt-20">
+<!-- Hero Section -->
+<section class="relative h-[819px] w-full overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-transparent z-10"></div>
+<div class="absolute inset-0 w-full h-full" data-alt="A cinematic wide shot of a customized Nissan GT-R R35 with a flawless matte black wrap and aggressive custom bronze wheels. The car is parked in a minimalist, dimly lit architectural garage with dramatic sage green accent lighting reflecting off the surfaces. High-end automotive photography style with deep blacks and sharp technical details." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCnMahSZoSX9_RtRZRRVNh0ZVvvWk6vjP2epxuUzhgt3_OhXeqRuvmX2SWgCV57mWzOkhUJR1HVUcjS9BWUwlXOKBCU9oAc76unojlNDSuMpxZ0IiPpDfQTC9DQZ5D-J8RMBNUdKf2ZldujY7eSNLiAZHmIQyRrNdAhxPBoBy84JaatF-gRyX1YE3qH2oZ_BzWmaqjoKCKGa3IogZyrMNGQIvrx31sW80x9ts9xu6xBQAhagVARp414iWLqvXd6IRUKY66j3iGFIbwo')"></div>
+<div class="relative z-20 h-full flex flex-col justify-end px-margin-desktop pb-stack-xl max-w-container-max mx-auto">
+<span class="inline-block bg-primary-container/20 text-primary font-label-sm text-label-sm px-3 py-1 rounded-full mb-stack-md tracking-widest border border-primary/20 backdrop-blur-md">ACTIVE PROJECT</span>
+<h1 class="font-headline-xl text-headline-xl md:text-[64px] font-extrabold text-on-background mb-stack-sm tracking-tight leading-none text-glow">Project Nightfall</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-stack-lg">A technical masterpiece focusing on stealth aesthetics and precision engineering. This Nissan GT-R R35 evolution prioritizes material quality and aggressive stance.</p>
+<div class="flex gap-stack-md">
+<button class="bg-primary text-on-primary px-stack-lg py-3 rounded-xl font-label-md text-label-md flex items-center gap-2 hover:brightness-110 transition-all active:scale-95">
+<span class="material-symbols-outlined">favorite</span> FOLLOW BUILD
+                    </button>
+<button class="border border-outline-variant bg-white/5 backdrop-blur-md text-on-surface px-stack-lg py-3 rounded-xl font-label-md text-label-md hover:bg-white/10 transition-all active:scale-95">
+                        SHARE LOG
+                    </button>
+</div>
+</div>
+</section>
+<!-- Content Grid -->
+<div class="max-w-container-max mx-auto px-margin-desktop py-stack-xl grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Technical Specs (Bento Left) -->
+<div class="md:col-span-4 space-y-gutter">
+<div class="glass-card rounded-xl p-stack-lg">
+<h3 class="font-headline-md text-headline-md text-primary mb-stack-lg">Technical Specs</h3>
+<div class="space-y-stack-md">
+<div class="flex justify-between items-center py-stack-sm border-b border-white/5">
+<span class="text-on-surface-variant font-label-sm text-label-sm">ENGINE</span>
+<span class="text-on-surface font-body-md text-body-md font-semibold">3.8L V6 Twin-Turbo</span>
+</div>
+<div class="flex justify-between items-center py-stack-sm border-b border-white/5">
+<span class="text-on-surface-variant font-label-sm text-label-sm">HORSEPOWER</span>
+<span class="text-on-surface font-body-md text-body-md font-semibold">640 HP</span>
+</div>
+<div class="flex justify-between items-center py-stack-sm border-b border-white/5">
+<span class="text-on-surface-variant font-label-sm text-label-sm">EXTERIOR</span>
+<span class="text-on-surface font-body-md text-body-md font-semibold">Matte Black Satin</span>
+</div>
+<div class="flex justify-between items-center py-stack-sm border-b border-white/5">
+<span class="text-on-surface-variant font-label-sm text-label-sm">WHEELS</span>
+<span class="text-on-surface font-body-md text-body-md font-semibold">HRE Custom Forged</span>
+</div>
+</div>
+</div>
+<div class="glass-card rounded-xl p-stack-lg overflow-hidden relative group">
+<div class="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity bg-cover bg-center" data-alt="A macro detail shot of a forged carbon fiber automotive component, showing the unique marble-like technical weave and texture. The lighting is cold and precise, accentuating the high-tech automotive engineering aesthetic with deep shadows and subtle sage reflections." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCgtaHRLzXmyC2zapmU1n843aJ2IdrZ_-2JfYf_zG7bGxQpKwM_qoqxE6vf5wUDDMWoyVPQFvQuO_-v4qa7XBnkWwmCXm4mwNrivIFYGkFHvn9wFtFr13TH8jkERlbpgWGTHwdNPKh5KkjSKNfqKXTvWnhC3bPlrDMjlxyikmqNMcXIjaAc4-hMf5BeT10aZMeAIN8l4PlTByGnz57JVYgkK0MKKczwjGSyPHo_rRbPH-wsyb2W08NUxaGtIraECQnE1UZyDzQB4aYX')"></div>
+<div class="relative z-10">
+<h4 class="font-headline-md text-headline-md text-on-background mb-stack-sm">Upcoming Mod</h4>
+<p class="text-on-surface-variant font-body-md text-body-md mb-stack-md">Custom Carbon Intake System arriving next week.</p>
+<button class="text-primary font-label-sm text-label-sm flex items-center gap-1 hover:gap-2 transition-all">VIEW QUEUE <span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+</div>
+<!-- Build Timeline (Bento Center) -->
+<div class="md:col-span-5 space-y-gutter">
+<div class="glass-card rounded-xl p-stack-lg">
+<div class="flex justify-between items-center mb-stack-xl">
+<h3 class="font-headline-md text-headline-md text-on-surface">Modification Log</h3>
+<span class="text-on-surface-variant font-label-sm text-label-sm">75% COMPLETE</span>
+</div>
+<div class="relative pl-8">
+<div class="absolute left-3 top-2 bottom-2 w-[2px] timeline-line"></div>
+<!-- Timeline Item 1 -->
+<div class="relative mb-stack-xl">
+<div class="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-primary ring-4 ring-primary/20"></div>
+<div class="flex flex-col gap-stack-sm">
+<span class="font-label-sm text-label-sm text-primary tracking-widest uppercase">October 2023</span>
+<h4 class="font-headline-md text-headline-md text-on-surface">Custom Forged Rims</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Installed HRE P101 Forged Monoblok wheels in Frozen Gold. Reduced unsprung weight by 12 lbs per corner.</p>
+<div class="mt-stack-md rounded-lg overflow-hidden h-40 w-full" data-alt="Close up of a luxury car wheel with bronze multi-spoke rims and high-performance cross-drilled brakes. The lighting captures the metallic textures and the matte finish of the car body in the background. Slate and Sage color palette with premium automotive styling." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCesJmY78mFm0lHVKO8azn_kP9Ngg3Aep8Vtdrt9lSY5jTsi4Fqnnym-IOgMol45DAW8D8lj2WfU7olcnGJ8WZYmqsuBs_AIB3sxQGmXDVbDc9OdutYQsUXqZVaWcyktx1eBJudX1wXrBB8bJLXHOZv31MeeO8I4vwhxxu8LjeGGNc4JQFS9gEMo9yfUzwhUtM7UX0p4qYqW5jwi9Qc4cZMUZR29mkn7KjjIfB-urAcHALzsZByO0DGVmF1StN0X7WUpas02tObHKL5')"></div>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative mb-stack-xl">
+<div class="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-primary ring-4 ring-primary/20"></div>
+<div class="flex flex-col gap-stack-sm">
+<span class="font-label-sm text-label-sm text-primary tracking-widest uppercase">August 2023</span>
+<h4 class="font-headline-md text-headline-md text-on-surface">Matte Black Full Wrap</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Avery Dennison Supreme Wrapping Film in Satin Black. Complete chrome delete and ceramic coating applied for maximum durability.</p>
+</div>
+</div>
+<!-- Timeline Item 3 -->
+<div class="relative">
+<div class="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-primary ring-4 ring-primary/20"></div>
+<div class="flex flex-col gap-stack-sm">
+<span class="font-label-sm text-label-sm text-primary tracking-widest uppercase">July 2023</span>
+<h4 class="font-headline-md text-headline-md text-on-surface">Precision Tint</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">XPEL Prime XR Plus ceramic tint. 20% all around for heat rejection and privacy.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Community & Comments (Bento Right) -->
+<div class="md:col-span-3 space-y-gutter">
+<div class="glass-card rounded-xl p-stack-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-stack-lg">Comments</h3>
+<div class="space-y-stack-lg">
+<div class="flex gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-surface-variant shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A headshot profile icon of a young automotive designer, looking professional and creative, styled with the dark slate and sage brand colors, atmospheric lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5a-pwqExixUKkOr60Hg4Q-gR6qSNpHXhens0aavIQ1JetHt4kWALJEeUZZzzKJnPQr_wokW0HWA7CB242mOagOVbrlswm8WuvrT8WpDfZE9mmLaVUbxKhpynKlhFg2_TDqc3LTmnqsw2S6-_nBgPGdIDdV6SLUe8_rVlwGV5vHJvX1B8LACWXZ8nvn9liA-xZuHViE7sjKa6WxbVNT5MQmee9T9yZmXQSvoLV6yMAOmdcDjkzTntHaG31RUW2e4vjoLXVU56lpXnH">
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Marcus V.</p>
+<p class="font-body-md text-body-md text-on-surface-variant leading-tight">That matte finish is absolute perfection. How was the ceramic coating process?</p>
+<span class="text-[10px] text-primary/60 mt-1 block">2 HOURS AGO</span>
+</div>
+</div>
+<div class="flex gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-surface-variant shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A headshot profile icon of an expert mechanic, atmospheric lighting with sage green tones, automotive professional style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRbH80wz8qLUdELqID0RlZCJiTDjLGBtzbwDvxjs9mMVNKU8T-Hk0us5E9_lF3narvQxyeGUr3cg4i4WJXKHeE5w7iTdbOuHPKCqMocLl8BZJJuSsvb-Hqjdc83FJEYS7XIOZOEIfbdpMm7v-6BjIozQyF0_Ev1sLxLNkusPbgrMo8xa661Pdkg0hS9FMB5WezVl_S4WqNAMd-2rm5sBlO3l77x3KGi2APT0ZbWjeUI-WsE6NALPdnj2spRmjGq2JQNsqeU-Jb7UbF">
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Sarah Forge</p>
+<p class="font-body-md text-body-md text-on-surface-variant leading-tight">HRE wheels were the right choice for the R35 platform. Stance looks spot on.</p>
+<span class="text-[10px] text-primary/60 mt-1 block">5 HOURS AGO</span>
+</div>
+</div>
+</div>
+<div class="mt-stack-xl pt-stack-lg border-t border-white/5">
+<div class="relative">
+<textarea class="w-full bg-surface-dim border border-outline-variant rounded-xl p-3 text-body-md focus:ring-1 focus:ring-primary focus:border-primary transition-all resize-none h-24 placeholder:text-on-surface-variant/40" placeholder="Add to the discussion..."></textarea>
+<button class="absolute bottom-3 right-3 text-primary material-symbols-outlined hover:scale-110 transition-transform">send</button>
+</div>
+</div>
+</div>
+<!-- Stats -->
+<div class="glass-card rounded-xl p-stack-lg flex flex-col items-center justify-center text-center py-stack-xl">
+<span class="material-symbols-outlined text-primary text-5xl mb-stack-md">visibility</span>
+<span class="font-headline-lg text-headline-lg text-on-surface">12.4K</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-widest">LOG VIEWS</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-xl mt-auto bg-surface-container-lowest bg-surface-dim border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop gap-stack-md max-w-container-max mx-auto">
+<div class="flex flex-col gap-2">
+<span class="text-primary font-headline-lg font-bold">Wheely Bits</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Â© 2024 Wheely Bits. Precision Engineered.</p>
+</div>
+<div class="flex gap-stack-lg">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">About Us</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Technical Specs</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Support</a>
+</div>
+</div>
+</footer>
+<!-- Mobile Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center p-stack-sm pb-safe bg-surface-container/90 backdrop-blur-xl border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.3)] rounded-t-xl z-50 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-primary-container/20 rounded-xl px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">build_circle</span>
+<span class="font-label-sm text-label-sm">Logs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-sm text-label-sm">Forum</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<!-- Interactive Layer -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-4px)';
+                    card.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                    card.style.boxShadow = '0 20px 40px rgba(0,0,0,0.4)';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.boxShadow = 'none';
+                });
+            });
+        });
+    </script>
+</body></html>

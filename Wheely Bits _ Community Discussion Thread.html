@@ -1,0 +1,403 @@
+﻿<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Fitment Help: Rubbing on full lock | Wheely Bits</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#282a2c",
+                    "surface-dim": "#121416",
+                    "tertiary-container": "#a8aaae",
+                    "secondary-fixed-dim": "#f0bd8b",
+                    "on-primary-fixed-variant": "#2d4e37",
+                    "tertiary": "#c5c6ca",
+                    "on-error-container": "#ffdad6",
+                    "surface-variant": "#333537",
+                    "inverse-on-surface": "#2f3133",
+                    "background": "#121416",
+                    "on-secondary": "#482904",
+                    "error-container": "#93000a",
+                    "on-primary": "#163722",
+                    "on-error": "#690005",
+                    "on-secondary-container": "#e1af7e",
+                    "tertiary-fixed": "#e1e2e6",
+                    "surface-container": "#1e2022",
+                    "secondary-fixed": "#ffdcbd",
+                    "primary": "#abcfb2",
+                    "on-tertiary-fixed": "#191c1f",
+                    "on-background": "#e2e2e5",
+                    "surface-tint": "#abcfb2",
+                    "surface-container-lowest": "#0c0e10",
+                    "primary-container": "#8fb397",
+                    "on-secondary-fixed-variant": "#623f18",
+                    "on-surface": "#e2e2e5",
+                    "surface-container-low": "#1a1c1e",
+                    "outline": "#8c928b",
+                    "on-secondary-fixed": "#2c1600",
+                    "on-primary-container": "#254630",
+                    "surface-bright": "#37393b",
+                    "secondary-container": "#65411a",
+                    "on-primary-fixed": "#00210f",
+                    "surface": "#121416",
+                    "on-tertiary-container": "#3c3f42",
+                    "error": "#ffb4ab",
+                    "on-tertiary": "#2e3134",
+                    "tertiary-fixed-dim": "#c5c6ca",
+                    "inverse-surface": "#e2e2e5",
+                    "primary-fixed-dim": "#abcfb2",
+                    "primary-fixed": "#c6eccd",
+                    "on-surface-variant": "#c2c8c0",
+                    "on-tertiary-fixed-variant": "#44474a",
+                    "inverse-primary": "#44664e",
+                    "surface-container-highest": "#333537",
+                    "outline-variant": "#424842",
+                    "secondary": "#f0bd8b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "stack-xl": "64px",
+                    "container-max": "1280px",
+                    "unit": "8px",
+                    "margin-mobile": "16px",
+                    "stack-lg": "32px",
+                    "margin-desktop": "48px",
+                    "stack-xs": "4px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-sm": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-xl-mobile": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "headline-xl-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #121416;
+            color: #e2e2e5;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(37, 40, 43, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #abcfb2;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121416;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333537;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface-dim/80 backdrop-blur-md border-b border-white/5 shadow-xl shadow-surface-lowest/20">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<div class="flex items-center gap-stack-lg">
+<a class="font-headline-md text-headline-md font-bold text-primary tracking-tight" href="#">Wheely Bits</a>
+<nav class="hidden md:flex items-center gap-stack-lg">
+<a class="font-label-md text-on-surface-variant hover:text-on-surface transition-colors relative" href="#">Discover</a>
+<a class="font-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Builds</a>
+<a class="font-label-md text-primary border-b-2 border-primary pb-1" href="#">Community</a>
+<a class="font-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Shop</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-white/5 rounded-full transition-all duration-300">notifications</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-white/5 rounded-full transition-all duration-300">settings</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant cursor-pointer active:scale-95 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A professional profile headshot of a young male automotive enthusiast in a dark garage setting, moody lighting with green neon accents in the background, sharp detail on the face, cinematic shallow depth of field, premium luxury aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuABxH2pNKfctsev2Fo56MTd9-zSLPfRwU4SruRR0eNgK_OlH7PlviMSEvHzWugBmXNv6EjuQUdtZkwGm4Wq3M7dKcpz7lMuDnXG4ux4_-9IE3AUC3_bxUL_bbq-AmNj7CkkM30GA6n_GqiPb5YRNShct2qaTGy3D9Cu9i5LoqyTNlVj1--d-Qu0mO61AaGIh3Zta31SBP7W16WxgSLmXHLYzUfEbyTvH6tCjC05DzI2Yef39ptIrlDacAbEEdgjKPQ76KV-itALhXOY">
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow pt-32 pb-stack-xl px-margin-mobile md:px-margin-desktop max-w-5xl mx-auto w-full">
+<!-- Thread Header -->
+<section class="mb-stack-lg">
+<div class="flex items-center gap-stack-sm mb-stack-md">
+<a class="flex items-center text-primary font-label-sm hover:underline" href="#">
+<span class="material-symbols-outlined text-[18px] mr-1">arrow_back</span>
+                    Back to Tech Forum
+                </a>
+<span class="text-outline-variant">â¢</span>
+<span class="text-on-surface-variant font-label-sm">Tech &amp; Mechanics</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg md:text-headline-xl text-on-surface font-bold mb-4 tracking-tight">Fitment Help: Rubbing on full lock with 19x9.5 ET22?</h1>
+<div class="flex flex-wrap items-center gap-stack-md">
+<div class="flex items-center gap-stack-sm bg-surface-container-high px-3 py-1 rounded-full border border-white/5">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+<span class="font-label-sm text-on-surface">Urgent</span>
+</div>
+<div class="text-on-surface-variant font-label-sm">Started 2 hours ago by <span class="text-primary font-bold">@StanceBoi</span></div>
+<div class="text-on-surface-variant font-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">visibility</span> 1.2k views
+                </div>
+</div>
+</section>
+<!-- Discussion Feed -->
+<div class="space-y-stack-md">
+<!-- Original Post -->
+<article class="glass-panel rounded-xl p-stack-lg flex flex-col md:flex-row gap-stack-lg relative overflow-hidden">
+<div class="hidden md:flex flex-col items-center gap-stack-sm w-20 flex-shrink-0">
+<div class="w-16 h-16 rounded-xl overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Avatar portrait of a car tuner wearing a cap, dark moody lighting, cinematic high contrast, deep blacks and sage green highlights, professional automotive lifestyle aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVzo7yHUn2ljIJqRNZlZVjIdzF3WlLE7aD85foDRvob54XsRi9dJc1YmH-ZB8Hwf1BrF88hu5Gml8O7YRX5rkVa8e0nuH-fNKu_qt0CyZ2MqRQ0ctxqtCre-mox194aZkSzSS97tCExSzBtJUxDW2IpVU5sFjzsKKtjPNZPDNSuC1gxWUvIcY0jfVg5QQQ-S76p_VV8oQj0dpYqRUZ2UxNk4mLeqzUNou6G5krZIpnW-jwNb5nF-LiliqKnU1FZYe0tu-WL8VIHDnh">
+</div>
+<div class="text-center">
+<div class="font-label-sm text-primary font-bold">@StanceBoi</div>
+<div class="text-[10px] text-outline-variant uppercase tracking-widest font-bold">Member</div>
+</div>
+<div class="mt-4 flex flex-col items-center gap-1">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">keyboard_arrow_up</button>
+<span class="font-headline-md text-on-surface">14</span>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-error transition-colors">keyboard_arrow_down</button>
+</div>
+</div>
+<div class="flex-grow">
+<div class="md:hidden flex items-center gap-stack-md mb-stack-md">
+<div class="w-10 h-10 rounded-xl overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Close up of a stylized car wheel logo, minimalist design, dark background with metallic sage green lighting, sleek high-end automotive brand style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtXLMxRyU0EXUdYVn6jZ4ark46Lbiwc2u20ee4GvyyHvGRM4klPLVEiKO_oeZX3zGGEyDZtcTq3F7w378eIE2-KmAsNpYZn0jBWDrwSjyA8SyzSd0nM90VG7HTxk2ZqLC4N23W_KQ8QnWZYs1jyqIyo0J7KrI_RMBVzLCrsJe0SdXfioqcaU69KMpVGVXEFVJRlEvlt6NFUsmAkaYm3JBZKv_XEHxsqvQaq9tORhYvgfVM4v2jUFmqK9fm-3nbwyXTYEYqvboEKRYl">
+</div>
+<div>
+<div class="font-label-sm text-primary font-bold">@StanceBoi</div>
+<div class="text-[10px] text-outline-variant uppercase tracking-widest font-bold">Member â¢ 14 votes</div>
+</div>
+</div>
+<div class="prose prose-invert max-w-none mb-stack-lg">
+<p class="font-body-md text-on-surface-variant leading-relaxed">
+                            Yo everyone! Just finished installing my new setup: 19x9.5 ET22 squared. Everything looked perfect until I hit the first corner. I'm getting some serious rubbing on full lock, specifically on the inner liner.
+                        </p>
+<p class="font-body-md text-on-surface-variant leading-relaxed mt-4">
+                            Running 255/35 tires and lowered about 1.5 inches on coilovers. Does anyone have experience with this offset? Should I look into spacers or is a fender roll inevitable?
+                        </p>
+</div>
+<!-- Images Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md mb-stack-lg">
+<div class="aspect-[4/3] rounded-xl overflow-hidden border border-white/10 group cursor-zoom-in">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A close-up shot of a luxury sports car wheel arch, showing the tight fitment of a high-performance tire against the inner fender liner. The lighting is moody and technical, emphasizing the metallic textures of the 19-inch wheel and the rubber tire. High-end automotive photography style with deep blacks and subtle sage green accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA0yfJiSwXYQEQFORxvHtBS0OI7_XT6ovVHnU_3HjajzSD-01k8rx1g_A0WKJhLfUxDDXT66QtS8f-49A7-muAsVdiqDKuhHwbNiicaXEDVpDEVC8aa2Zq9ugXVBtyLlDiyDGVm3llM6uh1hnuy78499t8wOLKCBZcA__RCfgFqF0QKcT-CUh7KHOuqxVfKVUwgBeCbSmuaHA_jdpg_fZsU6DLxwylSjdP5ovWjpONv-Y5ukRGM45hMfiCQDcXkExejRcbiv_vJQd3">
+</div>
+<div class="aspect-[4/3] rounded-xl overflow-hidden border border-white/10 group cursor-zoom-in">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Technical view of a car suspension assembly seen through a wheel well. The focus is on the proximity of the tire sidewall to the suspension strut, showing minimal clearance. The atmosphere is industrial and precise, with clean lighting reflecting off metallic surfaces in a premium dark-themed garage." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6_d-O-19u3EFtRSuacRwN_GOAFmTCOyBxdCsUqQhO6bkZ8PETUIp2leYyPfN62yFpiQdJlFMuTZOGWw4A55X7SgMbBRg9aUrs94egv28-Z-ErxMM3e9nazuyZSef9AHnURog8LSaAKkeAvIXF_pSmVBAKIgu-1FZiBeR68xQivOwcRz_SkNs6dUlfkxkDr8DtwY___f48-AzQ-Gv2Dxg0V-dnG1tQfJyrpVYtZyt91IGP3gy18eC0gVqSFQyDZam0ES7_5VM2kKez">
+</div>
+</div>
+<div class="flex items-center gap-stack-lg pt-4 border-t border-white/5">
+<button class="flex items-center gap-1 font-label-md text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">reply</span> Reply
+                        </button>
+<button class="flex items-center gap-1 font-label-md text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">share</span> Share
+                        </button>
+<button class="flex items-center gap-1 font-label-md text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">flag</span> Report
+                        </button>
+</div>
+</div>
+</article>
+<!-- Response 1 (Technical/High Upvote) -->
+<article class="glass-panel rounded-xl p-stack-lg flex flex-col md:flex-row gap-stack-lg">
+<div class="hidden md:flex flex-col items-center gap-stack-sm w-20 flex-shrink-0">
+<div class="w-16 h-16 rounded-xl overflow-hidden border border-primary/30 relative">
+<img class="w-full h-full object-cover" data-alt="Avatar portrait of an experienced mechanical engineer in a clean workshop, wearing technical gear, soft lighting with professional depth of field, high-end automotive professional aesthetic with sage green highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEIwjjWlzDA1qIjqoPRGtel4gOU_Eg7UFTBOVZ3qMXS5NVGazMgOEy5rLVTw0hQRlEcQtt-pJ-MulIxXKa9S3YIOz-daqf8NETwUZQQBM_9lTmtB9jtrnMYECfAJXKbD6WHnVWnNjVBDrR6mSoIlhmvquVJa5uNfiQp69vQS8kqIdkugiOkMT_zWtNRlkOBNLA-ybDSqkt8X_7TqmDDLm-M1QzTwjE7liH89qSrag5BkQ-v1Gp34_s_9FuCSn6OUwtsc9oYvaGwBsr">
+<div class="absolute bottom-0 right-0 bg-primary text-on-primary-container p-0.5 rounded-tl-md">
+<span class="material-symbols-outlined text-[12px] font-bold" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+</div>
+<div class="text-center">
+<div class="font-label-sm text-secondary font-bold">@FitmentExpert</div>
+<div class="text-[10px] text-primary uppercase tracking-widest font-bold">Expert</div>
+</div>
+<div class="mt-4 flex flex-col items-center gap-1">
+<button class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">keyboard_arrow_up</button>
+<span class="font-headline-md text-primary">82</span>
+<button class="material-symbols-outlined text-on-surface-variant">keyboard_arrow_down</button>
+</div>
+</div>
+<div class="flex-grow">
+<div class="md:hidden flex items-center gap-stack-md mb-stack-md">
+<div class="w-10 h-10 rounded-xl overflow-hidden border border-primary/30">
+<img class="w-full h-full object-cover" data-alt="A macro shot of mechanical gears and precision components, dark slate and sage green color palette, high-tech automotive engineering aesthetic with soft blurred background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC58KmIQOmBOgWua862zqe4s2oN5_x6j_j6vqMN3ORZtbv6ADmJpndOEN5eDYNB5TjcZUqZzaDxFcBmTouof9XknpYbSaDkQIy9jDz_QLyN-HHIkg0o6MOJAyNmaKCjZC_MC1S16BL20ucQ2VYlXcipUpg19s50Yxtrf6xubKOyIgPRS1pMjQnb2BSiEmOhwer0aoozXBW62Z07bQK3fT353It05PvcvLHCX6DrTGgeyIFloXWLc_CJezSweR5Ce7Jz73yXQbs3vlbs">
+</div>
+<div>
+<div class="font-label-sm text-secondary font-bold">@FitmentExpert</div>
+<div class="text-[10px] text-primary uppercase tracking-widest font-bold">Expert â¢ 82 votes</div>
+</div>
+</div>
+<div class="mb-2 text-[12px] text-primary font-bold uppercase tracking-wider">Solution Suggested</div>
+<div class="prose prose-invert max-w-none mb-stack-lg">
+<p class="font-body-md text-on-surface-variant leading-relaxed">
+                            ET22 on a 9.5" wheel is pretty aggressive for a squared setup. You're likely hitting the front part of the wheel well liner. 
+                        </p>
+<ul class="list-disc ml-5 mt-4 space-y-2 text-on-surface-variant font-body-md">
+<li><strong class="text-on-surface">Camber:</strong> Are you running stock camber? Adding -1.5 to -2.0 degrees will tilt the top of the tire in and likely clear the fender.</li>
+<li><strong class="text-on-surface">Spacers:</strong> NO. Do not add spacers, that will make it worse by pushing the wheel further out.</li>
+<li><strong class="text-on-surface">Heat Gun:</strong> You can slightly reshape the plastic liner with a heat gun to gain 5-8mm of clearance.</li>
+</ul>
+</div>
+<div class="flex items-center gap-stack-lg pt-4 border-t border-white/5">
+<button class="flex items-center gap-1 font-label-md text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">reply</span> Reply
+                        </button>
+<button class="flex items-center gap-1 font-label-md text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">thumb_up</span> Helpful
+                        </button>
+</div>
+</div>
+</article>
+<!-- Response 2 (Simple text) -->
+<article class="glass-panel rounded-xl p-stack-lg flex flex-col md:flex-row gap-stack-lg opacity-90">
+<div class="hidden md:flex flex-col items-center gap-stack-sm w-20 flex-shrink-0">
+<div class="w-16 h-16 rounded-xl overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Minimalist abstract portrait, low key lighting, mysterious automotive designer vibe, dark shadows and subtle light-catching edges, premium slate and sage palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVCmgnBHGzTgem-J3NVRAnuO9PIXHz2OP4jhe6JjtPSsK_hD62MXjQ5CrJp60Ofaly8aBOR0XGQ0hZOs6ZjGJNm6v6CGm_S13ptJxdBgKv5c_0gK3V50TLegfw8GNF98kFIL-AwZHc1sXytGVG2yghyKkCbPNFDZYxeiYrBBmgmWOHjkwFch4DMFFeVBtuByg-KWy87ZhJRdzX9bCSW5ehBTg42v9MuUtdTUXZ5XCeEQQuB3ITqXGlWvWqJJXDL_fvlUXV5IisBKBN">
+</div>
+<div class="text-center">
+<div class="font-label-sm text-on-surface font-bold">@DriftKing99</div>
+</div>
+<div class="mt-4 flex flex-col items-center gap-1">
+<button class="material-symbols-outlined text-on-surface-variant">keyboard_arrow_up</button>
+<span class="font-headline-md text-on-surface">5</span>
+<button class="material-symbols-outlined text-on-surface-variant">keyboard_arrow_down</button>
+</div>
+</div>
+<div class="flex-grow">
+<p class="font-body-md text-on-surface-variant leading-relaxed">
+                        I had the exact same issue on my F80. I ended up switching to 245/35 tires. That slight stretch was enough to stop the rubbing completely on full lock. It's not ideal for grip but solved the annoyance.
+                    </p>
+<div class="flex items-center gap-stack-lg pt-4 border-t border-white/5 mt-stack-md">
+<button class="flex items-center gap-1 font-label-md text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">reply</span> Reply
+                        </button>
+</div>
+</div>
+</article>
+</div>
+<!-- Quick Reply Box -->
+<section class="mt-stack-xl">
+<div class="glass-panel rounded-xl p-stack-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md">Join the Discussion</h3>
+<div class="relative">
+<textarea class="w-full bg-surface-container-low border border-outline-variant rounded-xl p-stack-md min-h-[120px] focus:ring-1 focus:ring-primary focus:border-primary transition-all text-on-surface placeholder:text-outline" placeholder="Write your technical advice or question here..."></textarea>
+<div class="absolute bottom-4 right-4 flex items-center gap-stack-sm">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface p-2">image</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface p-2">attach_file</button>
+</div>
+</div>
+<div class="flex justify-between items-center mt-stack-md">
+<p class="text-label-sm text-outline-variant">Be respectful and provide technical data where possible.</p>
+<button class="bg-primary text-on-primary-container px-6 py-3 rounded-full font-label-md font-bold hover:brightness-110 active:scale-95 transition-all">Post Reply</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant py-stack-xl mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop gap-stack-md max-w-container-max mx-auto w-full">
+<div class="flex flex-col gap-2">
+<div class="text-primary font-headline-lg font-bold">Wheely Bits</div>
+<div class="text-on-surface-variant font-body-md">Â© 2024 Wheely Bits. Precision Engineered.</div>
+</div>
+<div class="flex gap-stack-lg">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">About Us</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Technical Specs</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Support</a>
+</div>
+</div>
+</footer>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container/90 backdrop-blur-xl border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.3)] flex justify-around items-center p-stack-sm pb-safe z-50 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors p-2" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-bold mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors p-2" href="#">
+<span class="material-symbols-outlined">build_circle</span>
+<span class="text-[10px] font-bold mt-1">Logs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-primary-container/20 rounded-xl px-4 py-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">forum</span>
+<span class="text-[10px] font-bold mt-1">Forum</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors p-2" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold mt-1">Profile</span>
+</a>
+</nav>
+<!-- Decorative Atmosphere Background (Optional Scripted micro-interaction) -->
+<div class="fixed inset-0 pointer-events-none -z-10 opacity-20">
+<div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[120px]"></div>
+<div class="absolute bottom-[-5%] left-[-5%] w-[40%] h-[40%] rounded-full bg-secondary/5 blur-[100px]"></div>
+</div>
+<script>
+        // Simple micro-interaction for vote buttons
+        document.querySelectorAll('button.material-symbols-outlined').forEach(btn => {
+            if(btn.innerText.includes('keyboard_arrow')) {
+                btn.addEventListener('click', function() {
+                    this.classList.toggle('text-primary');
+                    this.style.transform = 'scale(1.2)';
+                    setTimeout(() => this.style.transform = 'scale(1)', 150);
+                });
+            }
+        });
+
+        // Sticky header opacity change on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('bg-surface-dim/95');
+                header.classList.remove('bg-surface-dim/80');
+            } else {
+                header.classList.add('bg-surface-dim/80');
+                header.classList.remove('bg-surface-dim/95');
+            }
+        });
+    </script>
+</body></html>

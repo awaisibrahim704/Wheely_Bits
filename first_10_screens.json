@@ -1,0 +1,52 @@
+﻿[
+    {
+        "title":  "Wheely Bits | Fitment Engine (Daylight)",
+        "prompt":  "Convert the Fitment Engine to a clean, light-mode technical calculator.\n\nKey Changes:\n- Page Background: Light grey.\n- Input Fields: Pure white backgrounds with subtle silver borders and orange focus rings.\n- Comparison Table: High-contrast text on alternating light grey rows.\n- Verdict Cards: Keep the green/yellow/red semantic colors but adapt the card backgrounds to be light versions (e.g., very pale green background with a solid green border) for better legibility in light mode.\n- Typography: Ensure all technical mono-spaced data (PCD, Offset) is in a dark, high-contrast grey.",
+        "theme":  "FIDELITY"
+    },
+    {
+        "title":  "Wheely Bits | Vehicle Selection (Updated)",
+        "prompt":  "Transform the Vehicle Selection page (SCREEN_63) to match the layout and visual style of the Wrap Visualization page (SCREEN_44). \n\nKey requirements:\n1. Use the cinematic dark background and centered capsule navigation from SCREEN_44.\n2. Replace the current grid of popular makes and featured models with a more focused interface.\n3. Add two prominent, glassmorphic dropdown menus at the center: one for \u0027Car Brand\u0027 and another for \u0027Car Model\u0027. \n4. Maintain the \u0027Selected Vehicle\u0027 confirmation bar at the bottom, but style it to match the \u0027Configuration Details\u0027 aesthetics from SCREEN_44.\n5. Keep the British Racing Green Porsche 911 GT3 RS as the background/reference image to maintain continuity.\n6. Ensure all typography and spacing align with the Slate \u0026 Sage design system.",
+        "theme":  "FIDELITY"
+    },
+    {
+        "title":  "Wheely Bits | Education Hub (Slate \u0026 Sage)",
+        "prompt":  "Append the professional footer from {{DATA:SCREEN:SCREEN_90}} to the bottom of this screen. Ensure the page layout supports scrolling to reach it.",
+        "theme":  "FIDELITY"
+    },
+    {
+        "title":  "Wheely Bits | Rim Fitment 101 (Slate \u0026 Sage)",
+        "prompt":  "Append the professional footer from {{DATA:SCREEN:SCREEN_90}} to the bottom of this screen. Ensure the page layout supports scrolling to reach it.",
+        "theme":  "FIDELITY"
+    },
+    {
+        "title":  "Wheely Bits | Home (Heritage Stance)",
+        "prompt":  "Wheely Bits Landing Page (Home). Use the image {{DATA:IMAGE:IMAGE_15}} as a cinematic hero background with a subtle dark green overlay to ensure text readability. The main headline \"WHEELY BITS\" should be in large Playfair Display font (Cashmere White). Include a subheadline \"Pakistan\u0027s first AI-powered car customization platform\" and two primary CTAs: \"START CUSTOMIZING\" (Champagne Bronze button) and \"IDENTIFY A RIM\" (Steel outline). Below the hero, add sections for technical capabilities: AI Recognition, 2D Visualizer, Paint/Wrap, and Fitment Engine. Apply the Heritage Stance design system strictly.",
+        "theme":  "FIDELITY"
+    },
+    {
+        "title":  "Wheely Bits | Booking Confirmed",
+        "prompt":  "A Booking Confirmation / Success screen for Wheely Bits. A large, elegant \u0027Checkmark\u0027 icon at the center. Text reads \u0027Booking Confirmed!\u0027 for Aura Custom Studio on June 15th at 10:00 AM. Includes buttons to \u0027Add to Calendar\u0027, \u0027View Directions\u0027, and \u0027Back to Garage\u0027. The background is a moody, blurred image of a Porsche in a garage, maintaining the Slate \u0026 Sage aesthetic.",
+        "theme":  "FIDELITY"
+    },
+    {
+        "title":  "Wheely Bits | Tint Visualization (Slate \u0026 Sage)",
+        "prompt":  "The third stage of the Tint Journey: \u0027Visualization\u0027. \nNavigation: Floating centered capsule with \u0027Tint\u0027 active. \nProgress Bar: Step 1 and 2 complete, Step 3 (Visualization) active. \nMain Content: A cinematic 3D environment featuring a car (e.g., a white or silver sports car to contrast the tint). \nInteractive Elements: A slider to adjust the tint shade in real-time, toggle buttons for \u0027Day\u0027 and \u0027Night\u0027 view, and a \u0027Interior View\u0027 vs \u0027Exterior View\u0027 toggle. \nSide Panel: Summary of the build (e.g., Ceramic Film, 35% Shade). \nCTA: \u0027Confirm Selection\u0027. \nTheme: Slate \u0026 Sage.",
+        "theme":  "FIDELITY"
+    },
+    {
+        "title":  "Wheely Bits | Utility States",
+        "prompt":  "PAGE 9: 404 \u0026 LOADING STATES. \n404: Large Orbitron \"404\", \"Looks like this page took a wrong turn\", GO BACK HOME button. \nLoading: WHEELY BITS logo with glowPulse animation, orange progress bar, \"Loading the garage...\" text. \nBoth use the Midnight Velocity design system.",
+        "theme":  "FIDELITY"
+    },
+    {
+        "title":  "Wheely Bits | Vendor Detail (Slate \u0026 Sage)",
+        "prompt":  "Wheely Bits Vendor Detail Page. A deep dive into a specific workshop (e.g., Apex Performance Garage). Features: Portfolio of previous builds, available rim inventory with pricing, customer reviews, and a technical expertise breakdown. Style: High-fidelity photography, technical specs, Slate and Sage theme using Plus Jakarta Sans.",
+        "theme":  "FIDELITY"
+    },
+    {
+        "title":  "Wheely Bits | Fitment Engine (Slate \u0026 Sage)",
+        "prompt":  "The Fitment Engine calculator page.\n- Layout: Two main rounded columns: \"Your Vehicle\" and \"Your Rim\".\n- Technical UI: Soft slate input fields with rounded corners and subtle sage green borders on focus.\n- Results: A \"Safe Direct Fit\" status indicator with a soft glow. A \"Technical Comparison\" table and a \"Tyre Matrix\" card.\n- Animations: Smooth expansion animations for technical details.",
+        "theme":  "FIDELITY"
+    }
+]

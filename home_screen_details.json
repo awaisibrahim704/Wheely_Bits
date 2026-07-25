@@ -1,0 +1,308 @@
+﻿{
+    "screenshot":  {
+                       "name":  "projects/14383869876512879994/files/1789972214403639813",
+                       "downloadUrl":  "https://lh3.googleusercontent.com/aida/AP1WRLsxu0cgjAFTfwgzJAaaAM3HP4A7-fPCZZDd-rYOInk0OXXkVxe8YsJaUh7hXFglJngH0TLz4Zk23iYlwLKBGBIp-fLMpWhk-WAuVBEXdWJ3sK80XInWfR0dH9VYSBxc5T20ZISpk6WqJDlDDtlRB4eSkJnV2vU-wQnQ7LUOH5uzepmXRnVXoPrDGnqNSXQRHks3fbEUbhQOJfV0dF24n3aN6-qg3pBIA1PYvOiZ66cPDl2V7g3NXUgY7EA"
+                   },
+    "htmlCode":  {
+                     "name":  "projects/14383869876512879994/files/7964172202936264455",
+                     "downloadUrl":  "https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sXzAwMDY1NTg2N2U3ZGExODAwMzgzYTA5NTg5MDRlYjc3EgsSBxCeiOj3_RwYAZIBJAoKcHJvamVjdF9pZBIWQhQxNDM4Mzg2OTg3NjUxMjg3OTk5NA\u0026filename=\u0026opi=89354086",
+                     "mimeType":  "text/html"
+                 },
+    "id":  "181c7de4b1244a378e44b8c4c3ca6f45",
+    "generatedBy":  "figaro_agent",
+    "width":  "2560",
+    "height":  "3774",
+    "title":  "Wheely Bits | Home (Slate \u0026 Sage)",
+    "prompt":  "The homepage for \"Wheely Bits\" using the Slate \u0026 Sage design system. \n- Background: Use {{DATA:IMAGE:IMAGE_18}} as a subtle, atmospheric hero background with a deep slate gradient overlay.\n- Hero Section: Large, smooth typography for \"WHEELY BITS\" using Plus Jakarta Sans. Subtext: \"Precision tuning, visual fidelity, and technical mastery combined.\"\n- Floating Navigation: Center-aligned, glassmorphic floating bar at the top.\n- Feature Grid: Four rounded cards highlighting core capabilities: AI Recognition, Studio Visualizer, Fitment Engine, and Colorimetry Lab. \n- Animations: Add entrance animations (fade-in and slide-up) to all sections. Use smooth CSS transitions for all hover states.\n## Available Images\nYou MUST include the following images in this design. You must reference them\nby putting their exact placeholder IDs in `src` attributes or CSS\n`background-image` rules. Do NOT use external URLs or generate new\nplaceholders. Preserve these IDs exactly as written. Read each image\u0027s\nDescription to understand its subject, intended section, and visual role.\n\n- {{DATA:IMAGE:IMAGE_18}}\n  Description: pexels-introspectivedsgn-17245104.jpg\n  Dimensions: 6000x4000\n  Aspect Ratio: 1.50\n",
+    "name":  "projects/14383869876512879994/screens/181c7de4b1244a378e44b8c4c3ca6f45",
+    "theme":  {
+                  "colorMode":  "DARK",
+                  "font":  "PLUS_JAKARTA_SANS",
+                  "roundness":  "ROUND_EIGHT",
+                  "customColor":  "#8fb397",
+                  "headlineFont":  "PLUS_JAKARTA_SANS",
+                  "bodyFont":  "PLUS_JAKARTA_SANS",
+                  "labelFont":  "PLUS_JAKARTA_SANS",
+                  "namedColors":  {
+                                      "on_tertiary_container":  "#3c3f42",
+                                      "on_surface_variant":  "#c2c8c0",
+                                      "surface_container":  "#1e2022",
+                                      "surface_dim":  "#121416",
+                                      "surface":  "#121416",
+                                      "primary_fixed_dim":  "#abcfb2",
+                                      "error":  "#ffb4ab",
+                                      "tertiary":  "#c5c6ca",
+                                      "background":  "#121416",
+                                      "on_primary_container":  "#254630",
+                                      "on_secondary_fixed_variant":  "#623f18",
+                                      "on_tertiary_fixed_variant":  "#44474a",
+                                      "on_tertiary":  "#2e3134",
+                                      "secondary_container":  "#65411a",
+                                      "surface_container_highest":  "#333537",
+                                      "on_tertiary_fixed":  "#191c1f",
+                                      "on_surface":  "#e2e2e5",
+                                      "tertiary_fixed_dim":  "#c5c6ca",
+                                      "secondary_fixed_dim":  "#f0bd8b",
+                                      "surface_variant":  "#333537",
+                                      "outline_variant":  "#424842",
+                                      "surface_container_high":  "#282a2c",
+                                      "surface_bright":  "#37393b",
+                                      "on_secondary":  "#482904",
+                                      "surface_container_low":  "#1a1c1e",
+                                      "secondary":  "#f0bd8b",
+                                      "surface_container_lowest":  "#0c0e10",
+                                      "error_container":  "#93000a",
+                                      "outline":  "#8c928b",
+                                      "on_secondary_container":  "#e1af7e",
+                                      "secondary_fixed":  "#ffdcbd",
+                                      "primary_container":  "#8fb397",
+                                      "tertiary_container":  "#a8aaae",
+                                      "inverse_primary":  "#44664e",
+                                      "inverse_on_surface":  "#2f3133",
+                                      "on_secondary_fixed":  "#2c1600",
+                                      "on_primary_fixed":  "#00210f",
+                                      "on_background":  "#e2e2e5",
+                                      "tertiary_fixed":  "#e1e2e6",
+                                      "inverse_surface":  "#e2e2e5",
+                                      "surface_tint":  "#abcfb2",
+                                      "on_primary_fixed_variant":  "#2d4e37",
+                                      "on_error_container":  "#ffdad6",
+                                      "on_primary":  "#163722",
+                                      "on_error":  "#690005",
+                                      "primary":  "#abcfb2",
+                                      "primary_fixed":  "#c6eccd"
+                                  },
+                  "colorVariant":  "FIDELITY",
+                  "overridePrimaryColor":  "#8fb397",
+                  "overrideSecondaryColor":  "#d4a373",
+                  "overrideTertiaryColor":  "#25282b",
+                  "overrideNeutralColor":  "#1a1c1e",
+                  "spacingScale":  2,
+                  "typography":  {
+                                     "headline-lg":  {
+                                                         "fontFamily":  "Plus Jakarta Sans",
+                                                         "fontSize":  "32px",
+                                                         "fontWeight":  "500",
+                                                         "lineHeight":  "1.3",
+                                                         "letterSpacing":  "0.01em"
+                                                     },
+                                     "headline-md":  {
+                                                         "fontFamily":  "Plus Jakarta Sans",
+                                                         "fontSize":  "24px",
+                                                         "fontWeight":  "500",
+                                                         "lineHeight":  "1.4",
+                                                         "letterSpacing":  "0.01em"
+                                                     },
+                                     "label-sm":  {
+                                                      "fontFamily":  "Plus Jakarta Sans",
+                                                      "fontSize":  "12px",
+                                                      "fontWeight":  "500",
+                                                      "lineHeight":  "1.4",
+                                                      "letterSpacing":  "0.05em"
+                                                  },
+                                     "body-md":  {
+                                                     "fontFamily":  "Plus Jakarta Sans",
+                                                     "fontSize":  "16px",
+                                                     "fontWeight":  "400",
+                                                     "lineHeight":  "1.6",
+                                                     "letterSpacing":  "0em"
+                                                 },
+                                     "headline-xl":  {
+                                                         "fontFamily":  "Plus Jakarta Sans",
+                                                         "fontSize":  "48px",
+                                                         "fontWeight":  "500",
+                                                         "lineHeight":  "1.2",
+                                                         "letterSpacing":  "0.02em"
+                                                     },
+                                     "label-md":  {
+                                                      "fontFamily":  "Plus Jakarta Sans",
+                                                      "fontSize":  "14px",
+                                                      "fontWeight":  "500",
+                                                      "lineHeight":  "1.4",
+                                                      "letterSpacing":  "0.05em"
+                                                  },
+                                     "body-lg":  {
+                                                     "fontFamily":  "Plus Jakarta Sans",
+                                                     "fontSize":  "18px",
+                                                     "fontWeight":  "400",
+                                                     "lineHeight":  "1.6",
+                                                     "letterSpacing":  "0em"
+                                                 },
+                                     "headline-xl-mobile":  {
+                                                                "fontFamily":  "Plus Jakarta Sans",
+                                                                "fontSize":  "32px",
+                                                                "fontWeight":  "500",
+                                                                "lineHeight":  "1.2",
+                                                                "letterSpacing":  "0.02em"
+                                                            }
+                                 },
+                  "spacing":  {
+                                  "stack-xs":  "4px",
+                                  "stack-lg":  "32px",
+                                  "stack-md":  "16px",
+                                  "margin-desktop":  "48px",
+                                  "margin-mobile":  "16px",
+                                  "stack-xl":  "64px",
+                                  "stack-sm":  "8px",
+                                  "gutter":  "24px",
+                                  "unit":  "8px",
+                                  "container-max":  "1280px"
+                              },
+                  "headlineFontFamily":  "Plus Jakarta Sans",
+                  "bodyFontFamily":  "Plus Jakarta Sans",
+                  "labelFontFamily":  "Plus Jakarta Sans"
+              },
+    "deviceType":  "DESKTOP",
+    "screenType":  "DESIGN",
+    "screenMetadata":  {
+                           "agentType":  "PRO_AGENT",
+                           "status":  "COMPLETE",
+                           "displayMode":  "HTML"
+                       },
+    "designSystem":  {
+                         "name":  "assets/58f3497093ef48c18ee66b9205b18764",
+                         "designSystem":  {
+                                              "displayName":  "Slate \u0026 Sage",
+                                              "styleGuidelines":  "## Brand \u0026 Style\n\nThis design system is engineered for a premium automotive experience, prioritizing a sophisticated, high-end atmosphere that balances technical precision with organic warmth. The aesthetic leans into **Modern Minimalism** with a **Glassmorphic** overlay, utilizing soft textures and diffused light to evoke the feel of a luxury vehicle dashboard. \n\nThe target audience consists of automotive enthusiasts and high-net-worth individuals who value clarity, performance, and understated elegance. The UI should feel calm, spacious, and deliberate, avoiding the aggressive \"gamer\" aesthetic often found in the automotive sector in favor of a serene, tactile digital environment.\n\n## Layout \u0026 Spacing\n\nThe layout philosophy follows a **Fluid Grid** model with significant breathing room to reflect luxury branding. \n- **Grid**: A 12-column system is used for desktop, collapsing to 4 columns on mobile.\n- **Rhythm**: All spacing is based on an 8px base unit. \n- **Negative Space**: High-end automotive photography should be given priority, with text blocks utilizing wide margins (48px on desktop) to prevent the UI from feeling cluttered.\n- **Adaptive Rules**: On mobile, padding is tightened to 16px, but the vertical \"stack\" remains generous to ensure touch targets are easily accessible while driving (when parked) or browsing.\n\n## Elevation \u0026 Depth\n\nDepth is achieved through a combination of **Tonal Layering** and **Glassmorphism**:\n- **Base Level**: The primary slate background (#1a1c1e).\n- **Surface Level**: Cards and secondary containers use #25282b with a subtle 1px border of #ffffff (at 5% opacity) to define edges.\n- **Floating Level**: Navigation bars and dropdown menus use a semi-transparent version of the secondary background with a `backdrop-filter: blur(12px)`.\n- **Shadows**: Shadows are extra-diffused. Use a 20px - 40px blur radius with a very low opacity (15-20%) dark tint, avoiding hard black drop shadows.\n\n## Components\n\n### Buttons\nPrimary buttons use the Sage Green (#8fb397) with dark text. Secondary buttons use a ghost style with a subtle slate border. All buttons should have a minimum height of 48px to ensure ease of interaction.\n\n### Cards\nCards are the primary content vehicle. They feature the secondary background (#25282b), a 16px corner radius, and no visible shadow unless hovered. On hover, the card should lift slightly with a soft, diffused shadow.\n\n### Input Fields\nInputs are dark-themed with a subtle border. The focus state uses a 1px Sage Green glow. Labels are always placed above the input using the `label-sm` typography style for clarity.\n\n### Glass Navigation\nThe main navigation bar is a floating element at the top or side of the viewport. It must utilize backdrop blur and a slight 10% white border on the top edge to simulate light hitting a glass surface.\n\n### Status Chips\nUse desaturated colors for status indicators (e.g., \"Available\", \"In Transit\"). These should be small, pill-shaped, and use the `label-sm` font style with increased letter spacing.",
+                                              "theme":  {
+                                                            "colorMode":  "DARK",
+                                                            "font":  "PLUS_JAKARTA_SANS",
+                                                            "roundness":  "ROUND_EIGHT",
+                                                            "customColor":  "#8fb397",
+                                                            "headlineFont":  "PLUS_JAKARTA_SANS",
+                                                            "bodyFont":  "PLUS_JAKARTA_SANS",
+                                                            "labelFont":  "PLUS_JAKARTA_SANS",
+                                                            "namedColors":  {
+                                                                                "tertiary_fixed_dim":  "#c5c6ca",
+                                                                                "surface_variant":  "#333537",
+                                                                                "secondary_fixed_dim":  "#f0bd8b",
+                                                                                "outline_variant":  "#424842",
+                                                                                "surface_container_high":  "#282a2c",
+                                                                                "surface_bright":  "#37393b",
+                                                                                "on_secondary":  "#482904",
+                                                                                "surface_container_low":  "#1a1c1e",
+                                                                                "secondary":  "#f0bd8b",
+                                                                                "on_tertiary_container":  "#3c3f42",
+                                                                                "surface_container":  "#1e2022",
+                                                                                "surface_dim":  "#121416",
+                                                                                "on_surface_variant":  "#c2c8c0",
+                                                                                "primary_fixed_dim":  "#abcfb2",
+                                                                                "surface":  "#121416",
+                                                                                "tertiary":  "#c5c6ca",
+                                                                                "error":  "#ffb4ab",
+                                                                                "on_primary_container":  "#254630",
+                                                                                "background":  "#121416",
+                                                                                "on_secondary_fixed_variant":  "#623f18",
+                                                                                "on_tertiary_fixed_variant":  "#44474a",
+                                                                                "on_surface":  "#e2e2e5",
+                                                                                "on_tertiary_fixed":  "#191c1f",
+                                                                                "surface_container_highest":  "#333537",
+                                                                                "on_tertiary":  "#2e3134",
+                                                                                "secondary_container":  "#65411a",
+                                                                                "on_secondary_fixed":  "#2c1600",
+                                                                                "on_primary_fixed":  "#00210f",
+                                                                                "on_background":  "#e2e2e5",
+                                                                                "tertiary_fixed":  "#e1e2e6",
+                                                                                "inverse_surface":  "#e2e2e5",
+                                                                                "surface_tint":  "#abcfb2",
+                                                                                "on_error_container":  "#ffdad6",
+                                                                                "on_primary":  "#163722",
+                                                                                "on_primary_fixed_variant":  "#2d4e37",
+                                                                                "primary":  "#abcfb2",
+                                                                                "primary_fixed":  "#c6eccd",
+                                                                                "on_error":  "#690005",
+                                                                                "surface_container_lowest":  "#0c0e10",
+                                                                                "outline":  "#8c928b",
+                                                                                "error_container":  "#93000a",
+                                                                                "secondary_fixed":  "#ffdcbd",
+                                                                                "on_secondary_container":  "#e1af7e",
+                                                                                "tertiary_container":  "#a8aaae",
+                                                                                "primary_container":  "#8fb397",
+                                                                                "inverse_primary":  "#44664e",
+                                                                                "inverse_on_surface":  "#2f3133"
+                                                                            },
+                                                            "designMd":  "---\nname: Slate \u0026 Sage\ncolors:\n  surface: \u0027#121416\u0027\n  surface-dim: \u0027#121416\u0027\n  surface-bright: \u0027#37393b\u0027\n  surface-container-lowest: \u0027#0c0e10\u0027\n  surface-container-low: \u0027#1a1c1e\u0027\n  surface-container: \u0027#1e2022\u0027\n  surface-container-high: \u0027#282a2c\u0027\n  surface-container-highest: \u0027#333537\u0027\n  on-surface: \u0027#e2e2e5\u0027\n  on-surface-variant: \u0027#c2c8c0\u0027\n  inverse-surface: \u0027#e2e2e5\u0027\n  inverse-on-surface: \u0027#2f3133\u0027\n  outline: \u0027#8c928b\u0027\n  outline-variant: \u0027#424842\u0027\n  surface-tint: \u0027#abcfb2\u0027\n  primary: \u0027#abcfb2\u0027\n  on-primary: \u0027#163722\u0027\n  primary-container: \u0027#8fb397\u0027\n  on-primary-container: \u0027#254630\u0027\n  inverse-primary: \u0027#44664e\u0027\n  secondary: \u0027#f0bd8b\u0027\n  on-secondary: \u0027#482904\u0027\n  secondary-container: \u0027#65411a\u0027\n  on-secondary-container: \u0027#e1af7e\u0027\n  tertiary: \u0027#c5c6ca\u0027\n  on-tertiary: \u0027#2e3134\u0027\n  tertiary-container: \u0027#a8aaae\u0027\n  on-tertiary-container: \u0027#3c3f42\u0027\n  error: \u0027#ffb4ab\u0027\n  on-error: \u0027#690005\u0027\n  error-container: \u0027#93000a\u0027\n  on-error-container: \u0027#ffdad6\u0027\n  primary-fixed: \u0027#c6eccd\u0027\n  primary-fixed-dim: \u0027#abcfb2\u0027\n  on-primary-fixed: \u0027#00210f\u0027\n  on-primary-fixed-variant: \u0027#2d4e37\u0027\n  secondary-fixed: \u0027#ffdcbd\u0027\n  secondary-fixed-dim: \u0027#f0bd8b\u0027\n  on-secondary-fixed: \u0027#2c1600\u0027\n  on-secondary-fixed-variant: \u0027#623f18\u0027\n  tertiary-fixed: \u0027#e1e2e6\u0027\n  tertiary-fixed-dim: \u0027#c5c6ca\u0027\n  on-tertiary-fixed: \u0027#191c1f\u0027\n  on-tertiary-fixed-variant: \u0027#44474a\u0027\n  background: \u0027#121416\u0027\n  on-background: \u0027#e2e2e5\u0027\n  surface-variant: \u0027#333537\u0027\ntypography:\n  headline-xl:\n    fontFamily: Plus Jakarta Sans\n    fontSize: 48px\n    fontWeight: \u0027500\u0027\n    lineHeight: \u00271.2\u0027\n    letterSpacing: 0.02em\n  headline-xl-mobile:\n    fontFamily: Plus Jakarta Sans\n    fontSize: 32px\n    fontWeight: \u0027500\u0027\n    lineHeight: \u00271.2\u0027\n    letterSpacing: 0.02em\n  headline-lg:\n    fontFamily: Plus Jakarta Sans\n    fontSize: 32px\n    fontWeight: \u0027500\u0027\n    lineHeight: \u00271.3\u0027\n    letterSpacing: 0.01em\n  headline-md:\n    fontFamily: Plus Jakarta Sans\n    fontSize: 24px\n    fontWeight: \u0027500\u0027\n    lineHeight: \u00271.4\u0027\n    letterSpacing: 0.01em\n  body-lg:\n    fontFamily: Plus Jakarta Sans\n    fontSize: 18px\n    fontWeight: \u0027400\u0027\n    lineHeight: \u00271.6\u0027\n    letterSpacing: 0em\n  body-md:\n    fontFamily: Plus Jakarta Sans\n    fontSize: 16px\n    fontWeight: \u0027400\u0027\n    lineHeight: \u00271.6\u0027\n    letterSpacing: 0em\n  label-md:\n    fontFamily: Plus Jakarta Sans\n    fontSize: 14px\n    fontWeight: \u0027500\u0027\n    lineHeight: \u00271.4\u0027\n    letterSpacing: 0.05em\n  label-sm:\n    fontFamily: Plus Jakarta Sans\n    fontSize: 12px\n    fontWeight: \u0027500\u0027\n    lineHeight: \u00271.4\u0027\n    letterSpacing: 0.05em\nrounded:\n  sm: 0.25rem\n  DEFAULT: 0.5rem\n  md: 0.75rem\n  lg: 1rem\n  xl: 1.5rem\n  full: 9999px\nspacing:\n  unit: 8px\n  container-max: 1280px\n  gutter: 24px\n  margin-mobile: 16px\n  margin-desktop: 48px\n  stack-xs: 4px\n  stack-sm: 8px\n  stack-md: 16px\n  stack-lg: 32px\n  stack-xl: 64px\n---\n\n## Brand \u0026 Style\n\nThis design system is engineered for a premium automotive experience, prioritizing a sophisticated, high-end atmosphere that balances technical precision with organic warmth. The aesthetic leans into **Modern Minimalism** with a **Glassmorphic** overlay, utilizing soft textures and diffused light to evoke the feel of a luxury vehicle dashboard. \n\nThe target audience consists of automotive enthusiasts and high-net-worth individuals who value clarity, performance, and understated elegance. The UI should feel calm, spacious, and deliberate, avoiding the aggressive \"gamer\" aesthetic often found in the automotive sector in favor of a serene, tactile digital environment.\n\n## Colors\n\nThe palette is anchored in deep, desaturated tones to reduce cognitive load and visual fatigue during night-time browsing. \n\n- **Primary Background**: A deep slate (#1a1c1e) provides a stable, low-contrast foundation.\n- **Surface/Elevated**: A secondary grey (#25282b) is used for floating panels and cards to create depth.\n- **Accents**: Desaturated Sage (#8fb397) is the primary action color, used for success states and primary buttons. Soft Amber (#d4a373) is used sparingly for highlights, alerts, or premium features.\n- **Typography**: Off-white (#e2e2e2) ensures high readability without the harshness of pure white, while Slate-Blue (#94a3b8) handles secondary information and metadata.\n\n## Typography\n\nThis design system utilizes **Plus Jakarta Sans** across all levels to maintain a friendly yet geometric consistency. The typography strategy focuses on \"softening\" the technical nature of automotive data:\n- **Weight**: Primarily Medium (500) for headers to ensure presence without the aggression of Bold weights.\n- **Letter Spacing**: Generous tracking is applied to headlines and labels to enhance the premium, airy feel.\n- **Scale**: A clear hierarchy allows for large, editorial-style imagery to be complemented by legible, structured data points.\n\n## Layout \u0026 Spacing\n\nThe layout philosophy follows a **Fluid Grid** model with significant breathing room to reflect luxury branding. \n- **Grid**: A 12-column system is used for desktop, collapsing to 4 columns on mobile.\n- **Rhythm**: All spacing is based on an 8px base unit. \n- **Negative Space**: High-end automotive photography should be given priority, with text blocks utilizing wide margins (48px on desktop) to prevent the UI from feeling cluttered.\n- **Adaptive Rules**: On mobile, padding is tightened to 16px, but the vertical \"stack\" remains generous to ensure touch targets are easily accessible while driving (when parked) or browsing.\n\n## Elevation \u0026 Depth\n\nDepth is achieved through a combination of **Tonal Layering** and **Glassmorphism**:\n- **Base Level**: The primary slate background (#1a1c1e).\n- **Surface Level**: Cards and secondary containers use #25282b with a subtle 1px border of #ffffff (at 5% opacity) to define edges.\n- **Floating Level**: Navigation bars and dropdown menus use a semi-transparent version of the secondary background with a `backdrop-filter: blur(12px)`.\n- **Shadows**: Shadows are extra-diffused. Use a 20px - 40px blur radius with a very low opacity (15-20%) dark tint, avoiding hard black drop shadows.\n\n## Shapes\n\nThe design system adopts a **Rounded** shape language to align with modern car interior ergonomics. \n- **Standard Elements**: Buttons and input fields use a 0.5rem (8px) radius.\n- **Large Containers**: Cards and floating panels utilize `rounded-lg` (1rem / 16px) or `rounded-xl` (1.5rem / 24px) for a softer, more modern silhouette.\n- **Interactive States**: Selection indicators and active chips may use pill-shapes to differentiate them from structural containers.\n\n## Components\n\n### Buttons\nPrimary buttons use the Sage Green (#8fb397) with dark text. Secondary buttons use a ghost style with a subtle slate border. All buttons should have a minimum height of 48px to ensure ease of interaction.\n\n### Cards\nCards are the primary content vehicle. They feature the secondary background (#25282b), a 16px corner radius, and no visible shadow unless hovered. On hover, the card should lift slightly with a soft, diffused shadow.\n\n### Input Fields\nInputs are dark-themed with a subtle border. The focus state uses a 1px Sage Green glow. Labels are always placed above the input using the `label-sm` typography style for clarity.\n\n### Glass Navigation\nThe main navigation bar is a floating element at the top or side of the viewport. It must utilize backdrop blur and a slight 10% white border on the top edge to simulate light hitting a glass surface.\n\n### Status Chips\nUse desaturated colors for status indicators (e.g., \"Available\", \"In Transit\"). These should be small, pill-shaped, and use the `label-sm` font style with increased letter spacing.",
+                                                            "colorVariant":  "FIDELITY",
+                                                            "overridePrimaryColor":  "#8fb397",
+                                                            "overrideSecondaryColor":  "#d4a373",
+                                                            "overrideTertiaryColor":  "#25282b",
+                                                            "overrideNeutralColor":  "#1a1c1e",
+                                                            "spacingScale":  2,
+                                                            "typography":  {
+                                                                               "body-md":  {
+                                                                                               "fontFamily":  "Plus Jakarta Sans",
+                                                                                               "fontSize":  "16px",
+                                                                                               "fontWeight":  "400",
+                                                                                               "lineHeight":  "1.6",
+                                                                                               "letterSpacing":  "0em"
+                                                                                           },
+                                                                               "headline-lg":  {
+                                                                                                   "fontFamily":  "Plus Jakarta Sans",
+                                                                                                   "fontSize":  "32px",
+                                                                                                   "fontWeight":  "500",
+                                                                                                   "lineHeight":  "1.3",
+                                                                                                   "letterSpacing":  "0.01em"
+                                                                                               },
+                                                                               "headline-md":  {
+                                                                                                   "fontFamily":  "Plus Jakarta Sans",
+                                                                                                   "fontSize":  "24px",
+                                                                                                   "fontWeight":  "500",
+                                                                                                   "lineHeight":  "1.4",
+                                                                                                   "letterSpacing":  "0.01em"
+                                                                                               },
+                                                                               "label-sm":  {
+                                                                                                "fontFamily":  "Plus Jakarta Sans",
+                                                                                                "fontSize":  "12px",
+                                                                                                "fontWeight":  "500",
+                                                                                                "lineHeight":  "1.4",
+                                                                                                "letterSpacing":  "0.05em"
+                                                                                            },
+                                                                               "label-md":  {
+                                                                                                "fontFamily":  "Plus Jakarta Sans",
+                                                                                                "fontSize":  "14px",
+                                                                                                "fontWeight":  "500",
+                                                                                                "lineHeight":  "1.4",
+                                                                                                "letterSpacing":  "0.05em"
+                                                                                            },
+                                                                               "body-lg":  {
+                                                                                               "fontFamily":  "Plus Jakarta Sans",
+                                                                                               "fontSize":  "18px",
+                                                                                               "fontWeight":  "400",
+                                                                                               "lineHeight":  "1.6",
+                                                                                               "letterSpacing":  "0em"
+                                                                                           },
+                                                                               "headline-xl-mobile":  {
+                                                                                                          "fontFamily":  "Plus Jakarta Sans",
+                                                                                                          "fontSize":  "32px",
+                                                                                                          "fontWeight":  "500",
+                                                                                                          "lineHeight":  "1.2",
+                                                                                                          "letterSpacing":  "0.02em"
+                                                                                                      },
+                                                                               "headline-xl":  {
+                                                                                                   "fontFamily":  "Plus Jakarta Sans",
+                                                                                                   "fontSize":  "48px",
+                                                                                                   "fontWeight":  "500",
+                                                                                                   "lineHeight":  "1.2",
+                                                                                                   "letterSpacing":  "0.02em"
+                                                                                               }
+                                                                           },
+                                                            "spacing":  {
+                                                                            "gutter":  "24px",
+                                                                            "unit":  "8px",
+                                                                            "stack-sm":  "8px",
+                                                                            "container-max":  "1280px",
+                                                                            "margin-mobile":  "16px",
+                                                                            "stack-xl":  "64px",
+                                                                            "margin-desktop":  "48px",
+                                                                            "stack-lg":  "32px",
+                                                                            "stack-xs":  "4px",
+                                                                            "stack-md":  "16px"
+                                                                        },
+                                                            "headlineFontFamily":  "Plus Jakarta Sans",
+                                                            "bodyFontFamily":  "Plus Jakarta Sans",
+                                                            "labelFontFamily":  "Plus Jakarta Sans"
+                                                        }
+                                          },
+                         "version":  "1"
+                     }
+}

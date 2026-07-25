@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Wheely Bits - Sign Up</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#424842",
+                        "surface-container-low": "#1a1c1e",
+                        "secondary": "#f0bd8b",
+                        "on-tertiary": "#2e3134",
+                        "outline": "#8c928b",
+                        "surface-dim": "#121416",
+                        "tertiary-fixed": "#e1e2e6",
+                        "on-tertiary-container": "#3c3f42",
+                        "on-primary-fixed-variant": "#2d4e37",
+                        "surface-tint": "#abcfb2",
+                        "surface-bright": "#37393b",
+                        "on-surface-variant": "#c2c8c0",
+                        "error-container": "#93000a",
+                        "surface-container": "#1e2022",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#191c1f",
+                        "on-secondary": "#482904",
+                        "primary-fixed-dim": "#abcfb2",
+                        "on-secondary-fixed": "#2c1600",
+                        "inverse-on-surface": "#2f3133",
+                        "inverse-primary": "#44664e",
+                        "on-secondary-container": "#e1af7e",
+                        "secondary-container": "#65411a",
+                        "surface-variant": "#333537",
+                        "on-surface": "#e2e2e5",
+                        "tertiary": "#c5c6ca",
+                        "surface-container-highest": "#333537",
+                        "primary": "#abcfb2",
+                        "tertiary-container": "#a8aaae",
+                        "secondary-fixed": "#ffdcbd",
+                        "primary-fixed": "#c6eccd",
+                        "on-primary-fixed": "#00210f",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed-variant": "#44474a",
+                        "background": "#121416",
+                        "on-secondary-fixed-variant": "#623f18",
+                        "surface-container-high": "#282a2c",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#8fb397",
+                        "inverse-surface": "#e2e2e5",
+                        "on-primary": "#163722",
+                        "tertiary-fixed-dim": "#c5c6ca",
+                        "surface": "#121416",
+                        "surface-container-lowest": "#0c0e10",
+                        "secondary-fixed-dim": "#f0bd8b",
+                        "on-primary-container": "#254630",
+                        "on-background": "#e2e2e5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "stack-xs": "4px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "margin-desktop": "48px",
+                        "stack-lg": "32px",
+                        "container-max": "1280px",
+                        "stack-xl": "64px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "headline-xl-mobile": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-xl-mobile": ["32px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.3", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-xl": ["48px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .noise-bg {
+            position: relative;
+        }
+        .noise-bg::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            z-index: 50;
+        }
+        .animate-shimmer {
+            background: linear-gradient(to right, #8fb397 20%, #c6eccd 40%, #c6eccd 60%, #8fb397 80%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer {
+            to {
+                background-position: 200% center;
+            }
+        }
+    </style>
+</head>
+<body class="bg-surface-container-low text-on-surface noise-bg min-h-screen flex flex-col font-body-md overflow-x-hidden antialiased">
+<!-- TopNavBar Omitted: Automatic Suppression per Semantic Shell Mandate (Transactional intent - Sign Up) -->
+<main class="flex-grow flex flex-col md:flex-row w-full h-full min-h-screen relative z-10">
+<!-- Left Side: Form Container -->
+<div class="w-full md:w-1/2 flex items-center justify-center p-8 md:p-margin-desktop bg-surface-container-low relative z-20">
+<div class="w-full max-w-md bg-surface-container/40 p-8 rounded-xl border border-white/5 shadow-2xl backdrop-blur-md">
+<div class="mb-8 text-center md:text-left">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Create Account</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Join Wheely Bits to explore precision engineering.</p>
+</div>
+<form class="space-y-6">
+<!-- Full Name -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider" for="fullName">Full Name</label>
+<input class="w-full bg-surface-variant border border-outline-variant text-on-surface font-body-md rounded-lg px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-300 placeholder:text-on-surface-variant/50" id="fullName" name="fullName" placeholder="John Doe" type="text">
+</div>
+<!-- Email -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider" for="email">Email</label>
+<input class="w-full bg-surface-variant border border-outline-variant text-on-surface font-body-md rounded-lg px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-300 placeholder:text-on-surface-variant/50" id="email" name="email" placeholder="john@example.com" type="email">
+</div>
+<!-- Password -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider" for="password">Password</label>
+<input class="w-full bg-surface-variant border border-outline-variant text-on-surface font-body-md rounded-lg px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-300 placeholder:text-on-surface-variant/50" id="password" name="password" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢" type="password">
+</div>
+<!-- Confirm Password -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider" for="confirmPassword">Confirm Password</label>
+<input class="w-full bg-surface-variant border border-outline-variant text-on-surface font-body-md rounded-lg px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-300 placeholder:text-on-surface-variant/50" id="confirmPassword" name="confirmPassword" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢" type="password">
+</div>
+<!-- Submit Button -->
+<button class="w-full bg-primary-container text-on-primary-container font-label-md text-label-md py-4 rounded-lg hover:bg-primary-fixed transition-colors duration-300 shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 mt-4" type="submit">
+<span class="">Join the Community</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</form>
+<div class="mt-8 text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        Already have an account? 
+                        <a class="text-primary hover:text-primary-fixed transition-colors underline underline-offset-4 decoration-primary/50 hover:decoration-primary" href="#">Log in</a>
+</p>
+</div>
+</div>
+</div>
+<!-- Right Side: Brand Showcase -->
+<div class="hidden md:flex md:w-1/2 relative bg-surface items-center justify-center overflow-hidden">
+<!-- Decorative background element -->
+<div class="absolute inset-0 bg-gradient-to-br from-surface-container-low via-surface to-surface-container-low opacity-80 z-0"></div>
+<!-- Abstract shapes -->
+<div class="absolute top-1/4 -right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl z-0"></div>
+<div class="absolute bottom-1/4 -left-20 w-80 h-80 bg-secondary/5 rounded-full blur-3xl z-0"></div>
+<div class="relative z-10 text-center px-12">
+<h2 class="font-headline-xl text-headline-xl font-bold animate-shimmer tracking-tight mb-6">
+                    Wheely Bits
+                </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg mx-auto opacity-80 leading-relaxed">
+                    Precision engineering meets organic design. A sophisticated platform for automotive enthusiasts who demand clarity and performance.
+                </p>
+</div>
+<!-- Structural lines overlay -->
+<div class="absolute inset-0 pointer-events-none z-0 opacity-10" style="background-image: linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px); background-size: 64px 64px;">
+</div>
+</div>
+</main>
+
+
+<footer class="bg-surface-container-lowest w-full py-stack-xl px-margin-mobile md:px-margin-desktop mt-stack-xl border-t border-white/5 relative z-20"><div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-stack-lg"><div><span class="text-headline-lg font-headline-lg font-bold text-on-surface block mb-stack-sm">Wheely Bits</span><p class="text-body-md font-body-md text-on-surface-variant">Â© 2024 Wheely Bits. Precision Engineering &amp; Design.</p></div><div class="flex flex-col md:items-end gap-stack-sm"><div class="flex flex-wrap gap-4 md:justify-end items-center"><a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a><a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a><a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Technical Support</a><a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Vendor Portal</a><a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">FAQs</a></div><div class="flex gap-4 mt-4"><a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a><a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">forum</span></a><a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">email</span></a></div></div></div></footer></body></html>

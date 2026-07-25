@@ -1,0 +1,52 @@
+﻿[
+    {
+        "title":  "Wheely Bits | Community (Slate \u0026 Sage)",
+        "prompt":  "The Community Showcase page.\n- Header: \"Community Builds\" in smooth, rounded typography.\n- Filter Sidebar: Rounded checkboxes and tag-based filters (Aero, Suspension, etc.) using sage green accents.\n- Grid: A gallery of community car builds. Each card has a large image, build title, and builder profile link.\n- Trending: A sidebar for \"Trending Tags\" and \"Top Builders\".\n- Animations: Cards should stagger-fade in on page load.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Home (Scrollable with Footer)",
+        "prompt":  "Make the home page scrollable by adding content sections below the hero. Add a comprehensive footer at the bottom of the page that includes:\n- Company branding: \"Wheely Bits\"\n- Copyright: \"© 2024 Wheely Bits. Precision Engineering \u0026 Design.\"\n- Quick Links: \"Terms of Service\", \"Privacy Policy\", \"Technical Support\", \"Vendor Portal\", \"FAQs\"\n- Social icons/links.\n- Use the \u0027Slate \u0026 Sage\u0027 color palette (surface-container-lowest for footer background) and maintain the glassmorphic aesthetic.\n- Ensure the overall page flow is smooth and supports vertical scrolling.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Home (with Hero Car)",
+        "prompt":  "In the hero section, add {{DATA:IMAGE:IMAGE_20}} as a background image behind the large \"WHEELY BITS\" text. Ensure the image is center-aligned and has a subtle dark overlay (e.g., bg-black/40) so the text remains highly readable. The text should sit on top of the image. Keep the animated particle system if it exists, or layer it over the image.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits | Community (Daylight)",
+        "prompt":  "Restyle the Community Hub into a bright, airy social feed.\n\nKey Changes:\n- Background: Off-white.\n- Build Cards: White backgrounds with subtle shadows. Tags and owner info should be clearly legible against the white card surface.\n- Filter Sidebar: Clean white surface with high-contrast text and orange checkboxes.\n- Feed Layout: Maintain the masonry/grid but ensure the whitespace feels generous and clean.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits | Schedule Installation",
+        "prompt":  "A Booking \u0026 Scheduling screen for an automotive customization project. The UI features a split-screen layout. On the left, a calendar for date selection and a grid of available time slots. On the right, a \u0027Build Review\u0027 panel showing the selected service (e.g., \u0027British Racing Green Wrap\u0027), the vendor (Aura Custom Studio), the estimated total cost, and a breakdown of the $50 refundable deposit. The style is \u0027Slate \u0026 Sage\u0027 with soft dark greens and greys, using a smooth sans-serif font.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | My Profile",
+        "prompt":  "PAGE 8: MY BUILDS (PROFILE). \nHeader with user stats (Builds, Likes, Followers). \nTabs: My Builds, Saved Rims, Wishlist. \nMy Builds: Grid of user\u0027s saved configurations. \nSaved Rims: Technical cards for rims the user likes. \nDark profile aesthetic with orange mesh accents.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits | Technical Guide: Wheel Offset (Slate \u0026 Sage)",
+        "prompt":  "A technical guide article screen within the Education Hub. The article title is \u0027Understanding Wheel Offset \u0026 Backspacing\u0027. The layout features a large, cinematic header image of a high-performance rim. The content area is a centered, readable column with balanced typography. Include sections for \u0027What is Offset?\u0027, \u0027Positive vs. Negative\u0027, and \u0027How it Affects Fitment\u0027. Use high-quality diagrams or placeholder areas for technical illustrations. Add a sidebar with \u0027Related Articles\u0027 like \u0027Bolt Pattern Guide\u0027 and \u0027Rim Width vs Tire Size\u0027. Maintain the dark Slate \u0026 Sage theme with a floating centered nav bar.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Studio (Daylight)",
+        "prompt":  "Transform the Studio interface into a light-themed \"Daylight Studio\". \n\nKey Changes:\n- Editor Background: Change the grid background to a light neutral grey.\n- Panels: Change the side and right panels from dark grey to crisp white or very light grey.\n- Sidebar Icons: Use dark icons on light backgrounds, with the orange square active state.\n- Rim Selection Grid: Card backgrounds should be white with light grey borders. Rim metadata (text) must be high-contrast dark grey.\n- Controls: Floating UI elements should use light-mode glass-morphism (white blur).\n- Active Indicators: Maintain the orange highlights for selected items and drag points.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits | Education Hub (Heritage)",
+        "prompt":  "Restyle the Education Hub with the \u0027Heritage Studio\u0027 design system. Light aesthetic with British Racing Green highlights. Update all module cards and the interactive rim diagram to match the new color palette and \u0027Outfit\u0027 font.",
+        "theme":  "Heritage Studio"
+    },
+    {
+        "title":  "Wheely Bits | Vendors (Slate \u0026 Sage)",
+        "prompt":  "Wheely Bits Vendor Directory. A marketplace for finding trusted rim vendors and modification shops. Features: A searchable map interface (Islamabad/Rawalpindi region), featured vendor cards with ratings and services (rim vendors, wrap/tint, performance), and a \u0027Book Appointment\u0027 integration. Style: Clean UI with technical maps and Slate/Sage accents using Plus Jakarta Sans.",
+        "theme":  "Slate \u0026 Sage"
+    }
+]

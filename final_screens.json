@@ -1,0 +1,357 @@
+﻿[
+    {
+        "title":  "Wheely Bits | AI Recognition",
+        "prompt":  "PAGE 2: AI RIM RECOGNITION. \nBreadcrumb: Home \u003e AI Rim Recognition. \nTitle: \"AI RIM RECOGNITION\" Bebas Neue 64px. \nLeft Column: 300px tall Upload Zone (dashed cyan border), Camera icon, \"Identify Rim\" large orange button. \nRight Column: Results Panel. Top 3 Matches with confidence bars (94%, 78%, 61%). \nBest match includes spec grid (Diameter, Width, Offset, PCD). \nRecent Identifications sidebar. \n\"How it Works\" section with CNN/ResNet-50 technical badges.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits | Tint Shade Selection (Slate \u0026 Sage)",
+        "prompt":  "The second stage of the Tint Journey: \u0027Shade Selection\u0027. \nNavigation: Floating centered capsule with \u0027Tint\u0027 active. \nProgress Bar: Step 1 (Types) complete with checkmark, Step 2 (Color/Shade) active. \nMain Content: A grid of tint shade options (5%, 15%, 35%, 50%, 70% VLT). Each card shows a high-quality preview of a car window with that shade, the VLT percentage, a brief description of privacy/visibility, and a \u0027Select\u0027 button. \nTheme: Slate \u0026 Sage (Dark mode, subtle greens, Jakarata Sans). \nFooter: Standard \u0027Wheely Bits\u0027 footer.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Education Hub",
+        "prompt":  "PAGE 5: EDUCATION HUB. \nHero banner (400px): \"THE KNOWLEDGE PIT STOP\" (Orbitron). \nModules: Rim Specs Glossary, Tyre Sidewall Decoder, Tyre Type Guide, Speed \u0026 Load Ratings. \nInteractive Rim Diagram: SVG with labels for Diameter, Width, Offset. Hovering shows definitions. \nTyre Sidewall Decoder tool: Input size, see visual breakdown (195/65R15 91H).",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits | Vehicle Selection (Updated)",
+        "prompt":  "Transform the Vehicle Selection page (SCREEN_63) to match the layout and visual style of the Wrap Visualization page (SCREEN_44). \n\nKey requirements:\n1. Use the cinematic dark background and centered capsule navigation from SCREEN_44.\n2. Replace the current grid of popular makes and featured models with a more focused interface.\n3. Add two prominent, glassmorphic dropdown menus at the center: one for \u0027Car Brand\u0027 and another for \u0027Car Model\u0027. \n4. Maintain the \u0027Selected Vehicle\u0027 confirmation bar at the bottom, but style it to match the \u0027Configuration Details\u0027 aesthetics from SCREEN_44.\n5. Keep the British Racing Green Porsche 911 GT3 RS as the background/reference image to maintain continuity.\n6. Ensure all typography and spacing align with the Slate \u0026 Sage design system.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Community (Slate \u0026 Sage)",
+        "prompt":  "Create the Community page for Wheely Bits using the \u0027Slate \u0026 Sage\u0027 aesthetic. \n- Use the exact glassmorphic floating navigation bar from the other pages (Home, Rim, Wrap, Tint, Vendors) with \u0027Community\u0027 highlighted as active.\n- Hero Section: \u0027The Enthusiast Collective\u0027 - A welcoming headline about sharing builds and getting inspiration.\n- Featured Builds: A high-quality grid showing user-submitted car projects with \u0027Like\u0027, \u0027Share\u0027, and \u0027View Build\u0027 buttons. Use cinematic automotive photography.\n- Discussion Hub: A section for \u0027Latest Discussions\u0027 or forums, covering topics like \u0027Fitment Help\u0027, \u0027Wrap Color Ideas\u0027, and \u0027Show \u0026 Shine\u0027.\n- Community Leaderboard: A small sidebar or section showing top-rated builds of the month.\n- Aesthetic: Dark mode (Deep Slate background #121416), glassmorphism, muted sage green accents (#8fb397), and clean typography (Plus Jakarta Sans).\n- Background: Use a subtle, dark automotive-themed background image or a clean dark gradient to match the established vibe.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Community Discussion Thread",
+        "prompt":  "A community discussion thread detail page focusing on \u0027Fitment Help: Rubbing on full lock with 19x9.5 ET22?\u0027. It shows the original post by @StanceBoi, technical responses from other users with upvotes/badges, and embedded photos of the fitment issue. The layout uses a vertical feed of glassmorphic messages against a dark, moody background. Navigation is the centered floating capsule.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Vehicle Selection (Updated)",
+        "prompt":  "Transform the Vehicle Selection page (SCREEN_63) to match the layout and visual style of the Wrap Visualization page (SCREEN_44). \n\nKey requirements:\n1. Use the cinematic dark background and centered capsule navigation from SCREEN_44.\n2. Replace the current grid of popular makes and featured models with a more focused interface.\n3. Add two prominent, glassmorphic dropdown menus at the center: one for \u0027Car Brand\u0027 and another for \u0027Car Model\u0027. \n4. Maintain the \u0027Selected Vehicle\u0027 confirmation bar at the bottom, but style it to match the \u0027Configuration Details\u0027 aesthetics from SCREEN_44.\n5. Keep the British Racing Green Porsche 911 GT3 RS as the background/reference image to maintain continuity.\n6. Ensure all typography and spacing align with the Slate \u0026 Sage design system.",
+        "theme":  "FIDELITY"
+    },
+    {
+        "title":  "Wheely Bits | Fitment Engine",
+        "prompt":  "PAGE 4: FITMENT ENGINE. \nTitle: \"FITMENT ENGINE\" 72px gradient. \nSelectors: Two-column layout for \"YOUR VEHICLE\" (Make/Model/Year) and \"YOUR RIM\" (Search/Manual specs). \n[RUN FITMENT CHECK] large orange button. \nVerdict Display: SAFE DIRECT FIT (Green glow), SPACER REQUIRED (Yellow), or INCOMPATIBLE (Red shake). \nDetailed Comparison Table: Offset, PCD, CB, Brake Clearance comparison with status icons. \nTyre Size Matrix: Recommended sizes (205/55R16) with speedometer difference badges. \nProfessional technical aesthetic.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits | Sign Up (Slate \u0026 Sage)",
+        "prompt":  "Create a premium Sign Up page for Wheely Bits using the \u0027Slate \u0026 Sage\u0027 design system. \n\nLayout:\n- Navigation: Use the glassmorphic floating top nav bar {{DATA:COMPONENTS:COMPONENTS_15}}.\n- Body: Split-screen layout.\n- Left Side (Form): A clean, sophisticated sign-up form. Fields include: Full Name, Email, Password, and Confirm Password. Include a \u0027Join the Community\u0027 primary button in Sage Green (#8fb397). Add a \u0027Already have an account? Log in\u0027 link.\n- Right Side (Brand): Large, elegant \u0027Wheely Bits\u0027 text in Plus Jakarta Sans. Apply a beautiful animation (e.g., a subtle shimmering gradient or a smooth floating motion).\n\nAesthetics:\n- Background: Deep Slate (#1a1c1e) with a subtle grain texture.\n- Typography: Plus Jakarta Sans.\n- Interactive: Smooth CSS transitions on input fields and buttons.\n- Eye-friendly: High contrast but soft colors to reduce strain.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Home (Daylight)",
+        "prompt":  "Completely restyle this landing page into a clean, modern light-mode interface using the \"Daylight Performance\" design system. \n\nKey Changes:\n- Background: Change the deep black background to a light, off-white grey (#F8F9FA).\n- Surface/Cards: Use pure white cards with subtle, crisp drop shadows instead of orange glows.\n- Typography: Convert all primary headings (WHEELY BITS) and subheaders to high-contrast dark grey or black for maximum legibility. Use orange (#FF5C00) only for primary CTAs and active indicators.\n- Textures: Replace the dark carbon fiber overlay with a very subtle, light geometric grid or technical pattern.\n- Navigation/Footer: Apply the new light-themed navbar and footer components.\n- Buttons: Maintain the high-octane orange for the \"START CUSTOMIZING\" button, but ensure the outline buttons (IDENTIFY A RIM) use a technical cyan outline against the light background.\n- Technical Badges: Use clean light-grey or cyan pills with dark text.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Generating Screen...",
+        "prompt":  null,
+        "theme":  "Unknown"
+    },
+    {
+        "title":  "Wheely Bits | Community (Daylight)",
+        "prompt":  "Restyle the Community Hub into a bright, airy social feed.\n\nKey Changes:\n- Background: Off-white.\n- Build Cards: White backgrounds with subtle shadows. Tags and owner info should be clearly legible against the white card surface.\n- Filter Sidebar: Clean white surface with high-contrast text and orange checkboxes.\n- Feed Layout: Maintain the masonry/grid but ensure the whitespace feels generous and clean.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits | FAQ (Slate \u0026 Sage)",
+        "prompt":  "Create a FAQ (Frequently Asked Questions) page for Wheely Bits. \n\nKey Requirements:\n1. Navigation: Use the exact same floating, glassmorphic capsule navigation bar found in the Community, Vendors, and Journey pages. Links: Home, Rim, Wrap, Tint, Vendors, Community, FAQ. \u0027FAQ\u0027 should be the active link.\n2. Layout: A clean, centered column for the FAQ content. \n3. Content Categories: Organize questions into logical groups like \u0027General\u0027, \u0027Rim \u0026 Fitment\u0027, \u0027Wrap \u0026 Tint\u0027, \u0027Account \u0026 Community\u0027.\n4. Interactive Elements: Use an accordion-style component for the questions to keep the page clean. \n5. Visual Style: Follow the \u0027Slate \u0026 Sage\u0027 design system (dark mode, deep slate backgrounds, muted sage accents, soft rounded corners, glassmorphism).\n6. Search: Include a prominent \u0027Search FAQ\u0027 bar at the top of the content area.\n7. Support CTA: At the bottom, add a section for users who can\u0027t find their answer, with a \u0027Contact Support\u0027 button.\n8. Footer: Standard footer with copyright and essential links.\n\nEnsure the typography and spacing match the high-end, eye-friendly engineering feel of the previous screens.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Tint Vendor Selection (Slate \u0026 Sage)",
+        "prompt":  "The fourth and final stage of the Tint Journey: \u0027Vendor Selection\u0027. \nNavigation: Floating centered capsule with \u0027Tint\u0027 active. \nProgress Bar: All previous steps complete, Step 4 (Vendor) active. \nMain Content: A list of certified tint installers. Each entry includes: Studio Name, Rating, Proximity, \u0027Certified Installer\u0027 badge, and \u0027Starting at\u0027 price. \nRight Panel: Final build summary with estimated costs for material and labor. \nCTA: \u0027Book Installation\u0027. \nTheme: Slate \u0026 Sage.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Vendors (Slate \u0026 Sage)",
+        "prompt":  "A professional Vendors page for \u0027Wheely Bits\u0027 using the Slate \u0026 Sage aesthetic (dark slate background, muted sage accents). \n\nThe page should include:\n1. The exact floating glassmorphic navigation bar from the other journey pages, with \u0027Vendors\u0027 as the active link.\n2. A hero section titled \u0027Verified Partners\u0027 with a subtitle about finding the best rim, wrap, and tint specialists.\n3. A search and filter bar for location (city/postal code) and service type (Rims, Wraps, Tints, Full Builds).\n4. A grid of vendor cards. Each card should feature a high-quality shop photo, shop name, rating (stars), location, and specialized services.\n5. Use cinematic automotive imagery for the background or cards to maintain the premium feel.\n6. A \u0027Featured Vendor\u0027 section at the top of the grid highlighting a top-rated partner with more detail.\n7. The standard site footer.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Vehicle Selection (Slate \u0026 Sage)",
+        "prompt":  "Create a vehicle selection screen in the \"Slate \u0026 Sage\" style (dark, sophisticated, glassmorphic). \n\nNavigation: Use the centered capsule TopNavBar from the design system.\n\nContent:\n1. Heading: \"Select Your Vehicle\" with a sub-heading \"Search by make, model, or year for precision fitment.\"\n2. Search Bar: A prominent, glassmorphic search input with an icon and \"e.g., Porsche 911 GT3 RS\".\n3. Brand Grid: A horizontal or grid section of \u0027Popular Makes\u0027 featuring minimalist car brand logos (Porsche, BMW, Audi, Mercedes, Nissan, Toyota).\n4. Results Area: A multi-column layout showing \u0027Featured Models\u0027 with high-quality car profile silhouettes. Each item should show the Year Range and Model Name.\n5. Filter Sidebar/Panel: Subtle options for \u0027Category\u0027 (Coupe, Sedan, SUV), \u0027Year\u0027, and \u0027Market\u0027.\n6. Action: A \u0027Confirm Selection\u0027 button that becomes active when a car is picked.\n\nVisuals: Keep the dark #121416 surface, plus jakarta sans typography, and subtle sage green accents (#8fb397). Use consistent glassmorphism (backdrop-blur) as seen in previous screens.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Community (Heritage)",
+        "prompt":  "Update the Community Hub with the \u0027Heritage Studio\u0027 theme. Light airy feed, British Racing Green tags and buttons, and smooth \u0027Outfit\u0027 typography. Ensure the masonry build grid and trending sidebar are visually consistent.",
+        "theme":  "Heritage Studio"
+    },
+    {
+        "title":  "Wheely Bits | Community (Slate \u0026 Sage)",
+        "prompt":  "The Community Showcase page.\n- Header: \"Community Builds\" in smooth, rounded typography.\n- Filter Sidebar: Rounded checkboxes and tag-based filters (Aero, Suspension, etc.) using sage green accents.\n- Grid: A gallery of community car builds. Each card has a large image, build title, and builder profile link.\n- Trending: A sidebar for \"Trending Tags\" and \"Top Builders\".\n- Animations: Cards should stagger-fade in on page load.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Support \u0026 Contact (Slate \u0026 Sage)",
+        "prompt":  "A Support and Contact page for Wheely Bits. The layout should feature a clear \u0027How can we help?\u0027 header followed by cards for different support channels: \u0027Technical Fitment Support\u0027 (direct line to engineers), \u0027Vendor Partnerships\u0027 (for new shops), and \u0027Order \u0026 Booking Queries\u0027. Below these, include a clean contact form with fields for Name, Email, Topic (dropdown), and Message. The design should use the dark Slate \u0026 Sage aesthetic with glassmorphic cards and subtle green accents on buttons and active fields. Use the centered capsule TopNavBar.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Tint Shade Selection (Slate \u0026 Sage)",
+        "prompt":  "The second stage of the Tint Journey: \u0027Shade Selection\u0027. \nNavigation: Floating centered capsule with \u0027Tint\u0027 active. \nProgress Bar: Step 1 (Types) complete with checkmark, Step 2 (Color/Shade) active. \nMain Content: A grid of tint shade options (5%, 15%, 35%, 50%, 70% VLT). Each card shows a high-quality preview of a car window with that shade, the VLT percentage, a brief description of privacy/visibility, and a \u0027Select\u0027 button. \nTheme: Slate \u0026 Sage (Dark mode, subtle greens, Jakarata Sans). \nFooter: Standard \u0027Wheely Bits\u0027 footer.",
+        "theme":  "FIDELITY"
+    },
+    {
+        "title":  "Wheely Bits | Wrap Vendor Selection (Slate \u0026 Sage)",
+        "prompt":  "Design the \u0027Vendor Selection\u0027 screen for the Wrap journey (Step 04). \n\nThe screen should include:\n1. A step indicator at the top showing Step 04: Vendor.\n2. A \u0027Final Configuration\u0027 summary panel on the left or side, recapping the user\u0027s choice: British Racing Green, Metallic Satin finish, for a 911 GT3 RS. Include a small preview thumbnail of the 3D visualization.\n3. A main list of \u0027Authorized Wrap Installers\u0027 near the user (e.g., Los Angeles, CA).\n4. Each vendor card should show: Name (e.g., \u0027Precision Wraps\u0027, \u0027AeroShield Pro\u0027), Rating (4.9/5), Distance (e.g., 5.2 mi), Pricing (e.g., Total $3,200), and badges like \u0027Ceramic Pro Certified\u0027 or \u00275-Year Warranty\u0027.\n5. Clear call-to-action buttons on each vendor card: \u0027Book Installation\u0027 and \u0027Contact Shop\u0027.\n6. Use the Slate \u0026 Sage dark aesthetic: deep slates (#121416), sage green accents (#8fb397), and glassmorphic panels.\n7. Maintain the centered capsule navigation bar (Home, Rim, Wrap, Tint, Vendors, Community, FAQ).",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Home (Heritage Stance)",
+        "prompt":  "Wheely Bits Landing Page (Home). Use the image {{DATA:IMAGE:IMAGE_15}} as a cinematic hero background with a subtle dark green overlay to ensure text readability. The main headline \"WHEELY BITS\" should be in large Playfair Display font (Cashmere White). Include a subheadline \"Pakistan\u0027s first AI-powered car customization platform\" and two primary CTAs: \"START CUSTOMIZING\" (Champagne Bronze button) and \"IDENTIFY A RIM\" (Steel outline). Below the hero, add sections for technical capabilities: AI Recognition, 2D Visualizer, Paint/Wrap, and Fitment Engine. Apply the Heritage Stance design system strictly.",
+        "theme":  "Heritage Stance"
+    },
+    {
+        "title":  "Wheely Bits | AI Recognition (Heritage)",
+        "prompt":  "Convert the AI Recognition page to the \u0027Heritage Studio\u0027 style. Light theme with British Racing Green accents and \u0027Outfit\u0027 typography. Keep the upload interface, technical results panel with confidence bars, and the recently identified sidebar.",
+        "theme":  "Heritage Studio"
+    },
+    {
+        "title":  "Wheely Bits | My Garage",
+        "prompt":  "A \u0027My Garage\u0027 screen in the Slate \u0026 Sage aesthetic, showing a user\u0027s collection of saved builds. Each car is displayed in a card with a high-quality photo (e.g., Porsche 911 GT3 RS with the British Racing Green wrap). Card details include the build name, status (\u0027Draft\u0027 or \u0027Booked\u0027), and a \u0027Continue Configuration\u0027 button. The layout is a clean, spacious grid with the signature centered capsule navigation.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | New User Welcome",
+        "prompt":  "1. Update the navigation bar to exactly match {{DATA:SCREEN:SCREEN_96}}. This includes the centered glassmorphic capsule design with links for Home, Rim, Wrap, Tint, Vendors, Community, and FAQ, and the specific \"Wheely Bits\" branding. Remove the \"Showroom/Customizer\" links and the right-side icons if they differ.\n2. Tailor the content for a brand-new user signing in for the first time:\n    - Change the main heading to \"Welcome to Wheely Bits, [Name]\" (e.g., Alex).\n    - Update the subtext/punchline to focus on exploration: \"Pakistan\u0027s first AI-powered automotive canvas is yours. Start your first build or explore the community to find inspiration.\"\n    - Ensure the \"Start New Build\" action is the primary focus.\n    - If there\u0027s a \"Recent Creations\" or \"Continue Last Project\" section, replace or update it with an \"Explore the Community\" or \"Getting Started\" guide since a new user won\u0027t have existing projects yet.\n3. Maintain the cinematic slideshow background and the overall \"Slate \u0026 Sage\" aesthetic.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Vendor Profile (Aura Custom Studio)",
+        "prompt":  "A high-fidelity Vendor Profile page for \u0027Aura Custom Studio\u0027 in the Slate \u0026 Sage aesthetic. The page features a large cinematic cover photo of a luxury garage. Key sections include a detailed service list (Wraps, PPF, Ceramic Coating), an \u0027About\u0027 section highlighting their 10+ years of experience, a \u0027Gallery\u0027 of recent builds (Porsche 911s, Ferraris), customer reviews with high ratings, and a prominent \u0027Book Consultation\u0027 call-to-action panel on the right. The UI is dark, atmospheric, and glassmorphic.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Login (Slate \u0026 Sage)",
+        "prompt":  "Create a matching Login page for Wheely Bits.\n\nLayout:\n- Navigation: Use the glassmorphic floating top nav bar {{DATA:COMPONENTS:COMPONENTS_15}}.\n- Body: Centered glassmorphic card for login.\n- Form Fields: Email and Password. \n- Actions: \u0027Login\u0027 primary button and \u0027Forgot Password?\u0027 link.\n- Aesthetic: Consistent with the Sign Up page and {{DATA:SCREEN:SCREEN_22}}, using the Slate \u0026 Sage palette. \n- Background: A moody, blurred automotive studio shot to maintain the premium feel.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Vendor Detail (Slate \u0026 Sage)",
+        "prompt":  "Wheely Bits Vendor Detail Page. A deep dive into a specific workshop (e.g., Apex Performance Garage). Features: Portfolio of previous builds, available rim inventory with pricing, customer reviews, and a technical expertise breakdown. Style: High-fidelity photography, technical specs, Slate and Sage theme using Plus Jakarta Sans.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Schedule Installation",
+        "prompt":  "A Booking \u0026 Scheduling screen for an automotive customization project. The UI features a split-screen layout. On the left, a calendar for date selection and a grid of available time slots. On the right, a \u0027Build Review\u0027 panel showing the selected service (e.g., \u0027British Racing Green Wrap\u0027), the vendor (Aura Custom Studio), the estimated total cost, and a breakdown of the $50 refundable deposit. The style is \u0027Slate \u0026 Sage\u0027 with soft dark greens and greys, using a smooth sans-serif font.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | My Profile",
+        "prompt":  "PAGE 8: MY BUILDS (PROFILE). \nHeader with user stats (Builds, Likes, Followers). \nTabs: My Builds, Saved Rims, Wishlist. \nMy Builds: Grid of user\u0027s saved configurations. \nSaved Rims: Technical cards for rims the user likes. \nDark profile aesthetic with orange mesh accents.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "pexels-introspectivedsgn-17245104.jpg",
+        "prompt":  null,
+        "theme":  "Unknown"
+    },
+    {
+        "title":  "Wheely Bits | Education Hub (Slate \u0026 Sage)",
+        "prompt":  "Wheely Bits Education Hub. A technical resource center for automotive enthusiasts. Features: A \"Knowledge Pit Stop\" hero section, a visual glossary for rim specifications (diameter, width, offset, PCD, center bore), a sidewall decoder tool for tire markings, and a library of guides on fitment geometry and suspension setups. Style: Clean, technical, Slate and Sage palette using Plus Jakarta Sans.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Fitment Engine (Slate \u0026 Sage)",
+        "prompt":  "Create the \u0027Fitment Calculation\u0027 screen for Wheely Bits. This is step 3 of the rim journey (Rim Recognition -\u003e Rim Selection -\u003e Fitment Calculation -\u003e Visualization -\u003e Vendor). \n\nKey elements:\n- A step-by-step progress indicator at the top showing Step 03: Fitment Calculation as active.\n- A technical, high-precision calculation interface.\n- Input fields for vehicle data (Make, Model, Year, Trim) and wheel specs (Diameter, Width, Offset/ET, Bolt Pattern, Center Bore).\n- A real-time fitment status panel showing \u0027Safety Rating\u0027, \u0027Poke\u0027, \u0027Inset\u0027, and \u0027Speedometer Error\u0027.\n- A visual 2D cross-section diagram or schematic showing the relationship between the wheel, suspension, and fender.\n- Dark, sophisticated \u0027Slate \u0026 Sage\u0027 aesthetic with glassmorphic containers and subtle green accents.\n- Use the centered navigation bar from {{DATA:SCREEN:SCREEN_26}} with \u0027Rim\u0027 as active.\n- A primary \u0027Calculate \u0026 Continue\u0027 button and a secondary \u0027Reset Specs\u0027 button.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Education Hub (Heritage)",
+        "prompt":  "Restyle the Education Hub with the \u0027Heritage Studio\u0027 design system. Light aesthetic with British Racing Green highlights. Update all module cards and the interactive rim diagram to match the new color palette and \u0027Outfit\u0027 font.",
+        "theme":  "Heritage Studio"
+    },
+    {
+        "title":  "Wheely Bits | Vendors",
+        "prompt":  "PAGE 6: VENDOR DIRECTORY. \n\"FIND TRUSTED VENDORS\" in Islamabad/Rawalpindi. \nSearch \u0026 Filter bar: Rim Vendors, Wrap \u0026 Tint, etc. \nTwo-column: List of vendor cards (Rating, Specialization, Contact) and a Dark-styled Map mockup with orange pins. \nFeatured shop spotlight. \nProduction-grade technical UI.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits | Fitment Engine (Slate \u0026 Sage)",
+        "prompt":  "Append the professional footer from {{DATA:SCREEN:SCREEN_90}} to the bottom of this screen. Ensure the page layout supports scrolling to reach it.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Wrap Color Selection (Slate \u0026 Sage)",
+        "prompt":  "A high-end automotive wrap color selection screen for \u0027Wheely Bits\u0027. This is Step 02 of the Wrap Journey. \n\nHeader: Centered capsule navigation bar (Home, Rim, Wrap, Tint, Vendors, Community, FAQ). \nProgress Tracker: A step-by-step indicator showing: Styles (Completed) -\u003e Color (Active) -\u003e Visualization -\u003e Vendor.\n\nMain Content:\n- A prominent \u0027Current Selection\u0027 preview showing a stylized car body segment with the selected color and finish applied.\n- A sophisticated color picker grid categorized by finish type (Metallic, Gloss, Satin, Matte, Specialty).\n- Each color swatch should have a name (e.g., \u0027British Racing Green\u0027, \u0027Stealth Grey\u0027, \u0027Deep Amethyst\u0027) and a small icon or badge indicating material properties (e.g., iridescent, textured).\n- A sidebar or bottom panel showing \u0027Selection Details\u0027: Color Name, Finish Type, Durability Rating (e.g., 5-7 years), and estimated material cost.\n\nCall to Action: A primary \u0027Continue to Visualization\u0027 button and a secondary \u0027Back to Styles\u0027 button.\n\nVisual Style: \u0027Slate \u0026 Sage\u0027 aesthetic - dark background (#121416), glassmorphic cards, subtle sage green accents (#8fb397), and clean Plus Jakarta Sans typography. Cinematic and high-end.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Wrap Vendor Selection (Slate \u0026 Sage)",
+        "prompt":  "The final \u0027Vendor\u0027 stage of the Wheely Bits Wrap Journey. The screen features the \u0027Slate \u0026 Sage\u0027 aesthetic with the centered floating capsule navigation bar (Home, Rim, Wrap, Tint, Vendors, Community, FAQ) and \u0027Wrap\u0027 highlighted. A step progress bar at the top shows stage 4 \u0027Vendor\u0027 as active, with Styles, Color, and Visualization marked as complete. The main content area displays a list of certified wrap installation vendors near the user. Each vendor card includes a shop name, rating, starting price for the selected \u0027British Racing Green\u0027 wrap, and a \u0027Book Installation\u0027 action. On the side, a summary panel shows the \u0027Selected Build\u0027: Porsche 911 GT3 RS in British Racing Green (Metallic Satin) with a \u0027Total Estimated Material \u0026 Labor\u0027 cost. Background is dark and moody, matching the rest of the journey.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Fitment Engine (Daylight)",
+        "prompt":  "Convert the Fitment Engine to a clean, light-mode technical calculator.\n\nKey Changes:\n- Page Background: Light grey.\n- Input Fields: Pure white backgrounds with subtle silver borders and orange focus rings.\n- Comparison Table: High-contrast text on alternating light grey rows.\n- Verdict Cards: Keep the green/yellow/red semantic colors but adapt the card backgrounds to be light versions (e.g., very pale green background with a solid green border) for better legibility in light mode.\n- Typography: Ensure all technical mono-spaced data (PCD, Offset) is in a dark, high-contrast grey.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Generating Screen...",
+        "prompt":  null,
+        "theme":  "Unknown"
+    },
+    {
+        "title":  "Wheely Bits | Rim Selection",
+        "prompt":  "Create the \u0027Rim Selection\u0027 page for Wheely Bits. \nTop Navigation: A floating, glassmorphic centered menu bar with links: Home, Rim, Wrap, Tint, Vendors, Community, FAQ. No \u0027Sign In\u0027 or \u0027Upload\u0027 button. \u0027Rim\u0027 should be the active state.\nStep-by-Step Flow: Below the nav, show the 5-stage engineering journey: Rim Recognition (completed state), Rim Selection (active state), Fitment Calculation, Visualization, Vendor. Use arrows between stages.\nMain Content: A premium product gallery for rims. \n- Left Sidebar: Technical filters (Brand, Diameter, Width, Offset, Finish, Construction type). \n- Grid: A responsive grid of high-end rim products. Each card should show: Large high-res rim photo, Brand name, Model name, starting price, and a \u0027Select for Fitment\u0027 primary action.\n- Aesthetics: Follow the \u0027Slate \u0026 Sage\u0027 style—deep slate (#1a1c1e) background, muted sage (#8fb397) accents for active states/primary buttons, Plus Jakarta Sans typography. Use soft shadows and subtle borders. \n- Empty/Hover States: Cards should have a subtle hover lift effect. \nFooter: Standard website footer with copyright and links.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "A professional side-profile shot of a high-end modified sports car (like a Nissan GT-R or Toyota Supra) in a dark, moody automotive studio. Cinematic lighting, deep blacks, subtle orange and cyan neon reflections, high-resolution photography, 8k. The car should be positioned to serve as a background element for large text.",
+        "prompt":  "A professional side-profile shot of a high-end modified sports car (like a Nissan GT-R or Toyota Supra) in a dark, moody automotive studio. Cinematic lighting, deep blacks, subtle orange and cyan neon reflections, high-resolution photography, 8k. The car should be positioned to serve as a background element for large text.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits Navigation Flow",
+        "prompt":  null,
+        "theme":  "Unknown"
+    },
+    {
+        "title":  "Wheely Bits | Home (Slate \u0026 Sage)",
+        "prompt":  "The homepage for \"Wheely Bits\" using the Slate \u0026 Sage design system. \n- Background: Use {{DATA:IMAGE:IMAGE_18}} as a subtle, atmospheric hero background with a deep slate gradient overlay.\n- Hero Section: Large, smooth typography for \"WHEELY BITS\" using Plus Jakarta Sans. Subtext: \"Precision tuning, visual fidelity, and technical mastery combined.\"\n- Floating Navigation: Center-aligned, glassmorphic floating bar at the top.\n- Feature Grid: Four rounded cards highlighting core capabilities: AI Recognition, Studio Visualizer, Fitment Engine, and Colorimetry Lab. \n- Animations: Add entrance animations (fade-in and slide-up) to all sections. Use smooth CSS transitions for all hover states.\n## Available Images\nYou MUST include the following images in this design. You must reference them\nby putting their exact placeholder IDs in `src` attributes or CSS\n`background-image` rules. Do NOT use external URLs or generate new\nplaceholders. Preserve these IDs exactly as written. Read each image\u0027s\nDescription to understand its subject, intended section, and visual role.\n\n- {{DATA:IMAGE:IMAGE_18}}\n  Description: pexels-introspectivedsgn-17245104.jpg\n  Dimensions: 6000x4000\n  Aspect Ratio: 1.50\n",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Rim Journey",
+        "prompt":  "Create the \u0027Rim\u0027 page for Wheely Bits. Below the glassmorphic top navigation bar (Home, Rim, Wrap, Tint, Vendors, Community, FAQ), include a prominent horizontal progress/flow indicator. \n\nThe flow should consist of five stages connected by arrows or lines:\n1. Rim Recognition\n2. Rim Selection\n3. Fitment Calculation\n4. Visualization\n5. Vendor\n\nStyle the flow indicator with a technical, high-end aesthetic: muted Sage colors for active/completed states, Slate for inactive, and Plus Jakarta Sans typography. \n\nBelow the flow indicator, provide an introductory area for the first step, \u0027Rim Recognition\u0027, featuring a clean upload zone or \u0027Start AI Scan\u0027 button, maintaining the \u0027Slate \u0026 Sage\u0027 visual language (dark backgrounds, subtle glassmorphism, and soft rounded corners). Include a professional footer with standard links.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Rim Selection (Slate \u0026 Sage)",
+        "prompt":  "Create the \u0027Rim Selection\u0027 page for Wheely Bits. This is the second step in the Rim Journey.\n\nPage Structure:\n1. Navigation: Use the centered glassmorphic floating TopNavBar from {{DATA:COMPONENTS:COMPONENTS_32}}, ensuring \u0027Rim\u0027 is the active link and no trailing action buttons (like Sign In) are present.\n2. Step Indicator: Below the nav, show the progress stepper from {{DATA:SCREEN:SCREEN_22}} with \u0027Rim Selection\u0027 as the active (highlighted) stage.\n3. Header: A clear title \u0027Select Your Rims\u0027 with a brief instruction \u0027Browse our curated collection or search for specific models.\u0027\n4. Filter/Search Bar: A sleek horizontal bar to filter by Brand, Size, Finish, and a search input.\n5. Product Grid: A responsive grid of high-quality rim cards. Each card should feature:\n    - High-res image of the rim.\n    - Brand and Model name.\n    - Price and key specs (size, weight).\n    - \u0027Select\u0027 primary button and \u0027View Details\u0027 secondary action.\n6. Footer: Standard footer as defined in {{DATA:COMPONENTS:COMPONENTS_32}}.\n\nVisual Style: \n- Stick strictly to the \u0027Slate \u0026 Sage\u0027 aesthetic ({{DATA:DESIGN_SYSTEM:DESIGN_SYSTEM_1}}).\n- Dark, moody backgrounds with subtle glassmorphic containers.\n- Sophisticated typography and smooth transitions.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Studio (Heritage)",
+        "prompt":  "Restyle the Studio with the \u0027Heritage Studio\u0027 design system. Light grey background, British Racing Green accents, and smoother \u0027Outfit\u0027 typography. Ensure the side panels and car visualization area are cohesive with the new aesthetic. Keep all functionality: rim selection grid, vehicle selector, and live telemetry.",
+        "theme":  "Heritage Studio"
+    },
+    {
+        "title":  "Wheely Bits | Rim Fitment 101 (Slate \u0026 Sage)",
+        "prompt":  "A \u0027Rim Fitment 101\u0027 interactive guide screen. This is a special landing page within the Education Hub designed for beginners. It features a step-by-step interactive carousel or scroll-based guide explaining \u0027The Anatomy of a Wheel\u0027. Use hotspots on a high-fidelity 3D wheel model to explain terms like Lip, Barrel, Spokes, and Center Bore. The UI should be highly interactive but still retain the premium Slate \u0026 Sage look — dark, atmospheric, with glassmorphic overlays for the educational content. Centered capsule navigation is present.",
+        "theme":  "FIDELITY"
+    },
+    {
+        "title":  "Generating Screen...",
+        "prompt":  null,
+        "theme":  "Unknown"
+    },
+    {
+        "title":  "Wheely Bits Landing Page",
+        "prompt":  "Create the main landing page for Wheely Bits, a car modification try-on system. \n\nThe page should include:\n1. TopNavBar: Using the shared component with a \u0027Launch Configurator\u0027 primary action.\n2. Hero Section: A striking, dark, and moody hero with a high-end modified sports car. Headline: \u0027PRECISION MEETS PASSION. VISUALIZE YOUR ULTIMATE BUILD.\u0027 Subheadline: \u0027The world\\\u0027s most advanced virtual try-on system for wheels, kits, and performance upgrades.\u0027 CTA: \u0027Start Your Build\u0027.\n3. How It Works (Horizontal Steps): \n   - Step 1: Upload Your Car (High-res photo or 3D scan).\n   - Step 2: Swap Components (Access 10,000+ authentic wheels and body kits).\n   - Step 3: Visualize in 4K (See your build in real-world lighting environments).\n4. Feature Grid: Highlight \u0027Real-time 3D Rendering\u0027, \u0027OEM \u0026 Aftermarket Database\u0027, and \u0027Fitment Guarantee\u0027.\n5. Community Showcase: A masonry layout of user-submitted \u0027Builds of the Week\u0027.\n6. Final CTA: \u0027Ready to see the potential? Launch the Configurator\u0027.\n7. Footer: Using the shared component.\n\nStyle: Dark, premium, technical, using the established \u0027Premium Automotive Digital\u0027 design system. Bold typography and metallic accents.",
+        "theme":  "Premium Automotive Digital"
+    },
+    {
+        "title":  "Wheely Bits | Home (Heritage)",
+        "prompt":  "Apply the new \u0027Heritage Studio\u0027 design system. Use {{DATA:IMAGE:IMAGE_11}} as the main hero background image. Update the color scheme to be light and aesthetic with British Racing Green (#004225) as the primary accent color. Change fonts to the smoother \u0027Outfit\u0027 font as defined in the design system. Maintain all section content: hero text, statistics counter, and technical capabilities cards. Ensure high contrast for readability against the new light background.",
+        "theme":  "Heritage Studio"
+    },
+    {
+        "title":  "Wheely Bits | Fitment Engine (Slate \u0026 Sage)",
+        "prompt":  "The Fitment Engine calculator page.\n- Layout: Two main rounded columns: \"Your Vehicle\" and \"Your Rim\".\n- Technical UI: Soft slate input fields with rounded corners and subtle sage green borders on focus.\n- Results: A \"Safe Direct Fit\" status indicator with a soft glow. A \"Technical Comparison\" table and a \"Tyre Matrix\" card.\n- Animations: Smooth expansion animations for technical details.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Studio (Heritage Stance)",
+        "prompt":  "Wheely Bits Customization Studio. A professional editor interface. Left sidebar with tool icons (Car, Palette, Scissors, etc.). Large central canvas showing a vehicle side profile. Right panel for \"Rim Selection\" with a grid of high-quality wheels (BBS, Volk, etc.) on Dark Carbon cards. Include \"Live Telemetry\" specs at the bottom left in JetBrains Mono. Use Heritage Stance styling: Deep Racing Green workspace, Champagne Bronze active states, and Playfair Display for panel headers.",
+        "theme":  "Heritage Stance"
+    },
+    {
+        "title":  "Wheely Bits | Rim Fitment 101 (Slate \u0026 Sage)",
+        "prompt":  "A \u0027Rim Fitment 101\u0027 interactive guide screen. This is a special landing page within the Education Hub designed for beginners. It features a step-by-step interactive carousel or scroll-based guide explaining \u0027The Anatomy of a Wheel\u0027. Use hotspots on a high-fidelity 3D wheel model to explain terms like Lip, Barrel, Spokes, and Center Bore. The UI should be highly interactive but still retain the premium Slate \u0026 Sage look — dark, atmospheric, with glassmorphic overlays for the educational content. Centered capsule navigation is present.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Build Log: Project Nightfall",
+        "prompt":  "A high-fidelity project build log page for \u0027Project Nightfall\u0027. It showcases a Nissan GT-R with a matte black wrap and custom wheels. The layout includes a hero image of the car, a timeline of modifications (Wrap, Rims, Tint), technical specs, and a comment section. Use the Slate \u0026 Sage aesthetic: dark backgrounds, glassmorphic cards, and accent colors of sage green. Navigation is a centered floating capsule.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Vendors (Slate \u0026 Sage)",
+        "prompt":  "Wheely Bits Vendor Directory. A marketplace for finding trusted rim vendors and modification shops. Features: A searchable map interface (Islamabad/Rawalpindi region), featured vendor cards with ratings and services (rim vendors, wrap/tint, performance), and a \u0027Book Appointment\u0027 integration. Style: Clean UI with technical maps and Slate/Sage accents using Plus Jakarta Sans.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Utility States",
+        "prompt":  "PAGE 9: 404 \u0026 LOADING STATES. \n404: Large Orbitron \"404\", \"Looks like this page took a wrong turn\", GO BACK HOME button. \nLoading: WHEELY BITS logo with glowPulse animation, orange progress bar, \"Loading the garage...\" text. \nBoth use the Midnight Velocity design system.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits | My Profile (Slate \u0026 Sage)",
+        "prompt":  "Wheely Bits My Profile / Personal Garage. A private dashboard for users to manage their car projects. Features: User profile header with stats (builds, likes, followers), a \u0027Active Projects\u0027 section showing saved 3D configurations, a \u0027Wishlist\u0027 for rims and parts, and \u0027Saved Fitment Specs\u0027. Style: Sophisticated Slate background with Sage green accents, card-based layout using Plus Jakarta Sans.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | My Profile (Heritage)",
+        "prompt":  "Apply the \u0027Heritage Studio\u0027 theme to the User Profile. Light grey/white background, British Racing Green for badges and CTAs, and \u0027Outfit\u0027 font. Maintain the profile stats and build gallery.",
+        "theme":  "Heritage Studio"
+    },
+    {
+        "title":  "Wheely Bits | Studio (Daylight)",
+        "prompt":  "Transform the Studio interface into a light-themed \"Daylight Studio\". \n\nKey Changes:\n- Editor Background: Change the grid background to a light neutral grey.\n- Panels: Change the side and right panels from dark grey to crisp white or very light grey.\n- Sidebar Icons: Use dark icons on light backgrounds, with the orange square active state.\n- Rim Selection Grid: Card backgrounds should be white with light grey borders. Rim metadata (text) must be high-contrast dark grey.\n- Controls: Floating UI elements should use light-mode glass-morphism (white blur).\n- Active Indicators: Maintain the orange highlights for selected items and drag points.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits | Home (with Hero Car)",
+        "prompt":  "In the hero section, add {{DATA:IMAGE:IMAGE_20}} as a background image behind the large \"WHEELY BITS\" text. Ensure the image is center-aligned and has a subtle dark overlay (e.g., bg-black/40) so the text remains highly readable. The text should sit on top of the image. Keep the animated particle system if it exists, or layer it over the image.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits | 3D Visualization (Slate \u0026 Sage)",
+        "prompt":  "A high-end 3D Visualization screen for \u0027Wheely Bits\u0027. This is Step 4 of the Rim journey.\nThe page should feature:\n1. The standard Slate \u0026 Sage top navigation bar (centered capsule, links: Home, Rim, Wrap, Tint, Vendors, Community, FAQ).\n2. A step-by-step progress indicator at the top highlighting \u0027Step 04: Visualization\u0027.\n3. A large, immersive 3D viewer section showing a side-profile or 3/4 view of a premium sports car (like a Porsche 911 or Nissan GT-R) with the previously selected rims (e.g., BBS or Vossen) rendered in high detail.\n4. UI controls for the 3D environment: Rotate camera, Zoom, and toggle \u0027Environment\u0027 (e.g., Studio, Street, Track).\n5. A \u0027Quick Specs\u0027 sidebar or overlay showing the wheel geometry being visualized: \u002721\" Vossen HF-5\u0027, \u0027Offset: +12mm\u0027, \u0027Finish: Satin Black\u0027.\n6. A primary action button \u0027Continue to Vendor\u0027 at the bottom right.\n7. The background should be dark and moody, consistent with SCREEN_22 and SCREEN_55.\n8. Use glassmorphism for all UI overlays to maintain the high-end automotive digital aesthetic.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Community (Heritage Stance)",
+        "prompt":  "Wheely Bits Community Hub. A grid-based feed of \"Community Builds\". Each card shows a car photo, owner name, and modification tags (Rims, Wrap, etc.). Left sidebar for filters (Vehicle Type, Modifications). Right sidebar for \"Trending\" and \"Top Builders\". Use Heritage Stance aesthetic: Deep Racing Green backgrounds, Cashmere White text, and Champagne Bronze accents for active tags and buttons. Typography should lead with Playfair Display for section headers.",
+        "theme":  "Heritage Stance"
+    },
+    {
+        "title":  "Wheely Bits | Wrap Visualization (Slate \u0026 Sage)",
+        "prompt":  "A high-fidelity 3D Visualization screen for a car wrap customization app. The header features the \u0027Slate \u0026 Sage\u0027 centered capsule navigation. Below the nav, a step indicator highlights \u0027Step 03: Visualization\u0027 in a 4-step flow (Styles, Color, Visualization, Vendor). The main area features a cinematic, large-scale 3D render of a sports car (e.g., a Porsche 911) with a premium British Racing Green metallic satin wrap applied. The car is set in a dark, moody studio environment with realistic reflections. On the left, a floating glassmorphic card displays selection details: \u0027Current Selection: British Racing Green\u0027, \u0027Finish: Metallic Satin\u0027, \u0027Material Quality: Premium Cast Vinyl\u0027. On the bottom right, interactive controls for \u0027Rotate 360°\u0027, \u0027Toggle Lights\u0027, and environment switchers (\u0027Studio\u0027 vs \u0027Street\u0027). A primary \u0027Continue to Vendor\u0027 button is in the bottom right corner, and a \u0027Back to Color\u0027 button is nearby. The overall aesthetic is dark, sophisticated, and premium, following the Slate \u0026 Sage design system.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Welcome Home",
+        "prompt":  "A personalized welcome home screen for Wheely Bits following a successful signup. The background is a high-fidelity cinematic slideshow of performance cars (similar to {{DATA:IMAGE:IMAGE_29}} and {{DATA:IMAGE:IMAGE_58}}). In the foreground, a large, sophisticated greeting reads \u0027Welcome back, Alex\u0027 (or placeholder name) with a punchline like \u0027Your next masterpiece awaits.\u0027 The screen includes the centered capsule navigation bar from the \u0027Slate \u0026 Sage\u0027 system, but without \u0027Sign Up/Login\u0027 buttons. It features a prominent \u0027Start New Build\u0027 CTA and a \u0027Continue Last Project\u0027 card. The page is scrollable and ends with the professional footer from {{DATA:SCREEN:SCREEN_95}}. Style is dark, atmospheric, and premium with glassmorphic elements.\n## Available Images\nYou MUST include the following images in this design. You must reference them\nby putting their exact placeholder IDs in `src` attributes or CSS\n`background-image` rules. Do NOT use external URLs or generate new\nplaceholders. Preserve these IDs exactly as written. Read each image\u0027s\nDescription to understand its subject, intended section, and visual role.\n\n- {{DATA:IMAGE:IMAGE_29}}\n  Description: A professional side-profile shot of a high-end modified sports car (like a Nissan GT-R or Toyota Supra) in a dark, moody automotive studio. Cinematic lighting, deep blacks, subtle orange and cyan neon reflections, high-resolution photography, 8k. The car should be positioned to serve as a background element for large text.\n  Dimensions: 1376x768\n  Aspect Ratio: 1.79\n- {{DATA:IMAGE:IMAGE_58}}\n  Description: pexels-introspectivedsgn-17245104.jpg\n  Dimensions: 6000x4000\n  Aspect Ratio: 1.50\n",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits Automotive Platform",
+        "prompt":  null,
+        "theme":  "Unknown"
+    },
+    {
+        "title":  "Wheely Bits | Studio",
+        "prompt":  "PAGE 3: CUSTOMIZATION STUDIO. \nFull-screen editor layout. \nLeft Icon Sidebar (72px): Rims, Paint, Wrap, Tint, Interior, Fitment. \nCenter Canvas: #0A0A0A with grid. Shows \"Upload your car\" prompt or sample Honda Civic. \nWheel Overlay System: 4 glowing drag points on wheels, connecting dashed lines. \nRight Panel (380px): Rim selection grid with filters (Wide Stance, OEM Plus), Paint swatches (Metallic, Matte), Window tint levels (5%, 15%, 35%). \nTop Bar: Vehicle selector pill, Undo/Redo, Save Build. \nInteraction: Clicking a rim applies it to the car with a scale animation.",
+        "theme":  "Midnight Velocity"
+    },
+    {
+        "title":  "Wheely Bits | Home (Updated)",
+        "prompt":  "Modify the home page {{DATA:SCREEN:SCREEN_14}} with these specific changes:\n1. Top Navigation: Remove the \u0027Upload\u0027 button from the floating nav bar. Keep the links: Home, Rim, Wrap, Tint, Vendors, Community, FAQ.\n2. Hero Section: \n   - Instead of a full-page background, create a centered container for a slideshow of car side-profile images showing different rims.\n   - Use high-quality car side profile images like {{DATA:IMAGE:IMAGE_19}} and {{DATA:IMAGE:IMAGE_25}} (and generate/include others if needed) for this slideshow.\n   - In front of this centered slideshow, add a translucent, slightly blurred box (glassmorphism).\n   - Inside the box, add welcome text: \"New to Wheely Bits? Start here...\"\n   - Below the text, add two primary action buttons: \"Sign Up\" and \"Login\".\n3. Footer: Add a standard professional footer at the bottom of the page with copyright info (\"© 2024 Wheely Bits. All rights reserved.\") and links like Privacy Policy, Terms of Service, etc.\n4. Styling: Maintain the \"Slate \u0026 Sage\" aesthetic ({{DATA:DESIGN_SYSTEM:DESIGN_SYSTEM_1}}) using Plus Jakarta Sans and the deep slate/sage color palette.\n5. Animations: Ensure smooth transitions for the slideshow and entrance animations for the welcome box.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Fitment Engine (Heritage Stance)",
+        "prompt":  "Wheely Bits Fitment Engine. A technical calculator page. Two main cards: \"Your Vehicle\" (Make/Model/Year dropdowns) and \"Your Rim\" (Manual specs for Diameter, Width, Offset, PCD). A large \"RUN FITMENT CHECK\" button in Champagne Bronze. Result display: \"SAFE DIRECT FIT\" with a green glow or warning states. Technical comparison table comparing OEM vs New specs. Tyre matrix at the bottom. Use Heritage Stance colors and Inter font for data.",
+        "theme":  "Heritage Stance"
+    },
+    {
+        "title":  "Wheely Bits | Tint Visualization (Slate \u0026 Sage)",
+        "prompt":  "The third stage of the Tint Journey: \u0027Visualization\u0027. \nNavigation: Floating centered capsule with \u0027Tint\u0027 active. \nProgress Bar: Step 1 and 2 complete, Step 3 (Visualization) active. \nMain Content: A cinematic 3D environment featuring a car (e.g., a white or silver sports car to contrast the tint). \nInteractive Elements: A slider to adjust the tint shade in real-time, toggle buttons for \u0027Day\u0027 and \u0027Night\u0027 view, and a \u0027Interior View\u0027 vs \u0027Exterior View\u0027 toggle. \nSide Panel: Summary of the build (e.g., Ceramic Film, 35% Shade). \nCTA: \u0027Confirm Selection\u0027. \nTheme: Slate \u0026 Sage.",
+        "theme":  "Slate \u0026 Sage"
+    },
+    {
+        "title":  "Wheely Bits | Wrap Journey",
+        "prompt":  "A professional automotive \"Wrap\" page for Wheely Bits. \n- Top Navigation: Floating glassmorphic bar with links for Home, Rim, Wrap, Tint, Vendors, Community, FAQ. \u0027Wrap\u0027 is active.\n- Journey Flow Bar: Below the nav, a horizontal step-by-step indicator showing: 1. Styles (Active), 2. Color, 3. Visualization, 4. Vendor. Use arrows between steps.\n- Main Content (Styles): A grid of wrap finish options (e.g., Matte, Gloss, Satin, Chrome, Carbon Fiber, Patterned). Each card should have a high-quality preview image and a \u0027Select\u0027 button.\n- Aesthetic: Slate \u0026 Sage (dark mode, #8fb397 accents, Plus Jakarta Sans). \n- Footer: Standard website footer with copyright and links.",
+        "theme":  "Slate \u0026 Sage"
+    }
+]
