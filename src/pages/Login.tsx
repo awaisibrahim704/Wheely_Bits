@@ -5,10 +5,16 @@ import { useAuth } from "../contexts/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, signInWithGoogle } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const { sendPhoneVerification, confirmPhoneCode } = useAuth();
+  const [usePhone, setUsePhone] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [code, setCode] = useState("");
+  const [phoneStep, setPhoneStep] = useState<"enter" | "verify">("enter");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,6 +24,38 @@ export default function Login() {
       navigate("/garage");
     } catch (err: any) {
       setError(err?.message || "Failed to sign in");
+    }
+  };
+
+  const handleGoogle = async () => {
+    setError(null);
+    try {
+      await signInWithGoogle();
+      navigate("/garage");
+    } catch (err: any) {
+      setError(err?.message || "Failed to sign in with Google");
+    }
+  };
+
+  const handleSendCode = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setPhoneError(null);
+    try {
+      await sendPhoneVerification(phone);
+      setPhoneStep("verify");
+    } catch (err: any) {
+      setPhoneError(err?.message || "Failed to send verification code");
+    }
+  };
+
+  const handleVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPhoneError(null);
+    try {
+      await confirmPhoneCode(code);
+      navigate("/garage");
+    } catch (err: any) {
+      setPhoneError(err?.message || "Failed to verify code");
     }
   };
 
@@ -102,6 +140,142 @@ export default function Login() {
             </span>
             <div className="flex-1 h-px bg-outline-subtle/50"></div>
           </div>
+
+          {/* Google Sign-in */}
+          <div className="mt-4 flex justify-center">
+            <button
+              onClick={handleGoogle}
+              type="button"
+              className="w-full max-w-sm flex items-center justify-center gap-2 border border-outline-subtle rounded-lg py-3 px-4 hover:shadow-sm"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden
+              >
+                <path
+                  d="M21.35 11.1h-9.18v2.92h5.26c-.23 1.38-1.36 3.08-5.26 3.08-3.16 0-5.73-2.6-5.73-5.8s2.57-5.8 5.73-5.8c1.8 0 3.01.77 3.7 1.43l2.53-2.43C17.34 3.08 15.48 2 12.17 2 7.48 2 3.8 5.67 3.8 10.5s3.68 8.5 8.36 8.5c4.82 0 8.2-3.38 8.2-8.17 0-.55-.06-.94-.01-1.73z"
+                  fill="#4285F4"
+                />
+              </svg>
+              <span className="text-sm font-semibold">
+                Continue with Google
+              </span>
+            </button>
+          </div>
+
+          {/* Phone sign-in toggle and UI */}
+          <div className="mt-4 text-center">
+            <button
+              className="text-sm font-medium text-primary-brand hover:text-primary"
+              onClick={() => setUsePhone((v) => !v)}
+              type="button"
+            >
+              {usePhone ? "Use email instead" : "Sign in with phone"}
+            </button>
+          </div>
+
+          {usePhone && (
+            <div className="mt-4">
+              {phoneStep === "enter" ? (
+                <form onSubmit={handleSendCode} className="space-y-3">
+                  <label className="block text-xs font-semibold text-on-surface-muted mb-1">
+                    Phone number
+                  </label>
+                  <input
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+12345678900"
+                    className="w-full bg-surface-highest border border-outline-subtle rounded-lg py-3 px-3"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      className="bg-primary-brand text-on-primary px-4 py-2 rounded"
+                      type="submit"
+                    >
+                      Send code
+                    </button>
+                    <button
+                      className="px-4 py-2 rounded border"
+                      type="button"
+                      onClick={() => {
+                        // Fill with env-provided test credentials if available
+                        const testPhone = import.meta.env.VITE_TEST_PHONE || "";
+                        const testCode = import.meta.env.VITE_TEST_CODE || "";
+                        if (testPhone) setPhone(testPhone);
+                        if (testCode) {
+                          setCode(testCode);
+                          setPhoneStep("verify");
+                        }
+                      }}
+                    >
+                      Use test creds
+                    </button>
+                    <button
+                      className="px-4 py-2 rounded border"
+                      type="button"
+                      onClick={() => setUsePhone(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  {phoneError && (
+                    <p className="mt-2 text-sm text-destructive">
+                      {phoneError}
+                    </p>
+                  )}
+                </form>
+              ) : (
+                <form onSubmit={handleVerifyCode} className="space-y-3">
+                  <label className="block text-xs font-semibold text-on-surface-muted mb-1">
+                    Verification code
+                  </label>
+                  <input
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    placeholder="123456"
+                    className="w-full bg-surface-highest border border-outline-subtle rounded-lg py-3 px-3"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      className="bg-primary-brand text-on-primary px-4 py-2 rounded"
+                      type="submit"
+                    >
+                      Verify
+                    </button>
+                    <button
+                      className="px-4 py-2 rounded border"
+                      type="button"
+                      onClick={() => {
+                        setPhoneStep("enter");
+                        setCode("");
+                      }}
+                    >
+                      Back
+                    </button>
+                    <button
+                      className="px-4 py-2 rounded border"
+                      type="button"
+                      onClick={() => {
+                        const testCode = import.meta.env.VITE_TEST_CODE || "";
+                        if (testCode) setCode(testCode);
+                      }}
+                    >
+                      Fill test code
+                    </button>
+                  </div>
+                  {phoneError && (
+                    <p className="mt-2 text-sm text-destructive">
+                      {phoneError}
+                    </p>
+                  )}
+                </form>
+              )}
+            </div>
+          )}
 
           {/* Secondary Action */}
           <div className="mt-6 text-center text-sm font-medium text-on-surface-muted">

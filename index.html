@@ -8,6 +8,8 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Persistent reCAPTCHA container so the verifier element isn't removed by React re-renders -->
+    <div id="recaptcha-container" style="display: none"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
