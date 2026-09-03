@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, ArrowRight } from "lucide-react";
+import { Mail, Lock, ArrowRight, CircleAlert } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -130,7 +130,12 @@ export default function Login() {
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </form>
-          {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
+          {error && (
+            <div className="auth-error" role="alert" aria-live="polite">
+              <CircleAlert className="h-5 w-5" aria-hidden="true" />
+              <p>{error}</p>
+            </div>
+          )}
 
           {/* Divider */}
           <div className="mt-6 flex items-center gap-4">
@@ -223,9 +228,10 @@ export default function Login() {
                     </button>
                   </div>
                   {phoneError && (
-                    <p className="mt-2 text-sm text-destructive">
-                      {phoneError}
-                    </p>
+                    <div className="auth-error" role="alert" aria-live="polite">
+                      <CircleAlert className="h-5 w-5" aria-hidden="true" />
+                      <p>{phoneError}</p>
+                    </div>
                   )}
                 </form>
               ) : (
@@ -268,9 +274,10 @@ export default function Login() {
                     </button>
                   </div>
                   {phoneError && (
-                    <p className="mt-2 text-sm text-destructive">
-                      {phoneError}
-                    </p>
+                    <div className="auth-error" role="alert" aria-live="polite">
+                      <CircleAlert className="h-5 w-5" aria-hidden="true" />
+                      <p>{phoneError}</p>
+                    </div>
                   )}
                 </form>
               )}

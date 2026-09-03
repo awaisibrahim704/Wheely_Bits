@@ -31,6 +31,21 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const getFriendlyAuthError = (error: unknown) => {
+  const code = (error as { code?: unknown })?.code;
+  if (code === "auth/email-already-in-use") {
+    return new Error(
+      "An account already exists with this email address. Try signing in instead, or use a different email.",
+    );
+  }
+  if (code === "auth/too-many-requests") {
+    return new Error(
+      "We have temporarily paused attempts from this device for security. Please wait a few minutes and try again.",
+    );
+  }
+  return error;
+};
+
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error("useAuth must be used within AuthProvider");
@@ -54,7 +69,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const login = async (email: string, password: string) => {
-    const cred = await signInWithEmailAndPassword(auth, email, password);
+    let cred;
+    try {
+      cred = await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      throw getFriendlyAuthError(error);
+    }
     // If email is not verified, prevent access and ask user to verify
     const u = cred.user;
     if (u && !u.emailVerified) {
@@ -67,7 +87,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
-    const cred = await signInWithPopup(auth, provider);
+    let cred;
+    try {
+      cred = await signInWithPopup(auth, provider);
+    } catch (error) {
+      throw getFriendlyAuthError(error);
+    }
     if (cred.user) setUser(cred.user);
   };
 
@@ -120,15 +145,59 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     password: string,
     displayName?: string,
   ) => {
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
-    if (displayName && cred.user) {
-      await updateProfile(cred.user, { displayName });
+    let cred;
+    let verificationAlreadySent = false;
+    try {
+      cred = await createUserWithEmailAndPassword(auth, email, password);
+      if (displayName && cred.user) {
+        await updateProfile(cred.user, { displayName });
+      }
+    } catch (error) {
+      if ((error as { code?: unknown })?.code === "auth/email-already-in-use") {
+        try {
+          cred = await signInWithEmailAndPassword(auth, email, password);
+        } catch {
+          throw new Error(
+            "This email is already registered but has not been verified. Use the password created with this account, then sign in to resend the verification email.",
+          );
+        }
+
+        if (cred.user.emailVerified) {
+          throw getFriendlyAuthError(error);
+        }
+
+        await sendEmailVerification(cred.user);
+        verificationAlreadySent = true;
+      } else {
+        throw getFriendlyAuthError(error);
+      }
     }
-    // Send verification email. Let failures propagate so the UI can surface them.
-    if (cred.user) {
+    // Send verification email. If VITE_USE_SENDGRID is true, POST to the external
+    // send server (which uses SendGrid) to improve deliverability. Otherwise
+    // fall back to Firebase's sendEmailVerification.
+    if (cred.user && !verificationAlreadySent) {
       // eslint-disable-next-line no-console
       console.log("Sending verification email to", cred.user.email);
-      await sendEmailVerification(cred.user);
+
+      const useSendGrid = import.meta.env.VITE_USE_SENDGRID === "true";
+      if (useSendGrid) {
+        const serverUrl =
+          import.meta.env.VITE_VERIFICATION_SERVER_URL ||
+          "http://localhost:4000";
+        const res = await fetch(`${serverUrl}/sendVerification`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: cred.user.email }),
+        });
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(
+            body.error || `Failed to send verification via ${serverUrl}`,
+          );
+        }
+      } else {
+        await sendEmailVerification(cred.user);
+      }
     }
   };
 

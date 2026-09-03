@@ -1,5 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, User, ArrowRight } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  User,
+  ArrowRight,
+  CircleAlert,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -10,12 +18,26 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [verificationSent, setVerificationSent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    if (password.length < 8) {
+      return setError("Password must be at least 8 characters long.");
+    }
+    if (
+      !/[A-Z]/.test(password) ||
+      !/[a-z]/.test(password) ||
+      !/[0-9]/.test(password)
+    ) {
+      return setError(
+        "Password must include an uppercase letter, a lowercase letter, and a number.",
+      );
+    }
     if (password !== confirmPassword) return setError("Passwords do not match");
     try {
       await signup(email, password, fullName || undefined);
@@ -93,13 +115,29 @@ export default function SignUp() {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-muted/50 w-5 h-5" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  minLength={8}
+                  required
+                  autoComplete="new-password"
                   placeholder="••••••••"
-                  className="w-full bg-surface-highest border border-outline-subtle text-on-surface font-medium rounded-lg py-3 pl-10 pr-4 focus:outline-none focus:ring-1 focus:ring-primary-brand focus:border-primary-brand transition-all duration-300 placeholder:text-on-surface-muted/50"
+                  className="w-full bg-surface-highest border border-outline-subtle text-on-surface font-medium rounded-lg py-3 pl-10 pr-12 focus:outline-none focus:ring-1 focus:ring-primary-brand focus:border-primary-brand transition-all duration-300 placeholder:text-on-surface-muted/50"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((visible) => !visible)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-muted/60 hover:text-on-surface transition-colors"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  title={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" aria-hidden="true" />
+                  ) : (
+                    <Eye className="h-5 w-5" aria-hidden="true" />
+                  )}
+                </button>
               </div>
             </div>
 
@@ -114,13 +152,37 @@ export default function SignUp() {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-muted/50 w-5 h-5" />
                 <input
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   id="confirmPassword"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  minLength={8}
+                  required
+                  autoComplete="new-password"
                   placeholder="••••••••"
-                  className="w-full bg-surface-highest border border-outline-subtle text-on-surface font-medium rounded-lg py-3 pl-10 pr-4 focus:outline-none focus:ring-1 focus:ring-primary-brand focus:border-primary-brand transition-all duration-300 placeholder:text-on-surface-muted/50"
+                  className="w-full bg-surface-highest border border-outline-subtle text-on-surface font-medium rounded-lg py-3 pl-10 pr-12 focus:outline-none focus:ring-1 focus:ring-primary-brand focus:border-primary-brand transition-all duration-300 placeholder:text-on-surface-muted/50"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((visible) => !visible)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-muted/60 hover:text-on-surface transition-colors"
+                  aria-label={
+                    showConfirmPassword
+                      ? "Hide confirmation password"
+                      : "Show confirmation password"
+                  }
+                  title={
+                    showConfirmPassword
+                      ? "Hide confirmation password"
+                      : "Show confirmation password"
+                  }
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-5 w-5" aria-hidden="true" />
+                  ) : (
+                    <Eye className="h-5 w-5" aria-hidden="true" />
+                  )}
+                </button>
               </div>
             </div>
 
@@ -133,7 +195,12 @@ export default function SignUp() {
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </form>
-          {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
+          {error && (
+            <div className="auth-error" role="alert" aria-live="polite">
+              <CircleAlert className="h-5 w-5" aria-hidden="true" />
+              <p>{error}</p>
+            </div>
+          )}
 
           {verificationSent && (
             <div className="mt-4 p-4 bg-surface-high rounded">

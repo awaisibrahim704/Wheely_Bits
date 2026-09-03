@@ -55,6 +55,26 @@
     background-clip: text;
     animation: shimmer 3s linear infinite;
   }
+
+  .auth-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 12px 14px;
+    border: 1px solid color-mix(in srgb, #e58d80 55%, transparent);
+    border-radius: var(--radius-default);
+    background: color-mix(in srgb, #8f3f38 18%, var(--color-surface-low));
+    color: #ffc4ba;
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+
+  .auth-error svg {
+    flex: 0 0 auto;
+    margin-top: 1px;
+    color: #f09a8d;
+  }
 }
 
 @keyframes shimmer {

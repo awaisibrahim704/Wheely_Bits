@@ -45,3 +45,32 @@ Notes
 
 - If email verification emails are not appearing: check Spam/Junk folders, ensure your project's `authDomain` is correct, and check Firebase Console → Authentication → Templates to customize email templates.
 - If `sendEmailVerification` throws, the error will surface in the UI console and the Sign Up page will display it.
+
+5. Sending verification emails using SendGrid (recommended to avoid spam)
+
+- Create a SendGrid account and verify your sending domain. Follow SendGrid's docs to add SPF and DKIM DNS records for your domain — this is the most important step to keep emails out of Spam.
+- Add `.env` entries:
+
+```
+SERVICE_ACCOUNT=service-account.json
+SENDGRID_API_KEY=your_sendgrid_api_key
+SENDER_EMAIL=verify@yourdomain.com   # must be a verified sender in SendGrid
+PORT=4000
+# optional: ACTION_DOMAIN=https://your-app-domain.example
+```
+
+- Install server deps (only needed to run the local send server):
+
+```bash
+npm install express body-parser firebase-admin @sendgrid/mail dotenv cors
+```
+
+- Run the send server:
+
+```bash
+node scripts/sendVerificationServer.js
+```
+
+- Use the server to send verification email by POSTing JSON to `http://localhost:4000/sendVerification` with `{ "email": "user@example.com" }`.
+
+Notes: verifying your sending domain (SPF/DKIM) in SendGrid is the main way to improve deliverability — without that, messages may still land in Spam.
