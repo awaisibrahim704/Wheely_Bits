@@ -9,7 +9,11 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from "firebase/auth";
-import { sendEmailVerification } from "firebase/auth";
+import {
+  confirmPasswordReset as resetPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase";
 
@@ -23,6 +27,8 @@ type AuthContextType = {
     displayName?: string,
   ) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
+  sendPasswordReset: (email: string) => Promise<void>;
+  confirmPasswordReset: (code: string, password: string) => Promise<void>;
   resendEmailVerification: () => Promise<void>;
   sendPhoneVerification: (phone: string) => Promise<void>;
   confirmPhoneCode: (code: string) => Promise<void>;
@@ -33,6 +39,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const getFriendlyAuthError = (error: unknown) => {
   const code = (error as { code?: unknown })?.code;
+  if (
+    code === "auth/invalid-credential" ||
+    code === "auth/user-not-found" ||
+    code === "auth/wrong-password"
+  ) {
+    return new Error("Email or password is incorrect.");
+  }
   if (code === "auth/email-already-in-use") {
     return new Error(
       "An account already exists with this email address. Try signing in instead, or use a different email.",
@@ -101,6 +114,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (!user)
       throw new Error("No authenticated user to resend verification to.");
     await sendEmailVerification(user);
+  };
+
+  const sendPasswordReset = async (email: string) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+      throw getFriendlyAuthError(error);
+    }
+  };
+
+  const confirmPasswordReset = async (code: string, password: string) => {
+    await resetPassword(auth, code, password);
   };
 
   const sendPhoneVerification = async (phone: string) => {
@@ -212,6 +237,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         loading,
         login,
         signInWithGoogle,
+        sendPasswordReset,
+        confirmPasswordReset,
         resendEmailVerification,
         signup,
         logout,

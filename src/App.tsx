@@ -49,6 +49,9 @@ import FitmentEngine from "./pages/FitmentEngine";
 import AIRecognition from "./pages/AIRecognition";
 
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import CheckEmail from "./pages/CheckEmail";
+import CreateNewPassword from "./pages/CreateNewPassword";
 import SignUp from "./pages/SignUp";
 import NewUserWelcome from "./pages/NewUserWelcome";
 import UserDashboard from "./pages/UserDashboard";
@@ -83,6 +86,12 @@ function App() {
           {/* Auth Routes */}
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/check-email" element={<CheckEmail />} />
+            <Route
+              path="/create-new-password"
+              element={<CreateNewPassword />}
+            />
             <Route path="/signup" element={<SignUp />} />
           </Route>
 

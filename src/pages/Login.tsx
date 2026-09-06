@@ -101,12 +101,12 @@ export default function Login() {
                 >
                   Password
                 </label>
-                <a
-                  href="#"
+                <Link
+                  to="/forgot-password"
                   className="text-xs font-semibold text-primary-brand hover:text-primary transition-colors"
                 >
                   Forgot Password?
-                </a>
+                </Link>
               </div>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-muted/50 w-5 h-5" />
