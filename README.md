@@ -1,5 +1,15 @@
 # React + TypeScript + Vite
 
+## Seller MongoDB API
+
+Seller drafts remain in browser storage for recovery, while completing seller setup and publishing a product save data to MongoDB through the seller API.
+
+1. Copy `.env.example` to `.env` and set `MONGODB_URI` to your local MongoDB or Atlas connection string.
+2. Start the API with `npm run seller-api`.
+3. Start the frontend with `npm run dev`.
+
+The API exposes `GET /api/health`, `PUT /api/sellers/:userId`, and `POST /api/products`. Seller profiles are stored in the `sellers` collection and published listings in the `products` collection.
+
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:

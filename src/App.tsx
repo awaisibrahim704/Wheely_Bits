@@ -25,6 +25,14 @@ import VendorDirectory from "./pages/VendorDirectory";
 import VendorDetail from "./pages/VendorDetail";
 import ScheduleInstallation from "./pages/ScheduleInstallation";
 import BookingConfirmed from "./pages/BookingConfirmed";
+import SellerBusinessInformation from "./pages/SellerBusinessInformation";
+import SellerStoreDetails from "./pages/SellerStoreDetails";
+import SellerSetupComplete from "./pages/SellerSetupComplete";
+import SellerDashboard from "./pages/SellerDashboard";
+import SellerProductCategory from "./pages/SellerProductCategory";
+import SellerProductSpecifications from "./pages/SellerProductSpecifications";
+import SellerTyreSpecifications from "./pages/SellerTyreSpecifications";
+import SellerProductPreview from "./pages/SellerProductPreview";
 
 import RimRecognition from "./pages/RimRecognition";
 import RimOverview from "./pages/RimOverview";
@@ -133,6 +141,35 @@ function App() {
             {/* Main Routes (TopNav + Footer) */}
             <Route element={<MainLayout />}>
               <Route path="/" element={<Home />} />
+              <Route
+                path="/seller/business-information"
+                element={<SellerBusinessInformation />}
+              />
+              <Route
+                path="/seller/store-details"
+                element={<SellerStoreDetails />}
+              />
+              <Route
+                path="/seller/complete"
+                element={<SellerSetupComplete />}
+              />
+              <Route path="/seller/dashboard" element={<SellerDashboard />} />
+              <Route
+                path="/seller/products/new"
+                element={<SellerProductCategory />}
+              />
+              <Route
+                path="/seller/products/specifications"
+                element={<SellerProductSpecifications />}
+              />
+              <Route
+                path="/seller/products/tyre-specifications"
+                element={<SellerTyreSpecifications />}
+              />
+              <Route
+                path="/seller/products/preview"
+                element={<SellerProductPreview />}
+              />
 
               {/* Rim routing entry points */}
               <Route path="/rim" element={<RimSelection />} />
