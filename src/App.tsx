@@ -23,6 +23,8 @@ import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import VendorDirectory from "./pages/VendorDirectory";
 import VendorDetail from "./pages/VendorDetail";
+import VendorCatalog from "./pages/VendorCatalog";
+import ContactSeller from "./pages/ContactSeller";
 import ScheduleInstallation from "./pages/ScheduleInstallation";
 import BookingConfirmed from "./pages/BookingConfirmed";
 import SellerBusinessInformation from "./pages/SellerBusinessInformation";
@@ -38,6 +40,7 @@ import RimRecognition from "./pages/RimRecognition";
 import RimOverview from "./pages/RimOverview";
 import RimSelection from "./pages/RimSelection";
 import RimDetail from "./pages/RimDetailPage";
+import TyreDetail from "./pages/TyreDetailPage";
 import RimFitment from "./pages/RimFitment";
 import RimVisualization from "./pages/RimVisualization";
 import RimVendor from "./pages/RimVendor";
@@ -117,6 +120,7 @@ function App() {
               <Route path="/rim/overview" element={<RimOverview />} />
               <Route path="/rim/selection" element={<RimSelection />} />
               <Route path="/rim/detail/:id" element={<RimDetail />} />
+              <Route path="/tyre/detail/:id" element={<TyreDetail />} />
               <Route path="/rim/fitment" element={<RimFitment />} />
               <Route path="/rim/visualization" element={<RimVisualization />} />
               <Route path="/rim/vendor" element={<RimVendor />} />
@@ -202,6 +206,8 @@ function App() {
               <Route path="/contact" element={<Contact />} />
 
               <Route path="/vendors" element={<VendorDirectory />} />
+              <Route path="/vendors/:id/catalog" element={<VendorCatalog />} />
+              <Route path="/vendors/:id/contact" element={<ContactSeller />} />
               <Route path="/vendors/:id" element={<VendorDetail />} />
               <Route
                 path="/booking/schedule"

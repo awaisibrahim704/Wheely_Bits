@@ -7,13 +7,31 @@ const app = express();
 const port = Number(process.env.SELLER_API_PORT || 4000);
 const mongoUri = process.env.MONGODB_URI;
 const databaseName = process.env.MONGODB_DATABASE || "wheelybits";
+const allowedOrigins = new Set([
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  ...(process.env.CLIENT_ORIGIN || "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+]);
 
 if (!mongoUri) {
   console.error("MONGODB_URI is required to start the seller API.");
   process.exit(1);
 }
 
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:5173" }));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.has(origin)) {
+        callback(null, true);
+        return;
+      }
+      callback(new Error(`Origin ${origin} is not allowed by seller API CORS.`));
+    },
+  }),
+);
 app.use(express.json({ limit: "20mb" }));
 
 const client = new MongoClient(mongoUri);
