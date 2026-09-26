@@ -107,6 +107,12 @@
   .seller-radio span { width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); }
   .seller-textarea { width: 100%; min-height: 112px; resize: vertical; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; outline: 0; background: rgba(255,255,255,.025); padding: 12px; color: var(--color-on-surface); font-size: .8rem; line-height: 1.5; }
   .seller-textarea:focus { border-color: var(--color-primary-brand); box-shadow: 0 0 0 3px rgba(143,179,151,.12); }
+  .seller-inquiry-list { display: grid; gap: 10px; }
+  .seller-inquiry-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; border: 1px solid rgba(255,255,255,.08); border-radius: 8px; background: rgba(255,255,255,.025); padding: 14px; }
+  .seller-inquiry-item strong, .seller-inquiry-item small, .seller-inquiry-item p { display: block; }
+  .seller-inquiry-item strong { color: var(--color-on-surface); font-size: .78rem; }
+  .seller-inquiry-item small { margin-top: 3px; color: var(--color-on-surface-muted); font-size: .64rem; }
+  .seller-inquiry-item p { margin-top: 8px; color: var(--color-on-surface-muted); font-size: .72rem; line-height: 1.45; }
   .seller-step { display: flex; min-width: 0; align-items: center; gap: 8px; color: var(--color-on-surface-muted); }
   .seller-step > span { display: grid; width: 28px; height: 28px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: rgba(255,255,255,.08); color: var(--color-outline); font-size: .75rem; }
   .seller-step div { min-width: 0; }
@@ -182,7 +188,7 @@
   .seller-dashboard-meta svg { color: var(--color-primary); }
   .seller-dashboard-overline { display: flex; justify-content: space-between; margin: 24px 0 10px; color: var(--color-on-surface-muted); font-size: .59rem; text-transform: uppercase; letter-spacing: .1em; }
   .seller-dashboard-overline span { display: inline-flex; align-items: center; gap: 6px; }
-  .seller-stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .seller-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
   .seller-stat { display: flex; min-height: 92px; justify-content: space-between; border: 1px solid rgba(255,255,255,.1); border-radius: 9px; background: rgba(30,32,34,.8); padding: 16px; }
   .seller-stat-active { border-color: rgba(171,207,178,.55); }
   .seller-stat small, .seller-stat span { display: block; color: var(--color-on-surface-muted); font-size: .57rem; text-transform: uppercase; letter-spacing: .07em; }

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -8,8 +8,9 @@ import {
   Phone,
   Share2,
 } from "lucide-react";
+import { getMarketplace, type MarketplaceData } from "../lib/sellerApi";
 
-const image =
+const defaultImage =
   "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=1200&q=90";
 const specs = [
   ["TYRE WIDTH", "225 mm", "Section footprint width"],
@@ -27,18 +28,70 @@ const specs = [
 ];
 
 export default function TyreDetailPage() {
+  const { id } = useParams<{ id?: string }>();
+  const [marketplace, setMarketplace] = useState<MarketplaceData | null>(null);
   const [make, setMake] = useState("Toyota");
   const [model, setModel] = useState("Corolla");
   const [quantity, setQuantity] = useState("Full Set (4 Tyres)");
-  const total = quantity === "Single Tyre" ? "52,000" : "208,000";
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [selectedView, setSelectedView] = useState("Default");
+
+  useEffect(() => {
+    getMarketplace()
+      .then(setMarketplace)
+      .catch(() => setMarketplace(null));
+  }, []);
+
+  const matchedProduct =
+    marketplace?.products.find(
+      (product) =>
+        product._id === id ||
+        (id && product.productName?.toLowerCase().includes(id.toLowerCase().replace(/-/g, " "))) ||
+        (id && id.toLowerCase().includes(product.productName?.toLowerCase() || ""))
+    ) ||
+    marketplace?.products.find((p) => p.category === "tyres") ||
+    marketplace?.products[0];
+
+  const productName = matchedProduct?.productName || "Michelin Pilot Sport 4";
+  const brand = matchedProduct?.brand || "Michelin";
+  const priceNum = Number(matchedProduct?.price || 52000);
+  const stockNum = Number(matchedProduct?.stock || 8);
+  const description =
+    matchedProduct?.description ||
+    "225 / 45 R18 95Y XL Extra Load Ultra High Performance Summer Tyre";
+  const imageSrc =
+    matchedProduct?.gallery?.[0] || matchedProduct?.aiImage || defaultImage;
+
+  const sellerName =
+    marketplace?.seller?.store?.businessName ||
+    marketplace?.seller?.businessName ||
+    "AutoMax Wheels";
+  const sellerAddress =
+    marketplace?.seller?.store?.address ||
+    marketplace?.seller?.store?.city ||
+    "Sector G-8/1, Islamabad";
+
+  const singlePriceStr = `Rs. ${priceNum.toLocaleString()}`;
+  const setPriceStr = `Rs. ${(priceNum * 4).toLocaleString()}`;
+  const total =
+    quantity === "Single Tyre"
+      ? singlePriceStr
+      : setPriceStr;
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="min-h-screen bg-[#121416] pb-16 text-[#e2e2e5]">
       <div className="mx-auto max-w-[1120px] px-4 pt-5 sm:px-6 lg:px-8">
         <div className="mb-4 flex items-center justify-between text-[10px] text-[#c2c8c0]">
           <span>
-            Vendors › AutoMax Wheels › Tyres ›{" "}
-            <strong className="text-white">Michelin Pilot Sport 4</strong>
+            Vendors › {sellerName} › Tyres ›{" "}
+            <strong className="text-white">{productName}</strong>
           </span>
           <Link
             to="/vendors/automax-wheels/catalog"
@@ -51,8 +104,8 @@ export default function TyreDetailPage() {
           <div>
             <div className="relative overflow-hidden rounded-xl bg-[#1b2223] shadow-2xl">
               <img
-                src={image}
-                alt="Michelin Pilot Sport 4"
+                src={imageSrc}
+                alt={productName}
                 className="h-[330px] w-full object-cover sm:h-[410px]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#121416]/70 via-transparent to-transparent" />
@@ -63,10 +116,15 @@ export default function TyreDetailPage() {
                 Fresh 2024 DOT (Week 18)
               </span>
               <span className="absolute right-3 top-3 rounded-full bg-[#abcfb2] px-3 py-1 text-[9px] text-[#163722]">
-                ● In Stock (8 Tyres)
+                ● In Stock ({stockNum} Tyres)
               </span>
+              {selectedView !== "Default" && (
+                <div className="absolute bottom-3 left-3 rounded bg-[#121416]/80 px-3 py-1 text-[9px] text-[#abcfb2]">
+                  Viewing: {selectedView}
+                </div>
+              )}
             </div>
-            <div className="mt-2 flex gap-2">
+            <div className="mt-2 flex gap-2 overflow-x-auto">
               {[
                 "Tread Pattern",
                 "Sidewall Macro",
@@ -76,7 +134,8 @@ export default function TyreDetailPage() {
               ].map((item) => (
                 <button
                   key={item}
-                  className="h-12 min-w-16 rounded border border-white/10 bg-[#1a1c1e] px-2 text-[8px] text-[#c2c8c0]"
+                  onClick={() => setSelectedView(item)}
+                  className={`h-12 min-w-16 rounded border px-2 text-[8px] ${selectedView === item ? "border-[#abcfb2] bg-[#abcfb2]/20 text-white" : "border-white/10 bg-[#1a1c1e] text-[#c2c8c0]"}`}
                 >
                   {item}
                 </button>
@@ -84,7 +143,7 @@ export default function TyreDetailPage() {
             </div>
             <div className="mt-3 grid grid-cols-3 gap-2 rounded-xl bg-[#1a1c1e] p-3 text-[8px] text-[#c2c8c0]">
               <span>
-                ◉ Genuine Michelin
+                ◉ Genuine {brand}
                 <br />
                 <strong className="text-white">Authorized Stock</strong>
               </span>
@@ -104,33 +163,39 @@ export default function TyreDetailPage() {
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-[9px] uppercase tracking-wider text-[#abcfb2]">
-                  ◉ Michelin · France / Germany
+                  ◉ {brand}
                 </p>
                 <h1 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
-                  Michelin Pilot Sport 4
+                  {productName}
                 </h1>
-                <p className="text-[10px] text-[#c2c8c0]">
-                  225 / 45 R18{" "}
-                  <span className="rounded bg-[#abcfb2]/20 px-1 text-[8px] text-[#abcfb2]">
-                    95Y XL
-                  </span>
-                  <br />
-                  95Y Extra Load · Ultra High Performance Summer Tyre
-                </p>
+                <p className="text-[10px] text-[#c2c8c0]">{description}</p>
               </div>
               <div className="flex gap-2">
-                <button className="rounded-lg bg-[#1a1c1e] p-2">
-                  <Heart className="h-4 w-4" />
+                <button
+                  onClick={() => setIsFavorite(!isFavorite)}
+                  title={isFavorite ? "Remove from Favorites" : "Save to Favorites"}
+                  className={`rounded-lg p-2 ${isFavorite ? "bg-[#abcfb2] text-[#163722]" : "bg-[#1a1c1e] text-white"}`}
+                >
+                  <Heart className={`h-4 w-4 ${isFavorite ? "fill-current" : ""}`} />
                 </button>
-                <button className="rounded-lg bg-[#1a1c1e] p-2">
+                <button
+                  onClick={handleShare}
+                  title="Share link"
+                  className="relative rounded-lg bg-[#1a1c1e] p-2 text-white"
+                >
                   <Share2 className="h-4 w-4" />
+                  {copied && (
+                    <span className="absolute -bottom-7 right-0 rounded bg-[#abcfb2] px-2 py-0.5 text-[8px] font-bold text-[#163722]">
+                      Copied!
+                    </span>
+                  )}
                 </button>
               </div>
             </div>
             <div className="text-[10px] text-[#d4a373]">
-              ★★★★★ <span className="text-white">4.7</span>{" "}
+              ★★★★★ <span className="text-white">{marketplace?.averageRating ? marketplace.averageRating.toFixed(1) : "4.8"}</span>{" "}
               <span className="text-[#c2c8c0]">
-                · 48 verified customer reviews
+                · {marketplace?.totalRatings || 4} verified seller reviews · {stockNum} Available
               </span>
             </div>
             <div className="rounded-xl bg-[#1a1c1e] p-4">
@@ -138,13 +203,13 @@ export default function TyreDetailPage() {
                 <span>
                   PER TYRE PRICE
                   <strong className="mt-1 block text-2xl text-white">
-                    Rs. 52,000
+                    {singlePriceStr}
                   </strong>
                   <small>Single replacement</small>
                 </span>
                 <span className="text-right text-[#d4a373]">
                   FULL SET (4 TYRES)
-                  <strong className="mt-1 block text-lg">Rs. 208,000</strong>
+                  <strong className="mt-1 block text-lg">{setPriceStr}</strong>
                   <small>Free balancing & stems</small>
                 </span>
               </div>
@@ -153,7 +218,7 @@ export default function TyreDetailPage() {
                 Islamabad.
               </p>
               <p className="mt-2 text-[9px] text-[#abcfb2]">
-                ▣ Dispatches within 24h from Sector G-8 Bay
+                ▣ Dispatches within 24h from {sellerAddress}
               </p>
             </div>
             <div className="rounded-xl bg-[#1a1c1e] p-3">
@@ -163,39 +228,82 @@ export default function TyreDetailPage() {
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => setQuantity("Single Tyre")}
-                  className={`rounded-lg border p-2 text-left text-[9px] ${quantity === "Single Tyre" ? "border-[#abcfb2] bg-[#abcfb2]/10" : "border-white/10 bg-[#282a2c]"}`}
+                  className={`rounded-lg border p-2 text-left text-[9px] ${quantity === "Single Tyre" ? "border-[#abcfb2] bg-[#abcfb2]/10 text-white" : "border-white/10 bg-[#282a2c] text-white"}`}
                 >
                   Single Tyre
                   <br />
-                  <span className="text-[#c2c8c0]">Rs. 52,000</span>
+                  <span className="text-[#c2c8c0]">{singlePriceStr}</span>
                 </button>
                 <button
                   onClick={() => setQuantity("Full Set (4 Tyres)")}
-                  className={`rounded-lg border p-2 text-left text-[9px] ${quantity !== "Single Tyre" ? "border-[#abcfb2] bg-[#abcfb2]/10" : "border-white/10 bg-[#282a2c]"}`}
+                  className={`rounded-lg border p-2 text-left text-[9px] ${quantity !== "Single Tyre" ? "border-[#abcfb2] bg-[#abcfb2]/10 text-white" : "border-white/10 bg-[#282a2c] text-white"}`}
                 >
                   Full Set (4 Tyres)
                   <br />
-                  <span className="text-[#c2c8c0]">Rs. 208,000</span>
+                  <span className="text-[#c2c8c0]">{setPriceStr}</span>
                 </button>
               </div>
-              <button className="mt-3 w-full rounded-lg bg-[#abcfb2] py-3 text-[11px] font-bold text-[#163722]">
-                Buy Now - Rs. {total}
-              </button>
               <Link
-                to="/fitment-engine"
-                className="mt-2 block w-full rounded-lg bg-[#333537] py-2 text-center text-[10px] text-white"
+                to="/booking/schedule"
+                className="mt-3 block w-full rounded-lg bg-[#abcfb2] py-3 text-center text-[11px] font-bold text-[#163722] hover:bg-[#9eb8a1]"
+              >
+                Buy Now - {total}
+              </Link>
+              <Link
+                to="/booking/schedule"
+                className="mt-2 block w-full rounded-lg bg-[#333537] py-2 text-center text-[10px] text-white hover:bg-[#434547]"
               >
                 Book with Touchless Mounting & Laser Bay
               </Link>
               <div className="mt-3 flex gap-2">
-                <button className="flex-1 rounded-lg bg-[#333537] py-2 text-[9px]">
+                <Link
+                  to="/vendors/automax-wheels/contact"
+                  className="flex-1 rounded-lg bg-[#333537] py-2 text-center text-[9px] text-white hover:bg-[#abcfb2] hover:text-[#163722]"
+                >
                   <MessageCircle className="mr-1 inline h-3 w-3 text-[#abcfb2]" />{" "}
                   Inquire with AutoMax
-                </button>
-                <button className="flex-1 rounded-lg bg-[#333537] py-2 text-[9px]">
+                </Link>
+                <a
+                  href="tel:+923001234567"
+                  className="flex-1 rounded-lg bg-[#333537] py-2 text-center text-[9px] text-white hover:bg-[#abcfb2] hover:text-[#163722]"
+                >
                   <Phone className="mr-1 inline h-3 w-3 text-[#d4a373]" />{" "}
                   Direct Tyre Desk
-                </button>
+                </a>
+              </div>
+            </div>
+            {/* Seller Trust & Rating Card */}
+            <div className="mt-3 flex items-center justify-between rounded-xl border border-white/5 bg-[#141618] p-3 text-xs">
+              <div className="flex items-center gap-2.5">
+                <div className="grid h-9 w-9 place-items-center rounded-lg bg-[#313b36] text-xs font-bold text-[#abcfb2]">
+                  AM
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5 font-bold text-white">
+                    <span>{sellerName}</span>
+                    <span className="rounded bg-[#063a32] px-1.5 py-0.5 text-[8px] text-[#55d6a7]">✓ Verified Seller</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[10px] text-[#d4a373] mt-0.5">
+                    <span>★ {marketplace?.averageRating ? marketplace.averageRating.toFixed(1) : "4.8"}</span>
+                    <span className="text-[#c2c8c0]">
+                      ({marketplace?.totalRatings || 4} seller reviews)
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Link
+                  to="/vendors/automax-wheels#reviews-section"
+                  className="rounded-lg bg-[#282a2c] px-3 py-1.5 text-[10px] font-semibold text-[#abcfb2] hover:bg-[#abcfb2] hover:text-[#163722] transition"
+                >
+                  View Reviews
+                </Link>
+                <Link
+                  to="/vendors/automax-wheels#reviews-section"
+                  className="rounded-lg bg-[#abcfb2] px-3 py-1.5 text-[10px] font-bold text-[#163722] hover:bg-[#8fb397] transition"
+                >
+                  Rate Seller
+                </Link>
               </div>
             </div>
             <p className="text-[9px] text-[#c2c8c0]">
@@ -316,7 +424,7 @@ export default function TyreDetailPage() {
                 className="overflow-hidden rounded-xl bg-[#1a1c1e]"
               >
                 <img
-                  src={image}
+                  src={imageSrc}
                   alt={title}
                   className="h-28 w-full object-cover"
                 />
@@ -337,20 +445,23 @@ export default function TyreDetailPage() {
         </section>
         <div className="sticky bottom-3 mt-8 flex flex-wrap items-center gap-3 rounded-xl bg-[#222627] p-3 shadow-2xl">
           <img
-            src={image}
-            alt="Michelin"
+            src={imageSrc}
+            alt={productName}
             className="h-9 w-10 rounded object-cover"
           />
           <div className="flex-1 text-[9px] text-[#c2c8c0]">
-            Michelin Pilot Sport 4 (225/45R18)
+            {productName}
             <br />
-            <span>4 Tyres available in Islamabad · Fresh DOT Included</span>
+            <span>{stockNum} Tyres available in {sellerAddress} · Fresh DOT Included</span>
           </div>
-          <strong className="text-lg text-[#abcfb2]">Rs. 208,000</strong>
-          <button className="rounded-lg bg-[#abcfb2] px-4 py-2 text-[10px] font-bold text-[#163722]">
+          <strong className="text-lg text-[#abcfb2]">{total}</strong>
+          <Link
+            to="/booking/schedule"
+            className="rounded-lg bg-[#abcfb2] px-4 py-2 text-[10px] font-bold text-[#163722] hover:bg-[#9eb8a1]"
+          >
             Order with Fitment Guarantee{" "}
             <ArrowRight className="ml-1 inline h-3 w-3" />
-          </button>
+          </Link>
         </div>
       </div>
     </div>

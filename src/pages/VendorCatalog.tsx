@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -8,7 +8,15 @@ import {
   MessageCircle,
   Search,
   SlidersHorizontal,
+  Star,
 } from "lucide-react";
+import {
+  getMarketplace,
+  getLocalRatings,
+  computeRatingSummary,
+  type MarketplaceData,
+} from "../lib/sellerApi";
+import { VENDOR_PROFILES } from "../lib/vendorProfiles";
 
 type CatalogProduct = {
   name: string;
@@ -21,7 +29,7 @@ type CatalogProduct = {
   badgeTone: string;
 };
 
-const products: CatalogProduct[] = [
+const demoProducts: CatalogProduct[] = [
   {
     name: "HF-5 Monoblock Satin Bronze",
     brand: "Vossen · Hybrid Forged",
@@ -124,18 +132,140 @@ const products: CatalogProduct[] = [
 ];
 
 export default function VendorCatalog() {
+  const [marketplace, setMarketplace] = useState<MarketplaceData | null>(null);
+  const [marketplaceError, setMarketplaceError] = useState("");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState("Featured & Recommended");
   const [category, setCategory] = useState("All Products (124)");
   const [guarantee, setGuarantee] = useState(true);
   const [brand, setBrand] = useState("All brands");
+  // Sidebar filter state
+  const [maxPrice, setMaxPrice] = useState(800000);
+  const [selectedDiameters, setSelectedDiameters] = useState<number[]>([]);
+  const [showNew, setShowNew] = useState(true);
+  const [showOpenBox, setShowOpenBox] = useState(true);
+
+  const resetFilters = () => {
+    setQuery("");
+    setSort("Featured & Recommended");
+    setCategory("All Products (124)");
+    setGuarantee(true);
+    setBrand("All brands");
+    setMaxPrice(800000);
+    setSelectedDiameters([]);
+    setShowNew(true);
+    setShowOpenBox(true);
+  };
+
+  const toggleDiameter = (d: number) =>
+    setSelectedDiameters((cur) =>
+      cur.includes(d) ? cur.filter((x) => x !== d) : [...cur, d],
+    );
+
+  useEffect(() => {
+    getMarketplace()
+      .then(setMarketplace)
+      .catch((error: unknown) =>
+        setMarketplaceError(
+          error instanceof Error
+            ? error.message
+            : "Marketplace data is unavailable.",
+        ),
+      );
+  }, []);
+
+  // Use live products from API if available, otherwise fall back to demo products
+  const actualProducts: CatalogProduct[] = useMemo(() => {
+    const rawProducts = marketplace?.products ?? [];
+    if (rawProducts.length > 0) {
+      return rawProducts.map((product) => ({
+        name: product.productName || "Unnamed product",
+        brand: product.brand || "Unbranded",
+        kind:
+          product.category === "tyres"
+            ? "Tyre"
+            : product.category === "rims"
+              ? "Rim"
+              : "Hardware",
+        spec: product.description || "Published seller listing",
+        price: `PKR ${Number(product.price || 0).toLocaleString()}`,
+        image: product.gallery?.[0] || product.aiImage || "",
+        badge: Number(product.stock || 0) > 0 ? "IN STOCK" : "OUT OF STOCK",
+        badgeTone:
+          Number(product.stock || 0) > 0
+            ? "bg-[#abcfb2] text-[#163722]"
+            : "bg-[#d4a373] text-[#26180e]",
+      }));
+    }
+    // Fallback to static demo products when API is offline
+    return demoProducts;
+  }, [marketplace]);
+
+  const { id } = useParams<{ id: string }>();
+  const activeVendorId = id || "automax-wheels";
+  const vendorProfile = VENDOR_PROFILES[activeVendorId];
+
+  const ratings = useMemo(() => getLocalRatings(activeVendorId), [activeVendorId]);
+  const ratingSummary = useMemo(() => computeRatingSummary(ratings), [ratings]);
+
+  const sellerName =
+    vendorProfile?.name ||
+    marketplace?.seller?.store?.businessName ||
+    marketplace?.seller?.businessName ||
+    "AutoMax Wheels";
+  const sellerArea = vendorProfile?.area || "Islamabad";
+  const sellerLocation = vendorProfile?.location || "Sector I-9, Islamabad";
+  const productCount = vendorProfile?.productCount || actualProducts.length;
 
   const visibleProducts = useMemo(() => {
-    let result = products.filter((product) =>
-      `${product.name} ${product.brand} ${product.kind} ${product.spec}`
-        .toLowerCase()
-        .includes(query.toLowerCase()),
-    );
+    let result = actualProducts.filter((product) => {
+      // Text search
+      const q = query.trim().toLowerCase();
+      if (q) {
+        const tokens = q.split(/\s+/).filter(Boolean);
+        const name = product.name.toLowerCase();
+        const brandLc = product.brand.toLowerCase();
+        const kind = product.kind.toLowerCase();
+        const spec = product.spec.toLowerCase();
+        const primaryText = `${name} ${brandLc} ${kind}`;
+        const allWords = `${primaryText} ${spec}`
+          .split(/[\s,./()-]+/)
+          .filter(Boolean);
+        const matchesSearch = tokens.every((token) => {
+          if (primaryText.includes(token)) return true;
+          if (allWords.some((word) => word.startsWith(token))) return true;
+          if (token.length >= 3 && spec.includes(token)) return true;
+          return false;
+        });
+        if (!matchesSearch) return false;
+      }
+
+      // Price filter
+      const numericPrice = Number(product.price.replace(/[^0-9]/g, ""));
+      if (numericPrice > maxPrice) return false;
+
+      // Diameter filter
+      if (selectedDiameters.length > 0) {
+        const specText = product.spec.toLowerCase();
+        const hasMatch = selectedDiameters.some((d) =>
+          specText.includes(`${d}×`) ||
+          specText.includes(`${d}x`) ||
+          specText.includes(`/${d}r`) ||
+          specText.includes(`${d}"`) ||
+          new RegExp(`\\b${d}\\b`).test(specText),
+        );
+        if (!hasMatch) return false;
+      }
+
+      // Condition filter
+      const inStock = product.badge === "IN STOCK";
+      if (!showNew && inStock) return false;
+      if (!showOpenBox && !inStock) return false;
+
+      return true;
+    });
+
+    // Category filter (top tabs)
     if (category.includes("Wheels"))
       result = result.filter(
         (product) =>
@@ -150,32 +280,43 @@ export default function VendorCatalog() {
       );
     if (category.includes("Hardware"))
       result = result.filter((product) => product.kind === "Hardware");
+
+    // Brand filter
     if (brand !== "All brands")
       result = result.filter((product) =>
         product.brand.toLowerCase().includes(brand.toLowerCase()),
       );
+
+    // Sort
     if (sort === "Price: Low to High")
       result = [...result].sort(
         (a, b) =>
           Number(a.price.replace(/[^0-9]/g, "")) -
           Number(b.price.replace(/[^0-9]/g, "")),
       );
+    if (sort === "Price: High to Low")
+      result = [...result].sort(
+        (a, b) =>
+          Number(b.price.replace(/[^0-9]/g, "")) -
+          Number(a.price.replace(/[^0-9]/g, "")),
+      );
+
     return result;
-  }, [brand, category, query, sort]);
+  }, [actualProducts, brand, category, query, sort, maxPrice, selectedDiameters, showNew, showOpenBox]);
 
   return (
     <div className="min-h-screen bg-[#121416] pb-20 text-[#e2e2e5]">
       <div className="mx-auto max-w-[1120px] px-4 pt-5 sm:px-6 lg:px-8">
         <div className="mb-5 flex items-center justify-between text-[10px] text-[#c2c8c0]">
           <span>
-            Vendors <span className="mx-2 text-white/30">›</span> Islamabad{" "}
-            <span className="mx-2 text-white/30">›</span> AutoMax Wheels{" "}
+            Vendors <span className="mx-2 text-white/30">›</span> {sellerArea}{" "}
+            <span className="mx-2 text-white/30">›</span> {sellerName}{" "}
             <span className="mx-2 text-white/30">›</span>{" "}
             <strong className="text-white">Catalog</strong>
           </span>
           <Link
-            to="/vendors/automax-wheels"
-            className="rounded-full bg-[#1a1c1e] px-3 py-2"
+            to={`/vendors/${activeVendorId}`}
+            className="rounded-full bg-[#1a1c1e] px-3 py-2 text-[#c2c8c0] hover:text-white transition"
           >
             <ArrowLeft className="mr-1 inline h-3 w-3" /> Back to Shop Profile
           </Link>
@@ -190,18 +331,32 @@ export default function VendorCatalog() {
                 <span className="rounded-full bg-[#8fb397]/15 px-2 py-1 text-[9px] text-[#abcfb2]">
                   ✓ Wheely Bits Verified Partner
                 </span>
-                <span className="text-[10px] text-[#d4a373]">
-                  ★ 4.8 (124 reviews)
-                </span>
+                <Link
+                  to={`/vendors/${activeVendorId}#reviews-section`}
+                  className="text-[10px] text-[#d4a373] hover:underline font-semibold flex items-center gap-1"
+                  title="View Store Reviews"
+                >
+                  <Star className="h-3 w-3 fill-[#d4a373] text-[#d4a373]" />
+                  <span>
+                    ★ {ratingSummary.averageRating ? ratingSummary.averageRating.toFixed(1) : (vendorProfile?.rating ?? 4.8)} (
+                    {ratingSummary.totalRatings || vendorProfile?.reviewsCount || ratings.length} reviews)
+                  </span>
+                </Link>
+                <Link
+                  to={`/vendors/${activeVendorId}#rate`}
+                  className="rounded bg-[#d4a373]/15 hover:bg-[#d4a373] hover:text-[#1a1c1e] border border-[#d4a373]/30 px-2 py-0.5 text-[9px] font-bold text-[#d4a373] transition"
+                  title="Rate and review this shop"
+                >
+                  ★ Rate Shop
+                </Link>
                 <span className="text-[10px] text-[#c2c8c0]">
-                  <MapPin className="mr-1 inline h-3 w-3" /> Sector I-9,
-                  Islamabad
+                  <MapPin className="mr-1 inline h-3 w-3" /> {sellerLocation}
                 </span>
               </div>
               <h1 className="mt-2 text-2xl font-bold tracking-tight text-white">
-                AutoMax Wheels Catalog{" "}
+                {sellerName} Catalog{" "}
                 <span className="align-middle rounded-full bg-[#333537] px-2 py-1 text-[9px] font-normal text-[#c2c8c0]">
-                  124 Products In Stock
+                  {productCount} Products In Stock
                 </span>
               </h1>
               <p className="mt-1 max-w-xl text-[11px] text-[#c2c8c0]">
@@ -230,7 +385,7 @@ export default function VendorCatalog() {
               <span className="text-white">×</span>
             </label>
             <span className="self-center px-2 text-[9px] text-[#c2c8c0]">
-              Showing 1-9 of 124 products
+              Showing 1-{visibleProducts.length} of {productCount} products
             </span>
             <label className="self-center whitespace-nowrap text-[9px]">
               Sort by:{" "}
@@ -241,6 +396,7 @@ export default function VendorCatalog() {
               >
                 <option>Featured & Recommended</option>
                 <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
               </select>
             </label>
           </div>
@@ -266,11 +422,16 @@ export default function VendorCatalog() {
             <h2 className="mb-5 text-xs font-bold text-white">
               <SlidersHorizontal className="mr-1 inline h-3 w-3 text-[#abcfb2]" />{" "}
               Filters{" "}
-              <button className="float-right text-[9px] font-normal text-[#c2c8c0]">
+              <button
+                onClick={resetFilters}
+                className="float-right text-[9px] font-normal text-[#c2c8c0] hover:text-white transition"
+              >
                 Reset All
               </button>
             </h2>
-            <label className="flex items-center justify-between border-b border-white/[0.08] pb-4 text-[#c2c8c0]">
+
+            {/* Fitment Guarantee */}
+            <label className="flex cursor-pointer items-center justify-between border-b border-white/[0.08] pb-4 text-[#c2c8c0] hover:text-white transition">
               <span>
                 100% Fitment Guarantee
                 <br />
@@ -279,32 +440,35 @@ export default function VendorCatalog() {
               <input
                 type="checkbox"
                 checked={guarantee}
-                onChange={(event) => setGuarantee(event.target.checked)}
+                onChange={(e) => setGuarantee(e.target.checked)}
                 className="accent-[#abcfb2]"
               />
             </label>
+
+            {/* Price Range */}
             <div className="border-b border-white/[0.08] py-4">
               <p className="mb-2 font-bold text-white">Price Range (PKR)</p>
               <div className="flex justify-between text-[9px] text-[#c2c8c0]">
-                <span>
-                  MIN
-                  <br />
-                  <strong className="text-white">30,000</strong>
-                </span>
-                <span>
-                  MAX
-                  <br />
-                  <strong className="text-white">800,000</strong>
+                <span>MIN<br /><strong className="text-white">30,000</strong></span>
+                <span className="text-right">
+                  MAX<br />
+                  <strong className="text-white">
+                    {maxPrice >= 800000 ? "800,000" : maxPrice.toLocaleString()}
+                  </strong>
                 </span>
               </div>
               <input
                 type="range"
                 min="30000"
                 max="800000"
-                defaultValue="800000"
+                step="10000"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(Number(e.target.value))}
                 className="mt-3 w-full accent-[#abcfb2]"
               />
             </div>
+
+            {/* Brand */}
             <div className="border-b border-white/[0.08] py-4">
               <p className="mb-2 font-bold text-white">Brand</p>
               {[
@@ -316,7 +480,7 @@ export default function VendorCatalog() {
                 "Michelin",
                 "Yokohama",
               ].map((item) => (
-                <label key={item} className="mb-2 block text-[#c2c8c0]">
+                <label key={item} className="mb-2 flex cursor-pointer items-center text-[#c2c8c0] hover:text-white transition">
                   <input
                     type="radio"
                     name="brand"
@@ -328,31 +492,69 @@ export default function VendorCatalog() {
                 </label>
               ))}
             </div>
-            <div className="py-4">
+
+            {/* Rim Diameter */}
+            <div className="border-b border-white/[0.08] py-4">
               <p className="mb-2 font-bold text-white">Rim Diameter</p>
               <div className="grid grid-cols-3 gap-1 text-center text-[9px]">
-                <button className="rounded bg-[#282a2c] py-2">18”</button>
-                <button className="rounded bg-[#abcfb2] py-2 text-[#163722]">
-                  19”
-                </button>
-                <button className="rounded bg-[#282a2c] py-2">20”</button>
+                {[17, 18, 19, 20, 21, 22].map((d) => (
+                  <button
+                    key={d}
+                    onClick={() => toggleDiameter(d)}
+                    className={`rounded py-2 transition ${
+                      selectedDiameters.includes(d)
+                        ? "bg-[#abcfb2] font-semibold text-[#163722]"
+                        : "bg-[#282a2c] text-[#c2c8c0] hover:bg-[#333537]"
+                    }`}
+                  >
+                    {d}"
+                  </button>
+                ))}
               </div>
-              <p className="mt-4 font-bold text-white">Condition</p>
-              <label className="mt-2 block text-[#c2c8c0]">
+              {selectedDiameters.length > 0 && (
+                <button
+                  onClick={() => setSelectedDiameters([])}
+                  className="mt-2 text-[9px] text-[#c2c8c0] hover:text-white transition"
+                >
+                  Clear diameter filter
+                </button>
+              )}
+            </div>
+
+            {/* Condition */}
+            <div className="py-4">
+              <p className="mb-2 font-bold text-white">Condition</p>
+              <label className="mt-2 flex cursor-pointer items-center gap-2 text-[#c2c8c0] hover:text-white transition">
                 <input
                   type="checkbox"
-                  defaultChecked
-                  className="mr-2 accent-[#abcfb2]"
-                />{" "}
-                Factory Boxed (New)
+                  checked={showNew}
+                  onChange={(e) => setShowNew(e.target.checked)}
+                  className="accent-[#abcfb2]"
+                />
+                Factory Boxed (New / In Stock)
               </label>
-              <label className="mt-2 block text-[#c2c8c0]">
-                <input type="checkbox" className="mr-2 accent-[#abcfb2]" /> Open
-                Box / Display Set
+              <label className="mt-2 flex cursor-pointer items-center gap-2 text-[#c2c8c0] hover:text-white transition">
+                <input
+                  type="checkbox"
+                  checked={showOpenBox}
+                  onChange={(e) => setShowOpenBox(e.target.checked)}
+                  className="accent-[#abcfb2]"
+                />
+                Out of Stock / Open Box
               </label>
             </div>
           </aside>
           <main>
+            {marketplaceError && (
+              <div className="mb-3 rounded-lg border border-[#d4a373]/30 bg-[#d4a373]/10 p-3 text-xs text-[#d4a373]">
+                {marketplaceError} Start the seller API to load live inventory.
+              </div>
+            )}
+            {!marketplace && !marketplaceError && (
+              <div className="mb-3 rounded-lg border border-white/10 bg-[#1a1c1e] p-4 text-xs text-[#c2c8c0]">
+                Loading live seller inventory...
+              </div>
+            )}
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {visibleProducts.map((product) => (
                 <article
@@ -400,6 +602,14 @@ export default function VendorCatalog() {
                     {product.kind === "Tyre" ? (
                       <Link
                         to="/tyre/detail/michelin-ps4s"
+                        className="mt-2 block w-full rounded-lg bg-[#abcfb2] py-2 text-center text-[9px] font-semibold text-[#163722]"
+                      >
+                        View Details{" "}
+                        <ArrowRight className="ml-1 inline h-3 w-3" />
+                      </Link>
+                    ) : product.name.includes("HF-5") ? (
+                      <Link
+                        to="/rim/detail/vossen-hf5"
                         className="mt-2 block w-full rounded-lg bg-[#abcfb2] py-2 text-center text-[9px] font-semibold text-[#163722]"
                       >
                         View Details{" "}

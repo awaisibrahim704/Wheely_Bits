@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -9,8 +9,9 @@ import {
   RotateCw,
   Share2,
 } from "lucide-react";
+import { getMarketplace, type MarketplaceData } from "../lib/sellerApi";
 
-const wheelImage =
+const defaultWheelImage =
   "https://images.unsplash.com/photo-1600712242805-9f72877b0492?auto=format&fit=crop&w=1200&q=90";
 const specs = [
   ["WHEEL DIAMETER", '18"', "Inches"],
@@ -31,16 +32,68 @@ const reviews = [
 ];
 
 export default function RimDetailPage() {
+  const { id } = useParams<{ id?: string }>();
+  const [marketplace, setMarketplace] = useState<MarketplaceData | null>(null);
   const [vehicle, setVehicle] = useState("Honda Civic");
   const [year, setYear] = useState("2016-2021");
+  const [quantity, setQuantity] = useState("Full Set (4x)");
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [selectedView, setSelectedView] = useState("Default");
+
+  useEffect(() => {
+    getMarketplace()
+      .then(setMarketplace)
+      .catch(() => setMarketplace(null));
+  }, []);
+
+  const matchedProduct =
+    marketplace?.products.find(
+      (product) =>
+        product._id === id ||
+        (id && product.productName?.toLowerCase().includes(id.toLowerCase().replace(/-/g, " "))) ||
+        (id && id.toLowerCase().includes(product.productName?.toLowerCase() || ""))
+    ) ||
+    marketplace?.products.find((p) => p.category === "rims" || p.category === "wheels") ||
+    marketplace?.products[0];
+
+  const productName = matchedProduct?.productName || "OZ Racing Ultraleggera";
+  const brand = matchedProduct?.brand || "OZ Racing";
+  const priceNum = Number(matchedProduct?.price || 85000);
+  const stockNum = Number(matchedProduct?.stock || 4);
+  const description =
+    matchedProduct?.description ||
+    '18" Lightweight Monoblock Alloy Wheel (Matte Graphite Silver)';
+  const imageSrc =
+    matchedProduct?.gallery?.[0] || matchedProduct?.aiImage || defaultWheelImage;
+
+  const sellerName =
+    marketplace?.seller?.store?.businessName ||
+    marketplace?.seller?.businessName ||
+    "AutoMax Wheels";
+  const sellerAddress =
+    marketplace?.seller?.store?.address ||
+    marketplace?.seller?.store?.city ||
+    "Sector G-8/1, Islamabad";
+
+  const singlePriceStr = `Rs. ${priceNum.toLocaleString()}`;
+  const setPriceStr = `Rs. ${(priceNum * 4).toLocaleString()}`;
+  const total = quantity === "Single Rim (1x)" ? singlePriceStr : setPriceStr;
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="min-h-screen bg-[#121416] pb-16 text-[#e2e2e5]">
       <div className="mx-auto max-w-[1120px] px-4 pt-5 sm:px-6 lg:px-8">
         <div className="mb-4 flex items-center justify-between text-[10px] text-[#c2c8c0]">
           <span>
-            Vendors <span className="mx-2 text-white/30">›</span> AutoMax Wheels{" "}
+            Vendors <span className="mx-2 text-white/30">›</span> {sellerName}{" "}
             <span className="mx-2 text-white/30">›</span> Rims & Wheels{" "}
-            <span className="mx-2 text-white/30">›</span> OZ Racing Ultraleggera
+            <span className="mx-2 text-white/30">›</span> {productName}
           </span>
           <Link
             to="/vendors/automax-wheels/catalog"
@@ -53,8 +106,8 @@ export default function RimDetailPage() {
           <div>
             <div className="relative overflow-hidden rounded-xl bg-[#1b2223] shadow-2xl">
               <img
-                src={wheelImage}
-                alt="OZ Racing Ultraleggera"
+                src={imageSrc}
+                alt={productName}
                 className="h-[360px] w-full object-cover sm:h-[440px]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#121416]/70 via-transparent to-transparent" />
@@ -62,21 +115,27 @@ export default function RimDetailPage() {
                 ✓ 100% Fitment Guaranteed
               </span>
               <span className="absolute right-3 top-3 rounded-full bg-[#abcfb2] px-3 py-1 text-[9px] text-[#163722]">
-                ● In Stock (4 Sets)
+                ● In Stock ({stockNum} Sets)
               </span>
-              <button className="absolute bottom-3 right-3 rounded bg-[#121416]/70 px-2 py-1 text-[8px] text-white">
+              <button
+                onClick={() => setSelectedView("3D Interactive View")}
+                className="absolute bottom-3 right-3 rounded bg-[#121416]/70 px-2 py-1 text-[8px] text-white hover:bg-[#abcfb2] hover:text-[#163722]"
+              >
                 <RotateCw className="mr-1 inline h-3 w-3" /> DRAG TO ROTATE 3D
                 VIEW
               </button>
-              <p className="absolute bottom-3 left-3 text-[8px] text-white">
-                ⚙ Lightweight Flow-Formed: 8.1 kg
-              </p>
+              {selectedView !== "Default" && (
+                <div className="absolute bottom-3 left-3 rounded bg-[#121416]/80 px-3 py-1 text-[9px] text-[#abcfb2]">
+                  Viewing: {selectedView}
+                </div>
+              )}
             </div>
             <div className="mt-2 flex gap-2 overflow-x-auto">
               <img
-                src={wheelImage}
+                src={imageSrc}
                 alt="Wheel thumbnail"
-                className="h-12 w-16 rounded border border-[#abcfb2] object-cover"
+                onClick={() => setSelectedView("Default")}
+                className="h-12 w-16 cursor-pointer rounded border border-[#abcfb2] object-cover"
               />
               {[
                 "45° Concave",
@@ -87,7 +146,8 @@ export default function RimDetailPage() {
               ].map((item) => (
                 <button
                   key={item}
-                  className="h-12 min-w-16 rounded border border-white/10 bg-[#1a1c1e] px-2 text-[8px] text-[#c2c8c0]"
+                  onClick={() => setSelectedView(item)}
+                  className={`h-12 min-w-16 rounded border px-2 text-[8px] ${selectedView === item ? "border-[#abcfb2] bg-[#abcfb2]/20 text-white" : "border-white/10 bg-[#1a1c1e] text-[#c2c8c0]"}`}
                 >
                   {item}
                 </button>
@@ -95,14 +155,14 @@ export default function RimDetailPage() {
             </div>
             <div className="mt-3 grid grid-cols-3 gap-2 rounded-xl bg-[#1a1c1e] p-3 text-[8px] text-[#c2c8c0]">
               <span>
-                ◉ Authentic OZ
+                ◉ Authentic {brand}
                 <br />
                 <strong className="text-white">Serial Stamped</strong>
               </span>
               <span>
                 ◉ Ultra Lightweight
                 <br />
-                <strong className="text-white">8.1 kg Track Tune</strong>
+                <strong className="text-white">Track Tuned</strong>
               </span>
               <span>
                 ◉ Fit Guarantee
@@ -115,29 +175,41 @@ export default function RimDetailPage() {
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-[9px] uppercase tracking-wider text-[#abcfb2]">
-                  ◉ OZ Racing · Italy
+                  ◉ {brand}
                 </p>
                 <h1 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                  OZ Racing Ultraleggera
+                  {productName}
                 </h1>
                 <p className="text-[10px] text-[#c2c8c0]">
-                  18&quot; Lightweight Monoblock Alloy Wheel (Matte Graphite
-                  Silver)
+                  {description}
                 </p>
               </div>
               <div className="flex gap-2">
-                <button className="rounded-lg bg-[#1a1c1e] p-2">
-                  <Heart className="h-4 w-4" />
+                <button
+                  onClick={() => setIsFavorite(!isFavorite)}
+                  title={isFavorite ? "Remove from Favorites" : "Save to Favorites"}
+                  className={`rounded-lg p-2 ${isFavorite ? "bg-[#abcfb2] text-[#163722]" : "bg-[#1a1c1e] text-white"}`}
+                >
+                  <Heart className={`h-4 w-4 ${isFavorite ? "fill-current" : ""}`} />
                 </button>
-                <button className="rounded-lg bg-[#1a1c1e] p-2">
+                <button
+                  onClick={handleShare}
+                  title="Share link"
+                  className="relative rounded-lg bg-[#1a1c1e] p-2 text-white"
+                >
                   <Share2 className="h-4 w-4" />
+                  {copied && (
+                    <span className="absolute -bottom-7 right-0 rounded bg-[#abcfb2] px-2 py-0.5 text-[8px] font-bold text-[#163722]">
+                      Copied!
+                    </span>
+                  )}
                 </button>
               </div>
             </div>
             <div className="text-[10px] text-[#d4a373]">
-              ★★★★★ <span className="text-white">4.8</span>{" "}
+              ★★★★★ <span className="text-white">{marketplace?.averageRating ? marketplace.averageRating.toFixed(1) : "4.8"}</span>{" "}
               <span className="text-[#c2c8c0]">
-                · 36 verified reviews · 62 Sets Fitted
+                · {marketplace?.totalRatings || 4} verified seller reviews · {stockNum} Sets Available
               </span>
             </div>
             <div className="rounded-xl bg-[#1a1c1e] p-4">
@@ -145,12 +217,12 @@ export default function RimDetailPage() {
                 <span>
                   PER RIM PRICE
                   <strong className="mt-1 block text-2xl text-white">
-                    Rs. 85,000<small className="text-[9px]"> /rim</small>
+                    {singlePriceStr}<small className="text-[9px]"> /rim</small>
                   </strong>
                 </span>
                 <span className="text-right text-[#d4a373]">
                   COMPLETE SET (4 RIMS)
-                  <strong className="mt-1 block text-lg">Rs. 340,000</strong>
+                  <strong className="mt-1 block text-lg">{setPriceStr}</strong>
                 </span>
               </div>
               <p className="mt-3 text-[9px] text-[#c2c8c0]">
@@ -158,7 +230,7 @@ export default function RimDetailPage() {
                 Fitment in Islamabad.
               </p>
               <p className="mt-2 text-[9px] text-[#abcfb2]">
-                ▣ Available in Islamabad G-8 Bay{" "}
+                ▣ Available in {sellerAddress}{" "}
                 <span className="float-right">Dispatches &lt;24h</span>
               </p>
             </div>
@@ -167,40 +239,86 @@ export default function RimDetailPage() {
                 Select Order Package
               </p>
               <div className="grid grid-cols-2 gap-2">
-                <button className="rounded-lg border border-[#abcfb2] bg-[#abcfb2]/10 p-2 text-left text-[9px] text-white">
+                <button
+                  onClick={() => setQuantity("Single Rim (1x)")}
+                  className={`rounded-lg border p-2 text-left text-[9px] ${quantity === "Single Rim (1x)" ? "border-[#abcfb2] bg-[#abcfb2]/10 text-white" : "border-white/10 bg-[#282a2c] text-white"}`}
+                >
                   Single Rim (1x)
                   <br />
-                  <span className="text-[#c2c8c0]">Rim Price: Rs. 85,000</span>
+                  <span className="text-[#c2c8c0]">Rim Price: {singlePriceStr}</span>
                 </button>
-                <button className="rounded-lg border border-white/10 bg-[#282a2c] p-2 text-left text-[9px] text-white">
+                <button
+                  onClick={() => setQuantity("Full Set (4x)")}
+                  className={`rounded-lg border p-2 text-left text-[9px] ${quantity !== "Single Rim (1x)" ? "border-[#abcfb2] bg-[#abcfb2]/10 text-white" : "border-white/10 bg-[#282a2c] text-white"}`}
+                >
                   Full Set (4x)
                   <br />
                   <span className="text-[#c2c8c0]">
-                    Includes 4 Wheels · Rs. 340,000
+                    Includes 4 Wheels · {setPriceStr}
                   </span>
                 </button>
               </div>
-              <button className="mt-3 w-full rounded-lg bg-[#abcfb2] py-3 text-[11px] font-bold text-[#163722]">
-                ♧ Buy Now - Rs. 340,000
-              </button>
               <Link
-                to="/fitment-engine"
-                className="mt-2 block w-full rounded-lg bg-[#333537] py-2 text-center text-[10px] text-white"
+                to="/booking/schedule"
+                className="mt-3 block w-full rounded-lg bg-[#abcfb2] py-3 text-center text-[11px] font-bold text-[#163722] hover:bg-[#9eb8a1]"
+              >
+                ♧ Buy Now - {total}
+              </Link>
+              <Link
+                to="/booking/schedule"
+                className="mt-2 block w-full rounded-lg bg-[#333537] py-2 text-center text-[10px] text-white hover:bg-[#434547]"
               >
                 ⚙ Book with Laser Balancing & Fitment Bay
               </Link>
               <div className="mt-3 flex gap-2">
                 <Link
                   to="/vendors/automax-wheels/contact"
-                  className="flex-1 rounded-lg bg-[#333537] py-2 text-center text-[9px]"
+                  className="flex-1 rounded-lg bg-[#333537] py-2 text-center text-[9px] text-white hover:bg-[#abcfb2] hover:text-[#163722]"
                 >
                   <MessageCircle className="mr-1 inline h-3 w-3 text-[#abcfb2]" />{" "}
                   Inquire with AutoMax
                 </Link>
-                <button className="flex-1 rounded-lg bg-[#333537] py-2 text-[9px]">
+                <a
+                  href="tel:+923001234567"
+                  className="flex-1 rounded-lg bg-[#333537] py-2 text-center text-[9px] text-white hover:bg-[#abcfb2] hover:text-[#163722]"
+                >
                   <Phone className="mr-1 inline h-3 w-3 text-[#d4a373]" />{" "}
                   Direct Fitment Desk
-                </button>
+                </a>
+              </div>
+            </div>
+            {/* Seller Trust & Rating Card */}
+            <div className="mt-3 flex items-center justify-between rounded-xl border border-white/5 bg-[#141618] p-3 text-xs">
+              <div className="flex items-center gap-2.5">
+                <div className="grid h-9 w-9 place-items-center rounded-lg bg-[#313b36] text-xs font-bold text-[#abcfb2]">
+                  AM
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5 font-bold text-white">
+                    <span>{sellerName}</span>
+                    <span className="rounded bg-[#063a32] px-1.5 py-0.5 text-[8px] text-[#55d6a7]">✓ Verified Seller</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[10px] text-[#d4a373] mt-0.5">
+                    <span>★ {marketplace?.averageRating ? marketplace.averageRating.toFixed(1) : "4.8"}</span>
+                    <span className="text-[#c2c8c0]">
+                      ({marketplace?.totalRatings || 4} seller reviews)
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Link
+                  to="/vendors/automax-wheels#reviews-section"
+                  className="rounded-lg bg-[#282a2c] px-3 py-1.5 text-[10px] font-semibold text-[#abcfb2] hover:bg-[#abcfb2] hover:text-[#163722] transition"
+                >
+                  View Reviews
+                </Link>
+                <Link
+                  to="/vendors/automax-wheels#reviews-section"
+                  className="rounded-lg bg-[#abcfb2] px-3 py-1.5 text-[10px] font-bold text-[#163722] hover:bg-[#8fb397] transition"
+                >
+                  Rate Seller
+                </Link>
               </div>
             </div>
             <p className="text-[9px] text-[#c2c8c0]">
@@ -374,13 +492,13 @@ export default function RimDetailPage() {
             </button>
           </div>
           <div className="mt-4 grid gap-3 md:grid-cols-3">
-            {reviews.map((title, index) => (
+            {reviews.map((title) => (
               <article
                 key={title}
                 className="overflow-hidden rounded-xl bg-[#1a1c1e]"
               >
                 <img
-                  src={[wheelImage, wheelImage, wheelImage][index]}
+                  src={imageSrc}
                   alt={title}
                   className="h-28 w-full object-cover"
                 />
@@ -401,20 +519,23 @@ export default function RimDetailPage() {
         </section>
         <div className="sticky bottom-3 mt-8 flex flex-wrap items-center gap-3 rounded-xl bg-[#222627] p-3 shadow-2xl">
           <img
-            src={wheelImage}
-            alt="OZ Racing"
+            src={imageSrc}
+            alt={productName}
             className="h-9 w-10 rounded object-cover"
           />
           <div className="flex-1 text-[9px] text-[#c2c8c0]">
-            OZ Racing Ultraleggera 18&quot; (Set of 4)
+            {productName}
             <br />
-            <span>4 Sets available in Islamabad · Laser Fitment Included</span>
+            <span>{stockNum} Sets available in {sellerAddress} · Laser Fitment Included</span>
           </div>
-          <strong className="text-lg text-[#abcfb2]">Rs. 340,000</strong>
-          <button className="rounded-lg bg-[#abcfb2] px-4 py-2 text-[10px] font-bold text-[#163722]">
+          <strong className="text-lg text-[#abcfb2]">{total}</strong>
+          <Link
+            to="/booking/schedule"
+            className="rounded-lg bg-[#abcfb2] px-4 py-2 text-[10px] font-bold text-[#163722] hover:bg-[#9eb8a1]"
+          >
             Order with Fitment Guarantee{" "}
             <ArrowRight className="ml-1 inline h-3 w-3" />
-          </button>
+          </Link>
         </div>
       </div>
     </div>

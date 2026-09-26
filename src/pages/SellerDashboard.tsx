@@ -2,24 +2,30 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Bell,
+  Check,
   ChevronLeft,
   ChevronRight,
   CirclePlus,
   Edit3,
+  ExternalLink,
   Eye,
   Filter,
   Grid2X2,
   LayoutDashboard,
   MoreVertical,
+  MessageCircle,
   Package,
   Search,
   ShoppingCart,
+  Star,
   Store,
+  ThumbsUp,
   Wrench,
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import {
   getSellerDashboard,
+  updateInquiryStatus,
   type SellerDashboardData,
   type SellerDashboardProduct,
 } from "../lib/sellerApi";
@@ -81,6 +87,8 @@ export default function SellerDashboard() {
   const [dashboard, setDashboard] = useState<SellerDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [reviewFilter, setReviewFilter] = useState<number>(0);
+  const [copiedStoreLink, setCopiedStoreLink] = useState(false);
 
   useEffect(() => {
     if (authLoading) return;
@@ -147,6 +155,38 @@ export default function SellerDashboard() {
   const categoryCount = (name: string) =>
     products.filter((product) => product.category.toLowerCase().includes(name))
       .length;
+  const inquiries = dashboard?.inquiries ?? [];
+  const unreadInquiries = inquiries.filter(
+    (inquiry) => inquiry.status === "unread",
+  ).length;
+
+  const recentRatings = useMemo(() => dashboard?.recentRatings ?? [], [dashboard?.recentRatings]);
+  const ratingSummary = dashboard?.ratingSummary;
+
+  const filteredSellerRatings = useMemo(() => {
+    if (reviewFilter === 0) return recentRatings;
+    if (reviewFilter === 5) return recentRatings.filter((r) => r.stars >= 5);
+    if (reviewFilter === 4) return recentRatings.filter((r) => r.stars === 4);
+    if (reviewFilter === 1) return recentRatings.filter((r) => r.stars <= 3);
+    return recentRatings;
+  }, [recentRatings, reviewFilter]);
+
+  const handleCopyStoreLink = () => {
+    const url = `${window.location.origin}/vendors/automax-wheels`;
+    navigator.clipboard.writeText(url);
+    setCopiedStoreLink(true);
+    setTimeout(() => setCopiedStoreLink(false), 2000);
+  };
+  const markInquiryRead = async (inquiryId: string) => {
+    if (!user || !dashboard) return;
+    await updateInquiryStatus(inquiryId, user.uid, "read");
+    setDashboard({
+      ...dashboard,
+      inquiries: dashboard.inquiries.map((inquiry) =>
+        inquiry._id === inquiryId ? { ...inquiry, status: "read" } : inquiry,
+      ),
+    });
+  };
 
   return (
     <div className="seller-dashboard-page">
@@ -252,8 +292,287 @@ export default function SellerDashboard() {
             value={String(activeProducts)}
             note="Published listings"
             icon={<Eye size={14} />}
+          />
+          <Stat
+            label="Store Rating"
+            value={
+              ratingSummary?.averageRating
+                ? `★ ${ratingSummary.averageRating.toFixed(1)}`
+                : "★ 5.0"
+            }
+            note={`${ratingSummary?.totalRatings ?? recentRatings.length} Customer Reviews`}
+            icon={<Star size={14} className="fill-[#d4a373] text-[#d4a373]" />}
             active
           />
+        </section>
+        <section className="seller-products-panel">
+          <header className="seller-products-header">
+            <div>
+              <h2>
+                <MessageCircle size={15} /> Customer Messages
+              </h2>
+              <p>{unreadInquiries} unread inquiries from the marketplace</p>
+            </div>
+          </header>
+          {inquiries.length === 0 ? (
+            <div className="seller-empty-products">
+              No customer inquiries yet.
+            </div>
+          ) : (
+            <div className="seller-inquiry-list">
+              {inquiries.map((inquiry) => (
+                <article key={inquiry._id} className="seller-inquiry-item">
+                  <div>
+                    <strong>{inquiry.senderName}</strong>
+                    <small>
+                      {inquiry.senderPhone} ·{" "}
+                      {inquiry.car || "Vehicle not specified"}
+                    </small>
+                    <p>{inquiry.message}</p>
+                    <small>
+                      {inquiry.productName || "General seller inquiry"} ·{" "}
+                      {inquiry.createdAt
+                        ? new Date(inquiry.createdAt).toLocaleString()
+                        : "Recently"}
+                    </small>
+                  </div>
+                  <button
+                    className="seller-button seller-button-muted"
+                    onClick={() => markInquiryRead(inquiry._id)}
+                    disabled={inquiry.status !== "unread"}
+                  >
+                    {inquiry.status === "unread" ? "Mark Read" : inquiry.status}
+                  </button>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+        <section className="seller-products-panel">
+          <header className="seller-products-header">
+            <div>
+              <h2>
+                <Star size={15} className="fill-[#d4a373] text-[#d4a373]" /> Store Reputation & Customer Reviews
+              </h2>
+              <p>
+                Real fitment ratings and feedback left by verified car enthusiasts
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleCopyStoreLink}
+                className="seller-button seller-button-muted flex items-center gap-1.5"
+                title="Copy public store link to share with buyers"
+              >
+                {copiedStoreLink ? (
+                  <>
+                    <Check size={12} className="text-[#55d6a7]" />
+                    <span className="text-[#55d6a7]">Link Copied!</span>
+                  </>
+                ) : (
+                  <span>Share Store Link</span>
+                )}
+              </button>
+              <Link
+                to="/vendors/automax-wheels"
+                target="_blank"
+                className="seller-button seller-button-primary flex items-center gap-1.5"
+                title="View your store as buyers see it"
+              >
+                <span>Public Shop Profile</span>
+                <ExternalLink size={12} />
+              </Link>
+            </div>
+          </header>
+
+          {/* Score overview & reviews grid */}
+          <div className="p-4 sm:p-5">
+            <div className="grid gap-5 lg:grid-cols-12 items-start">
+              {/* Rating summary card */}
+              <div className="lg:col-span-4 rounded-xl bg-[#141618] border border-white/[0.06] p-4 text-center sm:text-left">
+                <small className="block text-[10px] uppercase font-bold tracking-wider text-[#c2c8c0]">Overall Store Score</small>
+                <div className="mt-2 flex items-baseline justify-center sm:justify-start gap-2">
+                  <span className="text-3xl font-extrabold text-white">
+                    {ratingSummary?.averageRating ? ratingSummary.averageRating.toFixed(1) : "5.0"}
+                  </span>
+                  <span className="text-xs text-[#c2c8c0]">/ 5.0</span>
+                </div>
+                <div className="mt-1 flex items-center justify-center sm:justify-start gap-1">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star
+                      key={s}
+                      size={14}
+                      className={
+                        s <= Math.round(ratingSummary?.averageRating ?? 5)
+                          ? "fill-[#d4a373] text-[#d4a373]"
+                          : "text-white/20"
+                      }
+                    />
+                  ))}
+                </div>
+                <p className="mt-2 text-[11px] text-[#c2c8c0]">
+                  Based on <strong className="text-white">{ratingSummary?.totalRatings ?? recentRatings.length}</strong> verified customer reviews
+                </p>
+
+                <div className="mt-4 border-t border-white/[0.06] pt-3 space-y-1.5">
+                  {[5, 4, 3, 2, 1].map((s) => {
+                    const count = ratingSummary?.breakdown?.[String(s)] ?? (s === 5 ? recentRatings.length : 0);
+                    const total = ratingSummary?.totalRatings || (recentRatings.length || 1);
+                    const pct = Math.round((count / (total || 1)) * 100);
+                    return (
+                      <div key={s} className="flex items-center gap-2 text-[10px] text-[#c2c8c0]">
+                        <span className="w-8 flex items-center gap-0.5">
+                          {s} <Star size={10} className="fill-[#d4a373] text-[#d4a373]" />
+                        </span>
+                        <div className="flex-1 h-1.5 rounded-full bg-white/[0.08] overflow-hidden">
+                          <div
+                            className={`h-full rounded-full ${s >= 4 ? "bg-[#abcfb2]" : s === 3 ? "bg-[#d4a373]" : "bg-red-500"}`}
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                        <span className="w-8 text-right text-[9px]">{count}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="mt-4 rounded-lg bg-[#063a32] border border-[#55d6a7]/30 p-2 text-center text-[10px] text-[#55d6a7] font-medium flex items-center justify-center gap-1.5">
+                  <ThumbsUp size={12} /> Top Rated Merchant
+                </div>
+              </div>
+
+              {/* Reviews list */}
+              <div className="lg:col-span-8">
+                {/* Filter toolbar */}
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.06] pb-3 mb-3">
+                  <div className="flex items-center gap-1.5 text-[10px]">
+                    <span className="text-[#c2c8c0]">Filter:</span>
+                    <button
+                      type="button"
+                      onClick={() => setReviewFilter(0)}
+                      className={`rounded px-2.5 py-1 text-[10px] transition ${
+                        reviewFilter === 0
+                          ? "bg-[#abcfb2] text-[#163722] font-bold"
+                          : "bg-[#282a2c] text-[#c2c8c0] hover:bg-[#333537]"
+                      }`}
+                    >
+                      All ({recentRatings.length})
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setReviewFilter(5)}
+                      className={`rounded px-2.5 py-1 text-[10px] transition ${
+                        reviewFilter === 5
+                          ? "bg-[#abcfb2] text-[#163722] font-bold"
+                          : "bg-[#282a2c] text-[#c2c8c0] hover:bg-[#333537]"
+                      }`}
+                    >
+                      5 ★
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setReviewFilter(4)}
+                      className={`rounded px-2.5 py-1 text-[10px] transition ${
+                        reviewFilter === 4
+                          ? "bg-[#abcfb2] text-[#163722] font-bold"
+                          : "bg-[#282a2c] text-[#c2c8c0] hover:bg-[#333537]"
+                      }`}
+                    >
+                      4 ★
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setReviewFilter(1)}
+                      className={`rounded px-2.5 py-1 text-[10px] transition ${
+                        reviewFilter === 1
+                          ? "bg-[#abcfb2] text-[#163722] font-bold"
+                          : "bg-[#282a2c] text-[#c2c8c0] hover:bg-[#333537]"
+                      }`}
+                    >
+                      1–3 ★
+                    </button>
+                  </div>
+                  <span className="text-[10px] text-[#c2c8c0]">
+                    Showing {filteredSellerRatings.length} feedback items
+                  </span>
+                </div>
+
+                {filteredSellerRatings.length === 0 ? (
+                  <div className="rounded-xl border border-dashed border-white/10 p-6 text-center text-xs text-[#c2c8c0]">
+                    No customer reviews under this filter.
+                  </div>
+                ) : (
+                  <div className="space-y-2.5">
+                    {filteredSellerRatings.map((review) => {
+                      const initials = (review.userName || "Customer")
+                        .split(" ")
+                        .map((n) => n[0])
+                        .slice(0, 2)
+                        .join("")
+                        .toUpperCase();
+                      const dateFormatted = review.createdAt
+                        ? new Date(review.createdAt).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                        : "Recently";
+
+                      return (
+                        <article
+                          key={review._id}
+                          className="rounded-lg bg-[#141618] border border-white/[0.04] p-3.5 hover:border-white/[0.08] transition"
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="flex items-center gap-2.5">
+                              <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-gradient-to-tr from-[#273a31] to-[#405f50] text-[10px] font-bold text-[#abcfb2]">
+                                {initials}
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <strong className="text-xs font-semibold text-white">
+                                    {review.userName}
+                                  </strong>
+                                  <span className="rounded bg-[#063a32] px-1.5 py-0.5 text-[8px] text-[#55d6a7]">
+                                    ✓ Verified Fitment
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2 text-[9px] text-[#c2c8c0]">
+                                  {review.car && <span>🏎 {review.car} · </span>}
+                                  <span>{dateFormatted}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-0.5">
+                              {[1, 2, 3, 4, 5].map((s) => (
+                                <Star
+                                  key={s}
+                                  size={11}
+                                  className={
+                                    s <= review.stars
+                                      ? "fill-[#d4a373] text-[#d4a373]"
+                                      : "text-white/20"
+                                  }
+                                />
+                              ))}
+                            </div>
+                          </div>
+
+                          {review.comment && (
+                            <p className="mt-2 pl-9 text-[11px] leading-relaxed text-[#c2c8c0]">
+                              {review.comment}
+                            </p>
+                          )}
+                        </article>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </section>
         <section className="seller-products-panel">
           <header className="seller-products-header">

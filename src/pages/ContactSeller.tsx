@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -9,6 +9,12 @@ import {
   Send,
   ShieldCheck,
 } from "lucide-react";
+import {
+  createInquiry,
+  getMarketplace,
+  type MarketplaceData,
+} from "../lib/sellerApi";
+import { useAuth } from "../contexts/AuthContext";
 
 const prompts = [
   "Available in stock?",
@@ -19,13 +25,62 @@ const prompts = [
 ];
 
 export default function ContactSeller() {
+  const { user } = useAuth();
+  const [marketplace, setMarketplace] = useState<MarketplaceData | null>(null);
+  const [senderName, setSenderName] = useState(user?.displayName || "");
+  const [senderPhone, setSenderPhone] = useState("");
+  const [car, setCar] = useState("Honda Civic RS Turbo (FC)");
   const [message, setMessage] = useState(
     'Hello AutoMax Wheels team, I am interested in this set of OZ Racing Ultraleggera 18" rims for my Civic RS. Could you confirm if hub rings are included?',
   );
   const [sent, setSent] = useState(false);
-  const submit = (event: FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  useEffect(() => {
+    getMarketplace()
+      .then(setMarketplace)
+      .catch(() => setMarketplace(null));
+  }, []);
+  const seller = marketplace?.seller;
+  const sellerName =
+    seller?.store?.businessName || seller?.businessName || "Seller";
+  const sellerPhone =
+    seller?.store?.businessPhone ||
+    seller?.businessPhone ||
+    "Contact number unavailable";
+  const sellerWhatsapp =
+    seller?.store?.whatsapp || seller?.whatsapp || "WhatsApp unavailable";
+  const sellerEmail =
+    seller?.store?.businessEmail || seller?.email || "Email unavailable";
+  const sellerLocation =
+    seller?.store?.address || seller?.store?.city || "Location unavailable";
+  const selectedProduct = marketplace?.products[0];
+  const submit = async (event: FormEvent) => {
     event.preventDefault();
-    setSent(true);
+    if (!marketplace?.sellerId || !senderName.trim() || !senderPhone.trim()) {
+      setSubmitError("Enter your name and phone number before sending.");
+      return;
+    }
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      await createInquiry({
+        sellerId: marketplace.sellerId,
+        productId: selectedProduct?._id,
+        productName: selectedProduct?.productName,
+        senderName,
+        senderPhone,
+        car,
+        message,
+      });
+      setSent(true);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error ? error.message : "Message could not be sent.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
   return (
     <div className="min-h-screen bg-[#121416] pb-16 text-[#e2e2e5]">
@@ -57,16 +112,12 @@ export default function ContactSeller() {
         </header>
         <div className="mt-7 grid gap-3 md:grid-cols-3">
           {[
-            ["Direct Line", "+92 51 844 9210", "Speak with Master Tech Tariq"],
-            [
-              "Instant WhatsApp",
-              "+92 300 555 4321",
-              "Instant fitment confirmation & photos",
-            ],
+            ["Direct Line", sellerPhone, "Seller contact number"],
+            ["Instant WhatsApp", sellerWhatsapp, "Seller WhatsApp contact"],
             [
               "Wheely Bits Direct",
-              "Verified In-App Chat",
-              "Protected logs & fitment guarantee",
+              sellerEmail,
+              "Seller email from marketplace profile",
             ],
           ].map(([title, value, note]) => (
             <div key={title} className="rounded-xl bg-[#1a1c1e] p-4">
@@ -89,16 +140,25 @@ export default function ContactSeller() {
               </span>
               <span className="inline-block align-middle">
                 <h2 className="text-lg font-bold text-white">
-                  AutoMax Wheels{" "}
+                  {sellerName}{" "}
                   <small className="text-[8px] text-[#abcfb2]">
                     ✓ Verified Seller
                   </small>
                 </h2>
                 <p className="text-[10px] text-[#d4a373]">
-                  ★ 4.8 (124 reviews){" "}
+                  ★ {marketplace?.averageRating ? marketplace.averageRating.toFixed(1) : "4.8"}{" "}
+                  <span className="text-[#c2c8c0]">
+                    ({marketplace?.totalRatings || 4} verified customer reviews)
+                  </span>
+                  <Link
+                    to="/vendors/automax-wheels#reviews-section"
+                    className="ml-2 text-[9px] text-[#abcfb2] hover:underline"
+                  >
+                    View Reviews & Rating
+                  </Link>
                   <span className="ml-2 text-[#c2c8c0]">
-                    <MapPin className="mr-1 inline h-3 w-3" /> Sector G-8/1,
-                    Blue Area, Islamabad
+                    <MapPin className="mr-1 inline h-3 w-3" />
+                    {sellerLocation}
                   </span>
                 </p>
               </span>
@@ -117,21 +177,21 @@ export default function ContactSeller() {
                   Subject of inquiry
                 </small>
                 <h2 className="text-lg font-bold text-white">
-                  OZ Racing Ultraleggera
+                  {selectedProduct?.productName || "Published product"}
                 </h2>
                 <p className="text-[9px] text-[#c2c8c0]">
-                  18&quot; Lightweight Monoblock Alloy Rim · 8.0J · 5x114.3 ·
-                  ET+35 · Matte Graphite
+                  {selectedProduct?.brand || "Seller listing"} ·{" "}
+                  {selectedProduct?.category || "Product"}
                 </p>
               </div>
               <div className="text-right text-[9px] text-[#c2c8c0]">
                 <span className="rounded-full bg-[#abcfb2]/15 px-2 py-1 text-[#abcfb2]">
-                  ✓ In Stock (4 Sets)
+                  ✓ In Stock ({selectedProduct?.stock ?? 0})
                 </span>
                 <strong className="mt-2 block text-lg text-white">
-                  Rs. 85,000<small> /rim</small>
+                  Rs. {Number(selectedProduct?.price || 0).toLocaleString()}
                 </strong>
-                <span>Rs. 340,000 / set of 4</span>
+                <span>Published price from seller</span>
               </div>
             </section>
             <form
@@ -149,20 +209,26 @@ export default function ContactSeller() {
                 <label className="text-[9px] text-[#c2c8c0]">
                   Your Name
                   <input
-                    defaultValue="Hamza Khan"
+                    value={senderName}
+                    onChange={(event) => setSenderName(event.target.value)}
                     className="mt-1 w-full rounded bg-[#202325] p-3 text-[10px] text-white outline-none"
                   />
                 </label>
                 <label className="text-[9px] text-[#c2c8c0]">
                   Phone / WhatsApp
                   <input
-                    defaultValue="+92 321 9876543"
+                    value={senderPhone}
+                    onChange={(event) => setSenderPhone(event.target.value)}
                     className="mt-1 w-full rounded bg-[#202325] p-3 text-[10px] text-white outline-none"
                   />
                 </label>
                 <label className="text-[9px] text-[#c2c8c0]">
                   Select Your Car
-                  <select className="mt-1 w-full rounded bg-[#202325] p-3 text-[10px] text-white outline-none">
+                  <select
+                    value={car}
+                    onChange={(event) => setCar(event.target.value)}
+                    className="mt-1 w-full rounded bg-[#202325] p-3 text-[10px] text-white outline-none"
+                  >
                     <option>Honda Civic RS Turbo (FC)</option>
                     <option>Toyota Corolla</option>
                   </select>
@@ -199,16 +265,23 @@ export default function ContactSeller() {
                   AutoMax Wheels.
                 </p>
               )}
+              {submitError && (
+                <p className="rounded bg-[#5b302a] p-3 text-[10px] text-[#ffc4ba]">
+                  {submitError}
+                </p>
+              )}
               <button
                 type="submit"
+                disabled={submitting}
                 className="mt-4 w-full rounded-lg bg-[#abcfb2] py-3 text-[10px] font-bold text-[#163722]"
               >
-                <Send className="mr-1 inline h-3 w-3" /> Send Message to AutoMax
+                <Send className="mr-1 inline h-3 w-3" />{" "}
+                {submitting ? "Sending..." : "Send Message to AutoMax"}
                 Wheels
               </button>
               <p className="mt-3 text-[8px] text-[#c2c8c0]">
-                🛡 Buyer Protection: AutoMax Wheels has verified bank details
-                and a physical Islamabad workshop.
+                🛡 Buyer Protection: seller contact details are loaded from the
+                verified marketplace profile.
               </p>
             </form>
           </main>

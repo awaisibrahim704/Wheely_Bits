@@ -106,123 +106,82 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
           </Route>
 
-          <Route element={<ProtectedRoute />}>
-            {/* Studio / Tools (No Nav/Footer) */}
-            <Route element={<StudioLayout />}>
-              <Route path="/studio" element={<Studio />} />
-              <Route path="/fitment-engine" element={<FitmentEngine />} />
-              <Route path="/ai-recognition" element={<AIRecognition />} />
-            </Route>
+          {/* Studio / Tools (No Nav/Footer) */}
+          <Route element={<StudioLayout />}>
+            <Route path="/studio" element={<Studio />} />
+            <Route path="/fitment-engine" element={<FitmentEngine />} />
+            <Route path="/ai-recognition" element={<AIRecognition />} />
+          </Route>
 
-            {/* Journey Routes */}
-            <Route element={<JourneyLayout />}>
-              <Route path="/rim/recognition" element={<RimRecognition />} />
-              <Route path="/rim/overview" element={<RimOverview />} />
-              <Route path="/rim/selection" element={<RimSelection />} />
-              <Route path="/rim/detail/:id" element={<RimDetail />} />
-              <Route path="/tyre/detail/:id" element={<TyreDetail />} />
-              <Route path="/rim/fitment" element={<RimFitment />} />
-              <Route path="/rim/visualization" element={<RimVisualization />} />
-              <Route path="/rim/vendor" element={<RimVendor />} />
+          {/* Journey Routes */}
+          <Route element={<JourneyLayout />}>
+            <Route path="/rim/recognition" element={<RimRecognition />} />
+            <Route path="/rim/overview" element={<RimOverview />} />
+            <Route path="/rim/selection" element={<RimSelection />} />
+            <Route path="/rim/detail/:id" element={<RimDetail />} />
+            <Route path="/tyre/detail/:id" element={<TyreDetail />} />
+            <Route path="/rim/fitment" element={<RimFitment />} />
+            <Route path="/rim/visualization" element={<RimVisualization />} />
+            <Route path="/rim/vendor" element={<RimVendor />} />
 
-              <Route path="/wrap/styles" element={<WrapStyles />} />
-              <Route path="/wrap/color" element={<WrapColor />} />
-              <Route
-                path="/wrap/visualization"
-                element={<WrapVisualization />}
-              />
-              <Route path="/wrap/vendor" element={<WrapVendor />} />
+            <Route path="/wrap/styles" element={<WrapStyles />} />
+            <Route path="/wrap/color" element={<WrapColor />} />
+            <Route path="/wrap/visualization" element={<WrapVisualization />} />
+            <Route path="/wrap/vendor" element={<WrapVendor />} />
 
-              <Route path="/tint/types" element={<TintTypes />} />
-              <Route path="/tint/shade" element={<TintShadeSelection />} />
-              <Route
-                path="/tint/visualization"
-                element={<TintVisualization />}
-              />
-              <Route path="/tint/vendor" element={<TintVendor />} />
-            </Route>
+            <Route path="/tint/types" element={<TintTypes />} />
+            <Route path="/tint/shade" element={<TintShadeSelection />} />
+            <Route path="/tint/visualization" element={<TintVisualization />} />
+            <Route path="/tint/vendor" element={<TintVendor />} />
+          </Route>
 
-            {/* Main Routes (TopNav + Footer) */}
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<Home />} />
-              <Route
-                path="/seller/business-information"
-                element={<SellerBusinessInformation />}
-              />
-              <Route
-                path="/seller/store-details"
-                element={<SellerStoreDetails />}
-              />
-              <Route
-                path="/seller/complete"
-                element={<SellerSetupComplete />}
-              />
+          {/* Main Routes (TopNav + Footer) */}
+          <Route element={<MainLayout />}>
+            {/* Public Pages */}
+            <Route path="/" element={<Home />} />
+            <Route path="/vendors" element={<VendorDirectory />} />
+            <Route path="/vendors/:id" element={<VendorDetail />} />
+            <Route path="/vendors/:id/catalog" element={<VendorCatalog />} />
+            <Route path="/vendors/:id/contact" element={<ContactSeller />} />
+            <Route path="/booking/schedule" element={<ScheduleInstallation />} />
+            <Route path="/booking/success" element={<BookingConfirmed />} />
+
+            {/* Rim/Wrap/Tint routing entry points */}
+            <Route path="/rim" element={<RimSelection />} />
+            <Route path="/wrap" element={<WrapStyles />} />
+            <Route path="/tint" element={<TintTypes />} />
+
+            <Route path="/community" element={<Community />} />
+            <Route path="/community/thread/:id" element={<CommunityThread />} />
+            <Route path="/community/build-log" element={<BuildLog />} />
+            <Route path="/community/discussion" element={<DiscussionThread />} />
+
+            <Route path="/education" element={<EducationHub />} />
+            <Route path="/education/article/:slug" element={<TechnicalGuide />} />
+            <Route path="/rim/fitment-101" element={<TechnicalGuide />} />
+
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/welcome" element={<NewUserWelcome />} />
+            <Route path="/loading" element={<LoadingState />} />
+
+            {/* Protected Routes (Seller & User Account) */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/seller/business-information" element={<SellerBusinessInformation />} />
+              <Route path="/seller/store-details" element={<SellerStoreDetails />} />
+              <Route path="/seller/complete" element={<SellerSetupComplete />} />
               <Route path="/seller/dashboard" element={<SellerDashboard />} />
-              <Route
-                path="/seller/products/new"
-                element={<SellerProductCategory />}
-              />
-              <Route
-                path="/seller/products/specifications"
-                element={<SellerProductSpecifications />}
-              />
-              <Route
-                path="/seller/products/tyre-specifications"
-                element={<SellerTyreSpecifications />}
-              />
-              <Route
-                path="/seller/products/preview"
-                element={<SellerProductPreview />}
-              />
-
-              {/* Rim routing entry points */}
-              <Route path="/rim" element={<RimSelection />} />
-              <Route path="/wrap" element={<WrapStyles />} />
-              <Route path="/tint" element={<TintTypes />} />
-
-              <Route path="/community" element={<Community />} />
-              <Route
-                path="/community/thread/:id"
-                element={<CommunityThread />}
-              />
-              <Route path="/community/build-log" element={<BuildLog />} />
-              <Route
-                path="/community/discussion"
-                element={<DiscussionThread />}
-              />
-              <Route
-                path="/community/create-build-log"
-                element={<CreateBuildLog />}
-              />
-
-              <Route path="/education" element={<EducationHub />} />
-              <Route
-                path="/education/article/:slug"
-                element={<TechnicalGuide />}
-              />
-              <Route path="/rim/fitment-101" element={<TechnicalGuide />} />
-
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/contact" element={<Contact />} />
-
-              <Route path="/vendors" element={<VendorDirectory />} />
-              <Route path="/vendors/:id/catalog" element={<VendorCatalog />} />
-              <Route path="/vendors/:id/contact" element={<ContactSeller />} />
-              <Route path="/vendors/:id" element={<VendorDetail />} />
-              <Route
-                path="/booking/schedule"
-                element={<ScheduleInstallation />}
-              />
-              <Route path="/booking/success" element={<BookingConfirmed />} />
-
-              <Route path="/welcome" element={<NewUserWelcome />} />
+              <Route path="/seller/products/new" element={<SellerProductCategory />} />
+              <Route path="/seller/products/specifications" element={<SellerProductSpecifications />} />
+              <Route path="/seller/products/tyre-specifications" element={<SellerTyreSpecifications />} />
+              <Route path="/seller/products/preview" element={<SellerProductPreview />} />
+              <Route path="/community/create-build-log" element={<CreateBuildLog />} />
               <Route path="/garage" element={<UserDashboard />} />
               <Route path="/profile" element={<MyProfile />} />
-              <Route path="/loading" element={<LoadingState />} />
-
-              {/* Fallback */}
-              <Route path="*" element={<NotFound />} />
             </Route>
+
+            {/* Fallback */}
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>

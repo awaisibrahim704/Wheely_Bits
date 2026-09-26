@@ -41,12 +41,18 @@ export default function TopNavBar() {
             );
           })}
           <Link
-            to="/seller/business-information"
+            to="/vendors"
             className={`ml-1 whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-semibold transition-colors ${
-              location.pathname.startsWith("/seller")
+              location.pathname.startsWith("/vendors")
                 ? "bg-primary-brand text-on-primary"
                 : "bg-primary-brand/15 text-primary-brand hover:bg-primary-brand hover:text-on-primary"
             }`}
+          >
+            Seller Center
+          </Link>
+          <Link
+            to="/seller/business-information"
+            className="whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium text-on-surface-muted transition-colors hover:bg-white/5 hover:text-on-surface"
           >
             Become a Seller
           </Link>
