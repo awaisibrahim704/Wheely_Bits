@@ -40,6 +40,7 @@ type Product = {
   status: "Active" | "Inactive";
   stockState: "In Stock" | "Low Stock" | "Out of Stock";
   image: string;
+  gallery: string[];
   source: SellerDashboardProduct;
 };
 
@@ -63,6 +64,10 @@ function toProduct(product: SellerDashboardProduct): Product {
       : stockNumber <= 3
         ? "Low Stock"
         : "In Stock";
+  const gallery = Array.isArray(product.gallery)
+    ? product.gallery.filter(Boolean)
+    : [];
+
   return {
     id: product._id,
     name: product.productName || "Unnamed product",
@@ -74,7 +79,8 @@ function toProduct(product: SellerDashboardProduct): Product {
     stock: product.stock === undefined ? "Not set" : `${product.stock} Units`,
     status,
     stockState,
-    image: product.gallery?.[0] || product.aiImage || "",
+    image: gallery[0] || product.aiImage || "",
+    gallery,
     source: product,
   };
 }
@@ -160,7 +166,10 @@ export default function SellerDashboard() {
     (inquiry) => inquiry.status === "unread",
   ).length;
 
-  const recentRatings = useMemo(() => dashboard?.recentRatings ?? [], [dashboard?.recentRatings]);
+  const recentRatings = useMemo(
+    () => dashboard?.recentRatings ?? [],
+    [dashboard?.recentRatings],
+  );
   const ratingSummary = dashboard?.ratingSummary;
 
   const filteredSellerRatings = useMemo(() => {
@@ -205,7 +214,16 @@ export default function SellerDashboard() {
           <a className="seller-dashboard-nav-active">
             <LayoutDashboard size={12} /> Dashboard
           </a>
-          <a>
+          <a
+            href="#products-section"
+            onClick={(event) => {
+              event.preventDefault();
+              document.getElementById("products-section")?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }}
+          >
             <Package size={12} /> Products
           </a>
           <Link to="/seller/products/new">
@@ -352,10 +370,12 @@ export default function SellerDashboard() {
           <header className="seller-products-header">
             <div>
               <h2>
-                <Star size={15} className="fill-[#d4a373] text-[#d4a373]" /> Store Reputation & Customer Reviews
+                <Star size={15} className="fill-[#d4a373] text-[#d4a373]" />{" "}
+                Store Reputation & Customer Reviews
               </h2>
               <p>
-                Real fitment ratings and feedback left by verified car enthusiasts
+                Real fitment ratings and feedback left by verified car
+                enthusiasts
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -391,10 +411,14 @@ export default function SellerDashboard() {
             <div className="grid gap-5 lg:grid-cols-12 items-start">
               {/* Rating summary card */}
               <div className="lg:col-span-4 rounded-xl bg-[#141618] border border-white/[0.06] p-4 text-center sm:text-left">
-                <small className="block text-[10px] uppercase font-bold tracking-wider text-[#c2c8c0]">Overall Store Score</small>
+                <small className="block text-[10px] uppercase font-bold tracking-wider text-[#c2c8c0]">
+                  Overall Store Score
+                </small>
                 <div className="mt-2 flex items-baseline justify-center sm:justify-start gap-2">
                   <span className="text-3xl font-extrabold text-white">
-                    {ratingSummary?.averageRating ? ratingSummary.averageRating.toFixed(1) : "5.0"}
+                    {ratingSummary?.averageRating
+                      ? ratingSummary.averageRating.toFixed(1)
+                      : "5.0"}
                   </span>
                   <span className="text-xs text-[#c2c8c0]">/ 5.0</span>
                 </div>
@@ -412,18 +436,32 @@ export default function SellerDashboard() {
                   ))}
                 </div>
                 <p className="mt-2 text-[11px] text-[#c2c8c0]">
-                  Based on <strong className="text-white">{ratingSummary?.totalRatings ?? recentRatings.length}</strong> verified customer reviews
+                  Based on{" "}
+                  <strong className="text-white">
+                    {ratingSummary?.totalRatings ?? recentRatings.length}
+                  </strong>{" "}
+                  verified customer reviews
                 </p>
 
                 <div className="mt-4 border-t border-white/[0.06] pt-3 space-y-1.5">
                   {[5, 4, 3, 2, 1].map((s) => {
-                    const count = ratingSummary?.breakdown?.[String(s)] ?? (s === 5 ? recentRatings.length : 0);
-                    const total = ratingSummary?.totalRatings || (recentRatings.length || 1);
+                    const count =
+                      ratingSummary?.breakdown?.[String(s)] ??
+                      (s === 5 ? recentRatings.length : 0);
+                    const total =
+                      ratingSummary?.totalRatings || recentRatings.length || 1;
                     const pct = Math.round((count / (total || 1)) * 100);
                     return (
-                      <div key={s} className="flex items-center gap-2 text-[10px] text-[#c2c8c0]">
+                      <div
+                        key={s}
+                        className="flex items-center gap-2 text-[10px] text-[#c2c8c0]"
+                      >
                         <span className="w-8 flex items-center gap-0.5">
-                          {s} <Star size={10} className="fill-[#d4a373] text-[#d4a373]" />
+                          {s}{" "}
+                          <Star
+                            size={10}
+                            className="fill-[#d4a373] text-[#d4a373]"
+                          />
                         </span>
                         <div className="flex-1 h-1.5 rounded-full bg-white/[0.08] overflow-hidden">
                           <div
@@ -431,7 +469,9 @@ export default function SellerDashboard() {
                             style={{ width: `${pct}%` }}
                           />
                         </div>
-                        <span className="w-8 text-right text-[9px]">{count}</span>
+                        <span className="w-8 text-right text-[9px]">
+                          {count}
+                        </span>
                       </div>
                     );
                   })}
@@ -512,11 +552,14 @@ export default function SellerDashboard() {
                         .join("")
                         .toUpperCase();
                       const dateFormatted = review.createdAt
-                        ? new Date(review.createdAt).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })
+                        ? new Date(review.createdAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            },
+                          )
                         : "Recently";
 
                       return (
@@ -539,7 +582,9 @@ export default function SellerDashboard() {
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-2 text-[9px] text-[#c2c8c0]">
-                                  {review.car && <span>🏎 {review.car} · </span>}
+                                  {review.car && (
+                                    <span>🏎 {review.car} · </span>
+                                  )}
                                   <span>{dateFormatted}</span>
                                 </div>
                               </div>
@@ -574,7 +619,7 @@ export default function SellerDashboard() {
             </div>
           </div>
         </section>
-        <section className="seller-products-panel">
+        <section id="products-section" className="seller-products-panel">
           <header className="seller-products-header">
             <div>
               <h2>
@@ -696,10 +741,19 @@ function ProductRow({ product }: { product: Product }) {
       : product.category === "Car Accessories"
         ? "accessory"
         : "rim";
+  const galleryImages =
+    product.gallery.length > 0
+      ? product.gallery.slice(0, 3)
+      : [product.image].filter(Boolean);
+
   return (
     <div className="seller-product-row">
       <div className="seller-product-name">
-        <img src={product.image} alt="" />
+        <div className="seller-product-gallery">
+          {galleryImages.map((image, index) => (
+            <img key={`${image}-${index}`} src={image} alt="" />
+          ))}
+        </div>
         <span>
           <strong>{product.name}</strong>
           <small>{product.detail}</small>

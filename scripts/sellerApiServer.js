@@ -224,7 +224,345 @@ app.get("/api/marketplace", async (_request, response) => {
   }
 });
 
-// ── Submit Rating ───────────────────────────────────────────────────────────
+// ── Community posts ────────────────────────────────────────────────────────
+const communityPostCollection = () => client.db(databaseName).collection("communityPosts");
+
+function serializeCommunityPost(post) {
+  return {
+    id: post._id.toString(),
+    userId: post.userId,
+    author: post.author,
+    description: post.description,
+    images: Array.isArray(post.images)
+      ? post.images
+      : post.image
+        ? [post.image]
+        : [],
+    createdAt: post.createdAt,
+    likedBy: post.likedBy || [],
+    comments: post.comments || [],
+  };
+}
+
+app.get("/api/community/posts", async (_request, response) => {
+  try {
+    const posts = await communityPostCollection()
+      .find({})
+      .sort({ createdAt: -1 })
+      .limit(100)
+      .toArray();
+    response.json({ posts: posts.map(serializeCommunityPost) });
+  } catch (error) {
+    console.error("Failed to load community posts", error);
+    response.status(500).json({ error: "Failed to load community posts." });
+  }
+});
+
+app.post("/api/community/posts", async (request, response) => {
+  const { userId, author, description, images } = request.body || {};
+  if (
+    typeof userId !== "string" ||
+    !userId.trim() ||
+    typeof author !== "string" ||
+    !author.trim() ||
+    typeof description !== "string" ||
+    !description.trim() ||
+    description.length > 2000 ||
+    !Array.isArray(images) ||
+    images.length < 1 ||
+    images.length > 5 ||
+    images.some((image) => typeof image !== "string" || !image.startsWith("data:image/")) ||
+    images.reduce((total, image) => total + image.length, 0) > 12_000_000
+  ) {
+    response.status(400).json({ error: "A description and valid image are required." });
+    return;
+  }
+
+  try {
+    const post = {
+      userId: userId.trim(),
+      author: author.trim().slice(0, 80),
+      description: description.trim(),
+      images,
+      createdAt: new Date().toISOString(),
+      likedBy: [],
+      comments: [],
+    };
+    const result = await communityPostCollection().insertOne(post);
+    response.status(201).json({ post: serializeCommunityPost({ ...post, _id: result.insertedId }) });
+  } catch (error) {
+    console.error("Failed to create community post", error);
+    response.status(500).json({ error: "Failed to create community post." });
+  }
+});
+
+app.post("/api/community/posts/:postId/reactions", async (request, response) => {
+  const { postId } = request.params;
+  const { userId } = request.body || {};
+  if (!ObjectId.isValid(postId) || typeof userId !== "string" || !userId.trim()) {
+    response.status(400).json({ error: "A valid post and user are required." });
+    return;
+  }
+
+  try {
+    const collection = communityPostCollection();
+    const _id = new ObjectId(postId);
+    const post = await collection.findOne({ _id });
+    if (!post) {
+      response.status(404).json({ error: "Community post not found." });
+      return;
+    }
+    const likedBy = post.likedBy || [];
+    if (likedBy.includes(userId)) {
+      await collection.updateOne({ _id }, { $pull: { likedBy: userId } });
+    } else {
+      await collection.updateOne({ _id }, { $addToSet: { likedBy: userId } });
+    }
+    const updated = await collection.findOne({ _id });
+    response.json({ post: serializeCommunityPost(updated) });
+  } catch (error) {
+    console.error("Failed to react to community post", error);
+    response.status(500).json({ error: "Failed to react to community post." });
+  }
+});
+
+app.post("/api/community/posts/:postId/comments", async (request, response) => {
+  const { postId } = request.params;
+  const { userId, author, content } = request.body || {};
+  if (
+    !ObjectId.isValid(postId) ||
+    typeof userId !== "string" ||
+    !userId.trim() ||
+    typeof author !== "string" ||
+    !author.trim() ||
+    typeof content !== "string" ||
+    !content.trim() ||
+    content.length > 1000
+  ) {
+    response.status(400).json({ error: "A comment is required." });
+    return;
+  }
+
+  try {
+    const collection = communityPostCollection();
+    const _id = new ObjectId(postId);
+    const comment = {
+      id: new ObjectId().toString(),
+      userId: userId.trim(),
+      author: author.trim().slice(0, 80),
+      content: content.trim(),
+      createdAt: new Date().toISOString(),
+    };
+    const result = await collection.updateOne(
+      { _id },
+      { $push: { comments: comment } },
+    );
+    if (!result.matchedCount) {
+      response.status(404).json({ error: "Community post not found." });
+      return;
+    }
+    const updated = await collection.findOne({ _id });
+    response.json({ post: serializeCommunityPost(updated) });
+  } catch (error) {
+    console.error("Failed to comment on community post", error);
+    response.status(500).json({ error: "Failed to add comment." });
+  }
+});
+
+app.delete("/api/community/posts/:postId", async (request, response) => {
+  const { postId } = request.params;
+  const { userId } = request.body || {};
+  if (!ObjectId.isValid(postId) || typeof userId !== "string" || !userId.trim()) {
+    response.status(400).json({ error: "A valid post and user are required." });
+    return;
+  }
+
+  try {
+    const collection = communityPostCollection();
+    const _id = new ObjectId(postId);
+    const post = await collection.findOne({ _id });
+    if (!post) {
+      response.status(404).json({ error: "Community post not found." });
+      return;
+    }
+    if (post.userId !== userId.trim()) {
+      response.status(403).json({ error: "You can only delete your own posts." });
+      return;
+    }
+    await collection.deleteOne({ _id });
+    response.json({ success: true });
+  } catch (error) {
+    console.error("Failed to delete community post", error);
+    response.status(500).json({ error: "Failed to delete community post." });
+  }
+});
+
+// ── Community discussions ──────────────────────────────────────────────────
+const communityDiscussionCollection = () => client.db(databaseName).collection("communityDiscussions");
+
+function serializeCommunityDiscussion(discussion) {
+  return {
+    id: discussion._id.toString(),
+    userId: discussion.userId,
+    author: discussion.author,
+    title: discussion.title,
+    category: discussion.category,
+    content: discussion.content,
+    createdAt: discussion.createdAt,
+    lastActivityAt: discussion.lastActivityAt || discussion.createdAt,
+    replies: discussion.replies || [],
+  };
+}
+
+app.get("/api/community/discussions", async (_request, response) => {
+  try {
+    const discussions = await communityDiscussionCollection()
+      .find({})
+      .sort({ lastActivityAt: -1, createdAt: -1 })
+      .limit(100)
+      .toArray();
+    response.json({ discussions: discussions.map(serializeCommunityDiscussion) });
+  } catch (error) {
+    console.error("Failed to load community discussions", error);
+    response.status(500).json({ error: "Failed to load community discussions." });
+  }
+});
+
+app.get("/api/community/discussions/:discussionId", async (request, response) => {
+  const { discussionId } = request.params;
+  if (!ObjectId.isValid(discussionId)) {
+    response.status(400).json({ error: "A valid discussion is required." });
+    return;
+  }
+
+  try {
+    const discussion = await communityDiscussionCollection().findOne({
+      _id: new ObjectId(discussionId),
+    });
+    if (!discussion) {
+      response.status(404).json({ error: "Discussion not found." });
+      return;
+    }
+    response.json({ discussion: serializeCommunityDiscussion(discussion) });
+  } catch (error) {
+    console.error("Failed to load community discussion", error);
+    response.status(500).json({ error: "Failed to load community discussion." });
+  }
+});
+
+app.put("/api/community/discussions/:discussionId/author", async (request, response) => {
+  const { discussionId } = request.params;
+  const { userId, author } = request.body || {};
+  if (
+    !ObjectId.isValid(discussionId) ||
+    typeof userId !== "string" || !userId.trim() ||
+    typeof author !== "string" || !author.trim() || author.length > 80
+  ) {
+    response.status(400).json({ error: "A valid user and display name are required." });
+    return;
+  }
+
+  try {
+    const collection = communityDiscussionCollection();
+    const _id = new ObjectId(discussionId);
+    const result = await collection.updateOne(
+      { _id, userId: userId.trim() },
+      {
+        $set: {
+          author: author.trim(),
+          "replies.$[reply].author": author.trim(),
+        },
+      },
+      { arrayFilters: [{ "reply.userId": userId.trim() }] },
+    );
+    if (!result.matchedCount) {
+      response.status(404).json({ error: "Your discussion was not found." });
+      return;
+    }
+    const discussion = await collection.findOne({ _id });
+    response.json({ discussion: serializeCommunityDiscussion(discussion) });
+  } catch (error) {
+    console.error("Failed to update community discussion author", error);
+    response.status(500).json({ error: "Failed to update your display name." });
+  }
+});
+
+app.post("/api/community/discussions", async (request, response) => {
+  const { userId, author, title, category, content } = request.body || {};
+  if (
+    typeof userId !== "string" || !userId.trim() ||
+    typeof author !== "string" || !author.trim() ||
+    typeof title !== "string" || !title.trim() || title.length > 140 ||
+    typeof category !== "string" || !category.trim() ||
+    typeof content !== "string" || !content.trim() || content.length > 4000
+  ) {
+    response.status(400).json({ error: "A title, category, and discussion are required." });
+    return;
+  }
+
+  try {
+    const createdAt = new Date().toISOString();
+    const discussion = {
+      userId: userId.trim(),
+      author: author.trim().slice(0, 80),
+      title: title.trim(),
+      category: category.trim().slice(0, 60),
+      content: content.trim(),
+      createdAt,
+      lastActivityAt: createdAt,
+      replies: [],
+    };
+    const result = await communityDiscussionCollection().insertOne(discussion);
+    response.status(201).json({
+      discussion: serializeCommunityDiscussion({ ...discussion, _id: result.insertedId }),
+    });
+  } catch (error) {
+    console.error("Failed to create community discussion", error);
+    response.status(500).json({ error: "Failed to create community discussion." });
+  }
+});
+
+app.post("/api/community/discussions/:discussionId/replies", async (request, response) => {
+  const { discussionId } = request.params;
+  const { userId, author, content } = request.body || {};
+  if (
+    !ObjectId.isValid(discussionId) ||
+    typeof userId !== "string" || !userId.trim() ||
+    typeof author !== "string" || !author.trim() ||
+    typeof content !== "string" || !content.trim() || content.length > 2000
+  ) {
+    response.status(400).json({ error: "A valid reply is required." });
+    return;
+  }
+
+  try {
+    const collection = communityDiscussionCollection();
+    const _id = new ObjectId(discussionId);
+    const reply = {
+      id: new ObjectId().toString(),
+      userId: userId.trim(),
+      author: author.trim().slice(0, 80),
+      content: content.trim(),
+      createdAt: new Date().toISOString(),
+    };
+    const lastActivityAt = new Date().toISOString();
+    const result = await collection.updateOne(
+      { _id },
+      { $push: { replies: reply }, $set: { lastActivityAt } },
+    );
+    if (!result.matchedCount) {
+      response.status(404).json({ error: "Discussion not found." });
+      return;
+    }
+    const discussion = await collection.findOne({ _id });
+    response.json({ discussion: serializeCommunityDiscussion(discussion) });
+  } catch (error) {
+    console.error("Failed to add discussion reply", error);
+    response.status(500).json({ error: "Failed to add discussion reply." });
+  }
+});
+
+// ── Submit Rating ──────────────────────────────────────────────────────────
 app.post("/api/ratings", async (request, response) => {
   const { sellerId, userId, userName, stars, comment, car } = request.body || {};
   if (!sellerId || !userId || !stars || stars < 1 || stars > 5) {

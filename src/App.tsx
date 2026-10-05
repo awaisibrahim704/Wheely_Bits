@@ -66,10 +66,12 @@ import CreateNewPassword from "./pages/CreateNewPassword";
 import SignUp from "./pages/SignUp";
 import NewUserWelcome from "./pages/NewUserWelcome";
 import UserDashboard from "./pages/UserDashboard";
+import AddGarageCar from "./pages/AddGarageCar";
+import GarageCarDetails from "./pages/GarageCarDetails";
 import MyProfile from "./pages/MyProfile";
 
 import BuildLog from "./pages/BuildLog";
-import DiscussionThread from "./pages/DiscussionThread";
+import CommunityDiscussionThread from "./pages/CommunityDiscussionThread";
 import CreateBuildLog from "./pages/CreateBuildLog";
 
 import NotFound from "./pages/NotFound";
@@ -143,7 +145,10 @@ function App() {
             <Route path="/vendors/:id" element={<VendorDetail />} />
             <Route path="/vendors/:id/catalog" element={<VendorCatalog />} />
             <Route path="/vendors/:id/contact" element={<ContactSeller />} />
-            <Route path="/booking/schedule" element={<ScheduleInstallation />} />
+            <Route
+              path="/booking/schedule"
+              element={<ScheduleInstallation />}
+            />
             <Route path="/booking/success" element={<BookingConfirmed />} />
 
             {/* Rim/Wrap/Tint routing entry points */}
@@ -154,10 +159,20 @@ function App() {
             <Route path="/community" element={<Community />} />
             <Route path="/community/thread/:id" element={<CommunityThread />} />
             <Route path="/community/build-log" element={<BuildLog />} />
-            <Route path="/community/discussion" element={<DiscussionThread />} />
+            <Route
+              path="/community/discussion/:id"
+              element={<CommunityDiscussionThread />}
+            />
+            <Route
+              path="/community/discussion"
+              element={<Navigate to="/community" replace />}
+            />
 
             <Route path="/education" element={<EducationHub />} />
-            <Route path="/education/article/:slug" element={<TechnicalGuide />} />
+            <Route
+              path="/education/article/:slug"
+              element={<TechnicalGuide />}
+            />
             <Route path="/rim/fitment-101" element={<TechnicalGuide />} />
 
             <Route path="/faq" element={<FAQ />} />
@@ -167,16 +182,43 @@ function App() {
 
             {/* Protected Routes (Seller & User Account) */}
             <Route element={<ProtectedRoute />}>
-              <Route path="/seller/business-information" element={<SellerBusinessInformation />} />
-              <Route path="/seller/store-details" element={<SellerStoreDetails />} />
-              <Route path="/seller/complete" element={<SellerSetupComplete />} />
+              <Route
+                path="/seller/business-information"
+                element={<SellerBusinessInformation />}
+              />
+              <Route
+                path="/seller/store-details"
+                element={<SellerStoreDetails />}
+              />
+              <Route
+                path="/seller/complete"
+                element={<SellerSetupComplete />}
+              />
               <Route path="/seller/dashboard" element={<SellerDashboard />} />
-              <Route path="/seller/products/new" element={<SellerProductCategory />} />
-              <Route path="/seller/products/specifications" element={<SellerProductSpecifications />} />
-              <Route path="/seller/products/tyre-specifications" element={<SellerTyreSpecifications />} />
-              <Route path="/seller/products/preview" element={<SellerProductPreview />} />
-              <Route path="/community/create-build-log" element={<CreateBuildLog />} />
+              <Route
+                path="/seller/products/new"
+                element={<SellerProductCategory />}
+              />
+              <Route
+                path="/seller/products/specifications"
+                element={<SellerProductSpecifications />}
+              />
+              <Route
+                path="/seller/products/tyre-specifications"
+                element={<SellerTyreSpecifications />}
+              />
+              <Route
+                path="/seller/products/preview"
+                element={<SellerProductPreview />}
+              />
+              <Route
+                path="/community/create-build-log"
+                element={<CreateBuildLog />}
+              />
               <Route path="/garage" element={<UserDashboard />} />
+              <Route path="/garage/add" element={<AddGarageCar />} />
+              <Route path="/garage/car/:carId" element={<GarageCarDetails />} />
+              <Route path="/garage/:carId/edit" element={<AddGarageCar />} />
               <Route path="/profile" element={<MyProfile />} />
             </Route>
 

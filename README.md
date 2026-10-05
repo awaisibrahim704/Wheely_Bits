@@ -8,6 +8,13 @@ Seller drafts remain in browser storage for recovery, while completing seller se
 2. Start the API with `npm run seller-api`.
 3. Start the frontend with `npm run dev`.
 
+Community discussions are shared through MongoDB and refresh automatically while
+the discussion page is open. Start the seller API and MongoDB before creating
+topics or replies; discussions are not saved to browser-only storage.
+Signed-in contributors appear under their account display name. Guests are asked
+to choose a community display name, and topic owners can replace an old
+"Enthusiast" author label on their topic.
+
 The API exposes `GET /api/health`, `PUT /api/sellers/:userId`, and `POST /api/products`. Seller profiles are stored in the `sellers` collection and published listings in the `products` collection.
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.

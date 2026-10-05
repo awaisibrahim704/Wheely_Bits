@@ -3,22 +3,18 @@ import type { ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
-  Car,
   Check,
   ChevronDown,
   CloudUpload,
   ImagePlus,
   Info,
-  Plus,
   Save,
   Sparkles,
   Trash2,
   Upload,
-  X,
 } from "lucide-react";
 
 const listingKey = "wheelybits:product-listing-draft";
-type Vehicle = { make: string; model: string; years: string };
 type Listing = {
   brand: string;
   productName: string;
@@ -35,7 +31,6 @@ type Listing = {
   material: string;
   color: string;
   finish: string;
-  vehicles: Vehicle[];
   gallery: string[];
   aiImage: string;
 };
@@ -55,10 +50,6 @@ const defaults: Listing = {
   material: "Forged Monoblock 6061-T6",
   color: "Satin Black & Diamond Polished",
   finish: "Gloss Clear Coat",
-  vehicles: [
-    { make: "Toyota Corolla", model: "2018-2023 - Hub Bore 54.1mm", years: "" },
-    { make: "Honda Civic", model: "2016-2021 - Hub Bore 64.1mm", years: "" },
-  ],
   gallery: [],
   aiImage: "",
 };
@@ -75,11 +66,6 @@ export default function SellerProductSpecifications() {
   const [draft, setDraft] = useState<Listing>({
     ...defaults,
     ...readListing(),
-  });
-  const [vehicle, setVehicle] = useState<Vehicle>({
-    make: "",
-    model: "",
-    years: "",
   });
   const [aiMessage, setAiMessage] = useState("");
   const update = <K extends keyof Listing>(field: K, value: Listing[K]) =>
@@ -104,11 +90,6 @@ export default function SellerProductSpecifications() {
       setAiMessage("AI calibration succeeded (99.4%)");
     };
     reader.readAsDataURL(file);
-  };
-  const addVehicle = () => {
-    if (!vehicle.make || !vehicle.model) return;
-    update("vehicles", [...draft.vehicles, vehicle]);
-    setVehicle({ make: "", model: "", years: "" });
   };
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -278,74 +259,6 @@ export default function SellerProductSpecifications() {
                 onChange={(value) => update("finish", value)}
                 options={["Gloss Clear Coat", "Satin Clear Coat", "Brushed"]}
               />
-            </div>
-          </SpecSection>
-          <SpecSection
-            icon={<Car size={15} />}
-            title="Compatible Vehicles"
-            description="Map this rim to specific chassis models so buyers find it instantly in vehicle searches."
-          >
-            <div className="seller-vehicle-entry">
-              <small>
-                <Plus size={11} /> Add Compatible Vehicle Entry
-              </small>
-              <div className="seller-spec-grid seller-spec-grid-3">
-                <TextField
-                  label="Vehicle Manufacturer"
-                  value={vehicle.make}
-                  onChange={(value) => setVehicle({ ...vehicle, make: value })}
-                  placeholder="e.g. Nissan / BMW / Porsche"
-                />
-                <TextField
-                  label="Vehicle Model"
-                  value={vehicle.model}
-                  onChange={(value) => setVehicle({ ...vehicle, model: value })}
-                  placeholder="e.g. GT-R / M3 / Cayman"
-                />
-                <TextField
-                  label="Year / Year Range"
-                  value={vehicle.years}
-                  onChange={(value) => setVehicle({ ...vehicle, years: value })}
-                  placeholder="e.g. 2017-2024"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={addVehicle}
-                className="seller-attach-button"
-              >
-                + Attach Vehicle
-              </button>
-            </div>
-            <label className="seller-spec-label">
-              Currently Attached Vehicles
-            </label>
-            <div className="seller-attached-grid">
-              {draft.vehicles.map((item, index) => (
-                <div
-                  className="seller-attached-vehicle"
-                  key={`${item.make}-${index}`}
-                >
-                  <Car size={14} />
-                  <span>
-                    <strong>{item.make}</strong>
-                    <small>{item.model}</small>
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      update(
-                        "vehicles",
-                        draft.vehicles.filter(
-                          (_, itemIndex) => itemIndex !== index,
-                        ),
-                      )
-                    }
-                  >
-                    <X size={12} />
-                  </button>
-                </div>
-              ))}
             </div>
           </SpecSection>
           <SpecSection

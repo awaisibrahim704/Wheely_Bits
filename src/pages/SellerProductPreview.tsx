@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import {
-  Car,
   Eye,
   MapPin,
   Package,
@@ -11,7 +10,12 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { publishSellerProduct, updateSellerProduct } from "../lib/sellerApi";
+import {
+  computeRatingSummary,
+  getLocalRatings,
+  publishSellerProduct,
+  updateSellerProduct,
+} from "../lib/sellerApi";
 
 const listingKey = "wheelybits:product-listing-draft";
 type Draft = {
@@ -32,7 +36,6 @@ type Draft = {
   loadIndex?: string;
   speedRating?: string;
   tyreType?: string;
-  vehicles?: Array<{ make: string; model: string }>;
   gallery?: string[];
 };
 function readDraft(): Draft {
@@ -48,6 +51,7 @@ export default function SellerProductPreview() {
   const { user } = useAuth();
   const draft = useMemo(readDraft, []);
   const [customerView, setCustomerView] = useState(false);
+  const [selectedGalleryIndex, setSelectedGalleryIndex] = useState(0);
   const [published, setPublished] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [publishError, setPublishError] = useState("");
@@ -60,7 +64,6 @@ export default function SellerProductPreview() {
     (isTyre ? "Pilot Sport 4 S" : "Vossen Hybrid Forged HF-5 Monoblock");
   const brand = draft.brand || (isTyre ? "Michelin" : "Vossen Wheels");
   const stock = draft.stock || (isTyre ? "12" : "5");
-  const vehicles = draft.vehicles ?? [];
   const details = isTyre
     ? [
         ["Width", `${draft.width || "225"} mm`],
@@ -81,6 +84,9 @@ export default function SellerProductPreview() {
   const editPath = isTyre
     ? "/seller/products/tyre-specifications"
     : "/seller/products/specifications";
+  const galleryImages = draft.gallery ?? [];
+  const activeGalleryImage =
+    galleryImages[selectedGalleryIndex] ?? galleryImages[0] ?? "";
   const publish = async () => {
     if (!user?.uid) {
       setPublishError("You must be signed in before publishing a product.");
@@ -155,18 +161,33 @@ export default function SellerProductPreview() {
           <div className="seller-preview-main">
             <div className="seller-preview-media">
               <div className="seller-preview-image">
-                {draft.gallery?.[0] ? (
-                  <img src={draft.gallery[0]} alt={productName} />
+                {activeGalleryImage ? (
+                  <img src={activeGalleryImage} alt={productName} />
                 ) : (
                   <PreviewProductIcon tyre={isTyre} />
                 )}
               </div>
-              <div className="seller-preview-thumbs">
-                <div className="seller-thumb-active">Primary</div>
-                <div>3/4 Angle</div>
-                <div>{isTyre ? "Tread Profile" : "Concave Lip"}</div>
-                <div>Details</div>
-              </div>
+              {galleryImages.length > 0 && (
+                <div className="seller-preview-thumbs">
+                  {galleryImages.slice(0, 4).map((image, index) => (
+                    <button
+                      key={`${image}-${index}`}
+                      type="button"
+                      onClick={() => setSelectedGalleryIndex(index)}
+                      className={
+                        index === selectedGalleryIndex
+                          ? "seller-thumb-active"
+                          : ""
+                      }
+                    >
+                      <img
+                        src={image}
+                        alt={`${productName} gallery ${index + 1}`}
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
               <MerchantCard />
             </div>
             <div className="seller-preview-details">
@@ -209,17 +230,6 @@ export default function SellerProductPreview() {
                     <small>{label}</small>
                     <strong>{value}</strong>
                   </div>
-                ))}
-              </div>
-              <h3>
-                Compatible Vehicles <small>{vehicles.length} ATTACHED</small>
-              </h3>
-              <div className="seller-preview-vehicles">
-                {vehicles.slice(0, 3).map((vehicle, index) => (
-                  <span key={`${vehicle.make}-${index}`}>
-                    <Car size={11} /> {vehicle.make}{" "}
-                    <small>{vehicle.model}</small>
-                  </span>
                 ))}
               </div>
               <div className="seller-preview-customer-actions">
@@ -311,17 +321,54 @@ function PreviewProductIcon({ tyre }: { tyre: boolean }) {
   );
 }
 function MerchantCard() {
+  const sellerDraft = (() => {
+    try {
+      return JSON.parse(
+        window.localStorage.getItem("wheelybits:seller-business-draft") ?? "{}",
+      );
+    } catch {
+      return {};
+    }
+  })();
+
+  const businessName = sellerDraft.businessName || "Apex Performance Wheels";
+  const location =
+    sellerDraft.city || sellerDraft.address || "Rawalpindi / Islamabad";
+  const description =
+    sellerDraft.description ||
+    sellerDraft.storeDescription ||
+    "Authorized automotive fitment specialist";
+  const initials =
+    businessName
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part: string) => part[0]?.toUpperCase() ?? "")
+      .join("") || "AP";
+  const normalizedBusinessName = String(
+    sellerDraft.businessName || "AutoMax Wheels",
+  ).toLowerCase();
+  const sellerId = normalizedBusinessName.includes("aura")
+    ? "aura-custom"
+    : normalizedBusinessName.includes("stance")
+      ? "stancecraft"
+      : "automax-wheels";
+  const ratingSummary = computeRatingSummary(getLocalRatings(sellerId));
+  const rating = (ratingSummary.averageRating ?? 4.9).toFixed(1);
+  const reviews =
+    ratingSummary.totalRatings || Number(sellerDraft.reviews ?? 118);
+
   return (
     <div className="seller-preview-merchant">
       <div>
-        <span>AP</span>
-        <strong>Apex Performance Wheels</strong>
+        <span>{initials}</span>
+        <strong>{businessName}</strong>
         <small>
-          Authorized automotive fitment specialist - Rawalpindi / Islamabad
+          {description} - {location}
         </small>
       </div>
       <b>
-        ★ 4.9 <small>(118 Reviews)</small>
+        ★ {rating} <small>({reviews} Reviews)</small>
       </b>
       <footer>
         <span>

@@ -1,4 +1,5 @@
 export type VendorProduct = {
+  id?: string;
   name: string;
   brand: string;
   type: string;
@@ -29,6 +30,9 @@ export type VendorProfile = {
   features: string[];
   bannerImage: string;
   products: VendorProduct[];
+  productCount?: number;
+  rating?: number;
+  reviewsCount?: number;
 };
 
 export const VENDOR_PROFILES: Record<string, VendorProfile> = {

@@ -1,156 +1,306 @@
-import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, MessageSquare, Heart, Share2, MoreHorizontal, User } from 'lucide-react';
+import { useEffect, useState, type FormEvent } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  ArrowLeft,
+  Heart,
+  MessageSquare,
+  Send,
+  Share2,
+  Trash2,
+  User,
+} from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
+import {
+  addCommunityComment,
+  deleteCommunityPost,
+  getCommunityPosts,
+  toggleCommunityReaction,
+  type CommunityPost,
+} from "../lib/sellerApi";
+
+function relativeTime(value: string) {
+  const minutes = Math.max(
+    1,
+    Math.floor((Date.now() - new Date(value).getTime()) / 60000),
+  );
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  return `${Math.floor(hours / 24)}d ago`;
+}
 
 export default function CommunityThread() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [guestId] = useState(() => {
+    try {
+      const key = "wheelybits:community-guest-id";
+      let value = localStorage.getItem(key);
+      if (!value) {
+        value = `guest-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+        localStorage.setItem(key, value);
+      }
+      return value;
+    } catch {
+      return `guest-${Date.now()}`;
+    }
+  });
+  const [post, setPost] = useState<CommunityPost | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [comment, setComment] = useState("");
+  const [commenting, setCommenting] = useState(false);
+  const [error, setError] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const currentUserId = user?.uid || guestId;
+  const currentAuthor =
+    user?.displayName || user?.email?.split("@")[0] || "Enthusiast";
 
-  // Mock post data
-  const post = {
-    id: id,
-    author: 'ApexHunter_99',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
-    time: '2 hours ago',
-    title: 'GT3 RS Delivery Day - First Impressions & Break-in Process',
-    content: `Finally took delivery of the 992 GT3 RS today after an 18-month wait. The sheer presence of this car in person cannot be captured in photos.\n\nThe initial drive home was a mix of terrifying and exhilarating. The suspension, even in normal mode, communicates every pebble on the road. Going to keep the revs under 7k for the first 1,000 miles, but even short shifting, the mechanical symphony from the 4.0L flat-six is intoxicating.\n\nFirst mods planned: \n1. Full body stealth PPF\n2. GMG center bypass exhaust\n3. Track alignment setup\n\nI'll be documenting the entire build process here. Let me know if you have any questions about the delivery process or initial impressions!`,
-    images: [
-      'https://images.unsplash.com/photo-1614200187524-dc4b892acf16?q=80&w=1200&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1503371476106-02685710f7a5?q=80&w=1200&auto=format&fit=crop'
-    ],
-    likes: 342,
-    comments: 56
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    getCommunityPosts()
+      .then((posts) => {
+        if (active) setPost(posts.find((entry) => entry.id === id) || null);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [id]);
+
+  const handleReaction = async () => {
+    if (!post) return;
+    const updated = await toggleCommunityReaction(post.id, currentUserId);
+    if (updated) setPost(updated);
   };
 
-  const comments = [
-    {
-      id: 1,
-      author: 'TrackAddict',
-      avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=200&auto=format&fit=crop',
-      time: '1 hour ago',
-      content: 'Absolutely stunning spec. The wait must have been agonizing. Are you taking it to Laguna Seca anytime soon?',
-      likes: 12
-    },
-    {
-      id: 2,
-      author: 'ApexHunter_99',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
-      time: '45 mins ago',
-      content: '@TrackAddict Thanks! And yes, aiming for the PCA event at Laguna in October once it\'s fully broken in and aligned.',
-      likes: 8
+  const handleComment = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!post || !comment.trim()) return;
+    setCommenting(true);
+    setError("");
+    const updated = await addCommunityComment(post.id, {
+      userId: currentUserId,
+      author: currentAuthor,
+      content: comment.trim(),
+    });
+    if (updated) {
+      setPost(updated);
+      setComment("");
+    } else {
+      setError("This post could not be updated. Please try again.");
     }
-  ];
+    setCommenting(false);
+  };
+
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+    } catch {
+      setError("Could not copy the post link.");
+    }
+  };
+
+  const handleDelete = async () => {
+    if (
+      !post ||
+      !window.confirm("Delete this community post? This cannot be undone.")
+    ) {
+      return;
+    }
+    setDeleting(true);
+    const deleted = await deleteCommunityPost(post.id, currentUserId);
+    if (deleted) {
+      navigate("/community");
+    } else {
+      setError("Only the post author can delete this post.");
+      setDeleting(false);
+    }
+  };
 
   return (
-    <div className="flex flex-col min-h-full pb-32">
-      {/* Header */}
-      <div className="max-w-[800px] mx-auto w-full px-4 md:px-0 pt-8 mb-8 sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-white/5 pb-4">
-        <Link to="/community" className="inline-flex items-center gap-2 text-on-surface-muted hover:text-on-surface transition-colors font-bold uppercase tracking-widest text-xs">
-          <ArrowLeft className="w-4 h-4" />
-          Back to Community
+    <main className="min-h-screen px-4 pb-20 pt-8">
+      <div className="mx-auto max-w-[800px]">
+        <Link
+          to="/community"
+          className="mb-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-on-surface-muted transition hover:text-on-surface"
+        >
+          <ArrowLeft size={16} /> Back to Community
         </Link>
-      </div>
 
-      <div className="max-w-[800px] mx-auto w-full px-4 md:px-0">
-        
-        {/* Main Post */}
-        <div className="bg-surface-high/40 rounded-3xl border border-white/10 p-6 md:p-8 mb-8">
-          {/* Author Info */}
-          <div className="flex justify-between items-start mb-6">
-            <div className="flex items-center gap-4">
-              <img src={post.avatar} alt={post.author} className="w-12 h-12 rounded-full border-2 border-surface-highest object-cover" />
-              <div>
-                <h3 className="font-bold text-on-surface">{post.author}</h3>
-                <p className="text-xs text-on-surface-muted">{post.time}</p>
+        {loading ? (
+          <p className="py-16 text-center text-on-surface-muted">
+            Loading post…
+          </p>
+        ) : !post ? (
+          <div className="rounded-xl border border-white/10 bg-surface-high/50 p-8 text-center">
+            <h1 className="text-xl font-semibold text-on-surface">
+              Post not found
+            </h1>
+            <p className="mt-2 text-sm text-on-surface-muted">
+              This post may have been removed or is not available on this
+              device.
+            </p>
+          </div>
+        ) : (
+          <>
+            <article className="overflow-hidden rounded-2xl border border-white/10 bg-surface-high/50">
+              <header className="flex items-center gap-3 p-5 sm:p-7">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-brand/15 text-primary-brand">
+                  <User size={20} />
+                </span>
+                <div>
+                  <h1 className="font-semibold text-on-surface">
+                    {post.author}
+                  </h1>
+                  <time className="text-xs text-on-surface-muted">
+                    {relativeTime(post.createdAt)}
+                  </time>
+                </div>
+                {post.userId === currentUserId && (
+                  <button
+                    type="button"
+                    onClick={() => void handleDelete()}
+                    disabled={deleting}
+                    title="Delete post"
+                    aria-label="Delete your post"
+                    className="ml-auto rounded-lg p-2 text-on-surface-muted transition hover:bg-red-500/10 hover:text-red-300 disabled:opacity-50"
+                  >
+                    <Trash2 size={17} />
+                  </button>
+                )}
+              </header>
+
+              <div className="space-y-4 px-5 pb-5 sm:px-7 sm:pb-7">
+                <p className="whitespace-pre-wrap break-words text-base leading-relaxed text-on-surface">
+                  {post.description}
+                </p>
+                <h2 className="text-xs font-semibold uppercase tracking-wider text-on-surface-muted">
+                  Photos · {post.images.length}
+                </h2>
               </div>
-            </div>
-            <button className="text-on-surface-muted hover:text-on-surface">
-              <MoreHorizontal className="w-5 h-5" />
-            </button>
-          </div>
 
-          {/* Content */}
-          <h1 className="text-2xl md:text-3xl font-medium text-on-surface mb-6">{post.title}</h1>
-          
-          <div className="prose prose-invert max-w-none mb-8 text-on-surface-muted/90">
-            {post.content.split('\\n').map((paragraph, idx) => (
-              <p key={idx} className="mb-4">{paragraph}</p>
-            ))}
-          </div>
-
-          {/* Media Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            {post.images.map((img, idx) => (
-              <div key={idx} className="aspect-square rounded-2xl overflow-hidden border border-white/5">
-                <img src={img} alt="Post media" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+              <div className="space-y-3 px-3 pb-4 sm:space-y-5 sm:px-7 sm:pb-7">
+                {post.images.map((image, index) => (
+                  <figure
+                    key={`${post.id}-photo-${index}`}
+                    className="overflow-hidden rounded-xl border border-white/10 bg-background/60"
+                  >
+                    <img
+                      src={image}
+                      alt={`Photo ${index + 1} shared by ${post.author}`}
+                      className="max-h-[80vh] w-full object-contain"
+                    />
+                    <figcaption className="px-3 py-2 text-xs text-on-surface-muted">
+                      {index + 1} of {post.images.length}
+                    </figcaption>
+                  </figure>
+                ))}
               </div>
-            ))}
-          </div>
 
-          {/* Interaction Bar */}
-          <div className="flex items-center gap-6 border-t border-white/10 pt-6">
-            <button className="flex items-center gap-2 text-primary-brand hover:text-primary transition-colors group">
-              <Heart className="w-5 h-5 fill-primary-brand group-hover:scale-110 transition-transform" />
-              <span className="font-bold">{post.likes}</span>
-            </button>
-            <button className="flex items-center gap-2 text-on-surface-muted hover:text-on-surface transition-colors group">
-              <MessageSquare className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              <span className="font-bold">{post.comments}</span>
-            </button>
-            <button className="flex items-center gap-2 text-on-surface-muted hover:text-on-surface transition-colors ml-auto">
-              <Share2 className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
+              <footer className="flex items-center gap-5 border-t border-white/10 px-5 py-4 sm:px-7">
+                <button
+                  type="button"
+                  onClick={() => void handleReaction()}
+                  aria-pressed={post.likedBy.includes(currentUserId)}
+                  className={`inline-flex items-center gap-2 text-sm transition ${post.likedBy.includes(currentUserId) ? "text-primary-brand" : "text-on-surface-muted hover:text-primary-brand"}`}
+                >
+                  <Heart
+                    size={18}
+                    fill={
+                      post.likedBy.includes(currentUserId)
+                        ? "currentColor"
+                        : "none"
+                    }
+                  />
+                  {post.likedBy.length} Like
+                  {post.likedBy.length === 1 ? "" : "s"}
+                </button>
+                <span className="inline-flex items-center gap-2 text-sm text-on-surface-muted">
+                  <MessageSquare size={18} /> {post.comments.length} Comments
+                </span>
+                <button
+                  type="button"
+                  onClick={() => void handleShare()}
+                  aria-label="Copy post link"
+                  className="ml-auto rounded-lg p-2 text-on-surface-muted transition hover:bg-white/5 hover:text-on-surface"
+                >
+                  <Share2 size={18} />
+                </button>
+              </footer>
+            </article>
 
-        {/* Comment Input */}
-        <div className="flex gap-4 mb-12">
-          <div className="w-10 h-10 rounded-full bg-surface-highest border border-white/10 flex items-center justify-center shrink-0">
-            <User className="w-5 h-5 text-on-surface-muted" />
-          </div>
-          <div className="flex-grow">
-            <textarea 
-              placeholder="Add a comment..." 
-              className="w-full bg-surface-high border border-white/10 rounded-2xl p-4 min-h-[100px] resize-none focus:outline-none focus:border-primary-brand focus:ring-1 focus:ring-primary-brand text-on-surface text-sm"
-            ></textarea>
-            <div className="flex justify-end mt-2">
-              <button className="bg-primary-brand text-on-primary font-bold px-6 py-2 rounded-lg text-sm hover:brightness-110 transition-all shadow-lg shadow-primary-brand/20">
-                Post Comment
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Comments Section */}
-        <div className="space-y-8">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-on-surface-muted border-b border-white/10 pb-4">Responses ({comments.length})</h3>
-          
-          {comments.map((comment) => (
-            <div key={comment.id} className="flex gap-4">
-              <img src={comment.avatar} alt={comment.author} className="w-10 h-10 rounded-full border border-surface-highest object-cover shrink-0" />
-              <div className="flex-grow">
-                <div className="bg-surface-high/40 rounded-2xl rounded-tl-none border border-white/5 p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <span className="font-bold text-on-surface text-sm mr-2">{comment.author}</span>
-                      <span className="text-xs text-on-surface-muted">{comment.time}</span>
+            <section
+              className="mt-8 space-y-5"
+              aria-labelledby="comments-heading"
+            >
+              <h2
+                id="comments-heading"
+                className="text-sm font-bold uppercase tracking-wider text-on-surface-muted"
+              >
+                Comments ({post.comments.length})
+              </h2>
+              <form
+                onSubmit={(event) => void handleComment(event)}
+                className="flex gap-3"
+              >
+                <label className="sr-only" htmlFor="thread-comment">
+                  Write a comment
+                </label>
+                <input
+                  id="thread-comment"
+                  value={comment}
+                  onChange={(event) => setComment(event.target.value)}
+                  maxLength={1000}
+                  placeholder="Add to the conversation…"
+                  className="min-w-0 flex-1 rounded-lg border border-white/10 bg-surface-high px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-muted focus:border-primary-brand focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  disabled={commenting || !comment.trim()}
+                  aria-label="Post comment"
+                  className="rounded-lg bg-primary-brand px-4 text-on-primary disabled:opacity-50"
+                >
+                  <Send size={17} />
+                </button>
+              </form>
+              {error && (
+                <p role="alert" className="text-sm text-red-300">
+                  {error}
+                </p>
+              )}
+              <div className="space-y-3">
+                {post.comments.map((entry) => (
+                  <article
+                    key={entry.id}
+                    className="rounded-xl border border-white/10 bg-surface-high/40 p-4"
+                  >
+                    <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                      <span className="text-sm font-semibold text-on-surface">
+                        {entry.author}
+                      </span>
+                      <time className="text-xs text-on-surface-muted">
+                        {relativeTime(entry.createdAt)}
+                      </time>
                     </div>
-                  </div>
-                  <p className="text-on-surface-muted text-sm leading-relaxed">{comment.content}</p>
-                </div>
-                <div className="flex items-center gap-4 mt-2 px-2">
-                  <button className="flex items-center gap-1.5 text-xs font-bold text-on-surface-muted hover:text-primary-brand transition-colors">
-                    <Heart className="w-3.5 h-3.5" />
-                    {comment.likes}
-                  </button>
-                  <button className="text-xs font-bold text-on-surface-muted hover:text-on-surface transition-colors">
-                    Reply
-                  </button>
-                </div>
+                    <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-on-surface-muted">
+                      {entry.content}
+                    </p>
+                  </article>
+                ))}
+                {post.comments.length === 0 && (
+                  <p className="py-3 text-sm text-on-surface-muted">
+                    No comments yet. Start the conversation.
+                  </p>
+                )}
               </div>
-            </div>
-          ))}
-        </div>
-
+            </section>
+          </>
+        )}
       </div>
-    </div>
+    </main>
   );
 }

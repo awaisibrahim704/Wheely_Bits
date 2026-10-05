@@ -19,6 +19,7 @@ import {
 import { VENDOR_PROFILES } from "../lib/vendorProfiles";
 
 type CatalogProduct = {
+  id?: string;
   name: string;
   brand: string;
   kind: string;
@@ -27,6 +28,32 @@ type CatalogProduct = {
   image: string;
   badge: string;
   badgeTone: string;
+};
+
+const matchesCatalogCategory = (
+  product: CatalogProduct,
+  selectedCategory: string,
+) => {
+  const normalized = selectedCategory.toLowerCase();
+  const haystack =
+    `${product.name} ${product.brand} ${product.kind} ${product.spec}`.toLowerCase();
+
+  if (normalized.includes("all")) return true;
+  if (normalized.includes("wheels") || normalized.includes("rims")) {
+    return (
+      /(rim|wheel|monoblock|forged|flow[- ]?formed|concave|mesh|spoke|racing)/.test(
+        haystack,
+      ) && !/(tyre|tire)/.test(haystack)
+    );
+  }
+  if (normalized.includes("tyre")) {
+    return /(tyre|tire|pilot|neova|advan|michelin|yokohama)/.test(haystack);
+  }
+  if (normalized.includes("hardware")) {
+    return /(hardware|lug|bolt|key|adapter|bracket|nuts|stud)/.test(haystack);
+  }
+
+  return true;
 };
 
 const demoProducts: CatalogProduct[] = [
@@ -179,6 +206,7 @@ export default function VendorCatalog() {
     const rawProducts = marketplace?.products ?? [];
     if (rawProducts.length > 0) {
       return rawProducts.map((product) => ({
+        id: product._id,
         name: product.productName || "Unnamed product",
         brand: product.brand || "Unbranded",
         kind:
@@ -205,7 +233,10 @@ export default function VendorCatalog() {
   const activeVendorId = id || "automax-wheels";
   const vendorProfile = VENDOR_PROFILES[activeVendorId];
 
-  const ratings = useMemo(() => getLocalRatings(activeVendorId), [activeVendorId]);
+  const ratings = useMemo(
+    () => getLocalRatings(activeVendorId),
+    [activeVendorId],
+  );
   const ratingSummary = useMemo(() => computeRatingSummary(ratings), [ratings]);
 
   const sellerName =
@@ -219,6 +250,8 @@ export default function VendorCatalog() {
 
   const visibleProducts = useMemo(() => {
     let result = actualProducts.filter((product) => {
+      if (!matchesCatalogCategory(product, category)) return false;
+
       // Text search
       const q = query.trim().toLowerCase();
       if (q) {
@@ -247,12 +280,13 @@ export default function VendorCatalog() {
       // Diameter filter
       if (selectedDiameters.length > 0) {
         const specText = product.spec.toLowerCase();
-        const hasMatch = selectedDiameters.some((d) =>
-          specText.includes(`${d}×`) ||
-          specText.includes(`${d}x`) ||
-          specText.includes(`/${d}r`) ||
-          specText.includes(`${d}"`) ||
-          new RegExp(`\\b${d}\\b`).test(specText),
+        const hasMatch = selectedDiameters.some(
+          (d) =>
+            specText.includes(`${d}×`) ||
+            specText.includes(`${d}x`) ||
+            specText.includes(`/${d}r`) ||
+            specText.includes(`${d}"`) ||
+            new RegExp(`\\b${d}\\b`).test(specText),
         );
         if (!hasMatch) return false;
       }
@@ -302,7 +336,17 @@ export default function VendorCatalog() {
       );
 
     return result;
-  }, [actualProducts, brand, category, query, sort, maxPrice, selectedDiameters, showNew, showOpenBox]);
+  }, [
+    actualProducts,
+    brand,
+    category,
+    query,
+    sort,
+    maxPrice,
+    selectedDiameters,
+    showNew,
+    showOpenBox,
+  ]);
 
   return (
     <div className="min-h-screen bg-[#121416] pb-20 text-[#e2e2e5]">
@@ -338,8 +382,15 @@ export default function VendorCatalog() {
                 >
                   <Star className="h-3 w-3 fill-[#d4a373] text-[#d4a373]" />
                   <span>
-                    ★ {ratingSummary.averageRating ? ratingSummary.averageRating.toFixed(1) : (vendorProfile?.rating ?? 4.8)} (
-                    {ratingSummary.totalRatings || vendorProfile?.reviewsCount || ratings.length} reviews)
+                    ★{" "}
+                    {ratingSummary.averageRating
+                      ? ratingSummary.averageRating.toFixed(1)
+                      : (vendorProfile?.rating ?? 4.8)}{" "}
+                    (
+                    {ratingSummary.totalRatings ||
+                      vendorProfile?.reviewsCount ||
+                      ratings.length}{" "}
+                    reviews)
                   </span>
                 </Link>
                 <Link
@@ -449,9 +500,14 @@ export default function VendorCatalog() {
             <div className="border-b border-white/[0.08] py-4">
               <p className="mb-2 font-bold text-white">Price Range (PKR)</p>
               <div className="flex justify-between text-[9px] text-[#c2c8c0]">
-                <span>MIN<br /><strong className="text-white">30,000</strong></span>
+                <span>
+                  MIN
+                  <br />
+                  <strong className="text-white">30,000</strong>
+                </span>
                 <span className="text-right">
-                  MAX<br />
+                  MAX
+                  <br />
                   <strong className="text-white">
                     {maxPrice >= 800000 ? "800,000" : maxPrice.toLocaleString()}
                   </strong>
@@ -480,7 +536,10 @@ export default function VendorCatalog() {
                 "Michelin",
                 "Yokohama",
               ].map((item) => (
-                <label key={item} className="mb-2 flex cursor-pointer items-center text-[#c2c8c0] hover:text-white transition">
+                <label
+                  key={item}
+                  className="mb-2 flex cursor-pointer items-center text-[#c2c8c0] hover:text-white transition"
+                >
                   <input
                     type="radio"
                     name="brand"
@@ -558,7 +617,7 @@ export default function VendorCatalog() {
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {visibleProducts.map((product) => (
                 <article
-                  key={product.name}
+                  key={product.id || product.name}
                   className="overflow-hidden rounded-xl bg-[#1a1c1e] shadow-lg transition hover:-translate-y-0.5 hover:ring-1 hover:ring-[#8fb397]/50"
                 >
                   <div className="relative h-36 bg-[#293031]">
@@ -601,15 +660,16 @@ export default function VendorCatalog() {
                     </strong>
                     {product.kind === "Tyre" ? (
                       <Link
-                        to="/tyre/detail/michelin-ps4s"
+                        to={`/tyre/detail/${encodeURIComponent(product.id || "michelin-ps4s")}`}
                         className="mt-2 block w-full rounded-lg bg-[#abcfb2] py-2 text-center text-[9px] font-semibold text-[#163722]"
                       >
                         View Details{" "}
                         <ArrowRight className="ml-1 inline h-3 w-3" />
                       </Link>
-                    ) : product.name.includes("HF-5") ? (
+                    ) : product.kind === "Rim" ||
+                      product.name.includes("HF-5") ? (
                       <Link
-                        to="/rim/detail/vossen-hf5"
+                        to={`/rim/detail/${encodeURIComponent(product.id || "vossen-hf5")}`}
                         className="mt-2 block w-full rounded-lg bg-[#abcfb2] py-2 text-center text-[9px] font-semibold text-[#163722]"
                       >
                         View Details{" "}

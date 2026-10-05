@@ -17,8 +17,41 @@ export function saveSellerProfile(userId: string, payload: unknown) {
   });
 }
 
+export async function hasSellerProfile(userId: string): Promise<boolean> {
+  if (!userId) return false;
+
+  try {
+    const data = await request<{ seller?: unknown }>(
+      `/api/sellers/${encodeURIComponent(userId)}/dashboard`,
+      { method: "GET" },
+    );
+    if (data?.seller) return true;
+  } catch {
+    // Fall back to a local draft check when the backend is unavailable.
+  }
+
+  try {
+    const draft = window.localStorage.getItem("wheelybits:seller-business-draft");
+    if (!draft) return false;
+
+    const parsed = JSON.parse(draft) as {
+      userId?: string;
+      store?: unknown;
+      status?: string;
+    };
+
+    return Boolean(
+      parsed.userId === userId &&
+        (parsed.status === "submitted" || Boolean(parsed.store)),
+    );
+  } catch {
+    return false;
+  }
+}
+
 export type SellerDashboardProduct = {
   _id: string;
+  userId?: string;
   productName?: string;
   brand?: string;
   category?: string;
@@ -313,19 +346,160 @@ export type MarketplaceData = {
   products: SellerDashboardProduct[];
 };
 
+export type CommunityComment = {
+  id: string;
+  userId: string;
+  author: string;
+  content: string;
+  createdAt: string;
+};
+
+export type CommunityPost = {
+  id: string;
+  userId: string;
+  author: string;
+  description: string;
+  images: string[];
+  createdAt: string;
+  likedBy: string[];
+  comments: CommunityComment[];
+};
+
+export type CommunityDiscussionReply = {
+  id: string;
+  userId: string;
+  author: string;
+  content: string;
+  createdAt: string;
+};
+
+export type CommunityDiscussion = {
+  id: string;
+  userId: string;
+  author: string;
+  title: string;
+  category: string;
+  content: string;
+  createdAt: string;
+  lastActivityAt?: string;
+  replies: CommunityDiscussionReply[];
+};
+
+type CommunityPostRecord = Partial<CommunityPost> & {
+  image?: string;
+};
+
+function normalizeCommunityPost(record: CommunityPostRecord): CommunityPost {
+  return {
+    id: typeof record.id === "string" ? record.id : "",
+    userId: typeof record.userId === "string" ? record.userId : "",
+    author: typeof record.author === "string" ? record.author : "Enthusiast",
+    description:
+      typeof record.description === "string" ? record.description : "",
+    images: Array.isArray(record.images)
+      ? record.images.filter((image): image is string => typeof image === "string")
+      : typeof record.image === "string"
+        ? [record.image]
+        : [],
+    createdAt:
+      typeof record.createdAt === "string"
+        ? record.createdAt
+        : new Date().toISOString(),
+    likedBy: Array.isArray(record.likedBy)
+      ? record.likedBy.filter((userId): userId is string => typeof userId === "string")
+      : [],
+    comments: Array.isArray(record.comments)
+      ? record.comments.filter(
+          (comment): comment is CommunityComment =>
+            Boolean(comment) &&
+            typeof comment === "object" &&
+            typeof comment.id === "string" &&
+            typeof comment.author === "string" &&
+            typeof comment.content === "string",
+        )
+      : [],
+  };
+}
+
+const LOCAL_PRODUCTS_KEY = "wheelybits:published-products";
+
+function readPublishedProducts(): SellerDashboardProduct[] {
+  try {
+    const raw = localStorage.getItem(LOCAL_PRODUCTS_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function writePublishedProducts(products: SellerDashboardProduct[]) {
+  try {
+    localStorage.setItem(LOCAL_PRODUCTS_KEY, JSON.stringify(products));
+  } catch {
+    // ignore persistent storage errors
+  }
+}
+
+const LOCAL_COMMUNITY_POSTS_KEY = "wheelybits:community-posts";
+
+function readCommunityPosts() {
+  try {
+    const parsed = JSON.parse(
+      localStorage.getItem(LOCAL_COMMUNITY_POSTS_KEY) || "[]",
+    );
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map((post) => normalizeCommunityPost(post));
+  } catch {
+    return [];
+  }
+}
+
+function writeCommunityPosts(posts: CommunityPost[]) {
+  try {
+    localStorage.setItem(LOCAL_COMMUNITY_POSTS_KEY, JSON.stringify(posts));
+  } catch {
+    // Ignore local storage errors; the API remains the primary store.
+  }
+}
+
+function keepLatestProducts(products: SellerDashboardProduct[]) {
+  const latestById = new Map<string, SellerDashboardProduct>();
+  for (const product of products) {
+    const existing = latestById.get(product._id);
+    const productUpdatedAt = Date.parse(
+      product.updatedAt || product.createdAt || "",
+    ) || 0;
+    const existingUpdatedAt = existing
+      ? Date.parse(existing.updatedAt || existing.createdAt || "") || 0
+      : -1;
+
+    if (!existing || productUpdatedAt >= existingUpdatedAt) {
+      latestById.set(product._id, product);
+    }
+  }
+  return Array.from(latestById.values());
+}
+
 export async function getMarketplace(): Promise<MarketplaceData> {
   try {
-    const data = await request<MarketplaceData>("/api/marketplace", { method: "GET" });
+    const data = await request<MarketplaceData>("/api/marketplace", {
+      method: "GET",
+      cache: "no-store",
+    });
     const localRatings = getLocalRatings(data.sellerId || "automax-wheels");
     const summary = computeRatingSummary(localRatings);
     return {
       ...data,
+      products: keepLatestProducts(data.products ?? []),
       averageRating: data.averageRating ?? summary.averageRating,
       totalRatings: data.totalRatings || summary.totalRatings,
     };
   } catch {
     const localRatings = getLocalRatings("automax-wheels");
     const summary = computeRatingSummary(localRatings);
+    const localProducts = readPublishedProducts();
     return {
       seller: {
         businessName: "AutoMax Wheels",
@@ -338,9 +512,173 @@ export async function getMarketplace(): Promise<MarketplaceData> {
       sellerId: "automax-wheels",
       averageRating: summary.averageRating,
       totalRatings: summary.totalRatings,
-      products: [],
+      products: keepLatestProducts(localProducts),
     };
   }
+}
+
+export async function getCommunityPosts(): Promise<CommunityPost[]> {
+  try {
+    const data = await request<{ posts: CommunityPost[] }>(
+      "/api/community/posts",
+      { method: "GET", cache: "no-store" },
+    );
+    return Array.isArray(data.posts)
+      ? data.posts.map((post) => normalizeCommunityPost(post))
+      : [];
+  } catch {
+    return readCommunityPosts();
+  }
+}
+
+export async function createCommunityPost(payload: {
+  userId: string;
+  author: string;
+  description: string;
+  images: string[];
+}): Promise<CommunityPost> {
+  try {
+    const data = await request<{ post: CommunityPost }>(
+      "/api/community/posts",
+      { method: "POST", body: JSON.stringify(payload) },
+    );
+    return data.post;
+  } catch {
+    const post: CommunityPost = {
+      ...payload,
+      id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      createdAt: new Date().toISOString(),
+      likedBy: [],
+      comments: [],
+    };
+    writeCommunityPosts([post, ...readCommunityPosts()]);
+    return post;
+  }
+}
+
+export async function toggleCommunityReaction(
+  postId: string,
+  userId: string,
+): Promise<CommunityPost | null> {
+  try {
+    const data = await request<{ post: CommunityPost }>(
+      `/api/community/posts/${encodeURIComponent(postId)}/reactions`,
+      { method: "POST", body: JSON.stringify({ userId }) },
+    );
+    return data.post;
+  } catch {
+    let updated: CommunityPost | null = null;
+    const posts = readCommunityPosts().map((post) => {
+      if (post.id !== postId) return post;
+      const likedBy = post.likedBy.includes(userId)
+        ? post.likedBy.filter((id) => id !== userId)
+        : [...post.likedBy, userId];
+      updated = { ...post, likedBy };
+      return updated;
+    });
+    writeCommunityPosts(posts);
+    return updated;
+  }
+}
+
+export async function addCommunityComment(
+  postId: string,
+  payload: { userId: string; author: string; content: string },
+): Promise<CommunityPost | null> {
+  try {
+    const data = await request<{ post: CommunityPost }>(
+      `/api/community/posts/${encodeURIComponent(postId)}/comments`,
+      { method: "POST", body: JSON.stringify(payload) },
+    );
+    return data.post;
+  } catch {
+    let updated: CommunityPost | null = null;
+    const posts = readCommunityPosts().map((post) => {
+      if (post.id !== postId) return post;
+      const comment: CommunityComment = {
+        id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        ...payload,
+        createdAt: new Date().toISOString(),
+      };
+      updated = { ...post, comments: [...post.comments, comment] };
+      return updated;
+    });
+    writeCommunityPosts(posts);
+    return updated;
+  }
+}
+
+export async function deleteCommunityPost(
+  postId: string,
+  userId: string,
+): Promise<boolean> {
+  try {
+    await request<{ success: boolean }>(
+      `/api/community/posts/${encodeURIComponent(postId)}`,
+      { method: "DELETE", body: JSON.stringify({ userId }) },
+    );
+    return true;
+  } catch {
+    const posts = readCommunityPosts();
+    const target = posts.find((post) => post.id === postId);
+    if (!target || target.userId !== userId) return false;
+    writeCommunityPosts(posts.filter((post) => post.id !== postId));
+    return true;
+  }
+}
+
+export async function getCommunityDiscussions(): Promise<CommunityDiscussion[]> {
+  const data = await request<{ discussions: CommunityDiscussion[] }>(
+    "/api/community/discussions",
+    { method: "GET", cache: "no-store" },
+  );
+  return Array.isArray(data.discussions) ? data.discussions : [];
+}
+
+export async function getCommunityDiscussion(
+  discussionId: string,
+): Promise<CommunityDiscussion> {
+  const data = await request<{ discussion: CommunityDiscussion }>(
+    `/api/community/discussions/${encodeURIComponent(discussionId)}`,
+    { method: "GET", cache: "no-store" },
+  );
+  return data.discussion;
+}
+
+export async function updateCommunityDiscussionAuthor(
+  discussionId: string,
+  payload: { userId: string; author: string },
+): Promise<CommunityDiscussion> {
+  const data = await request<{ discussion: CommunityDiscussion }>(
+    `/api/community/discussions/${encodeURIComponent(discussionId)}/author`,
+    { method: "PUT", body: JSON.stringify(payload) },
+  );
+  return data.discussion;
+}
+
+export async function createCommunityDiscussion(payload: {
+  userId: string;
+  author: string;
+  title: string;
+  category: string;
+  content: string;
+}): Promise<CommunityDiscussion> {
+  const data = await request<{ discussion: CommunityDiscussion }>(
+    "/api/community/discussions",
+    { method: "POST", body: JSON.stringify(payload) },
+  );
+  return data.discussion;
+}
+
+export async function addDiscussionReply(
+  discussionId: string,
+  payload: { userId: string; author: string; content: string },
+): Promise<CommunityDiscussion> {
+  const data = await request<{ discussion: CommunityDiscussion }>(
+    `/api/community/discussions/${encodeURIComponent(discussionId)}/replies`,
+    { method: "POST", body: JSON.stringify(payload) },
+  );
+  return data.discussion;
 }
 
 export function createInquiry(payload: {
@@ -387,6 +725,9 @@ export async function getSellerDashboard(userId: string): Promise<SellerDashboar
       recentRatings: ratings,
     };
   } catch {
+    const localProducts = readPublishedProducts().filter(
+      (product) => product.userId === userId || !product.userId,
+    );
     return {
       seller: {
         ownerName: "AutoMax Merchant",
@@ -397,7 +738,7 @@ export async function getSellerDashboard(userId: string): Promise<SellerDashboar
           address: "Sector I-9, Islamabad",
         },
       },
-      products: [],
+      products: localProducts,
       inquiries: [],
       ratingSummary: localSummary,
       recentRatings: localRatings,
@@ -478,6 +819,19 @@ export function publishSellerProduct(payload: unknown) {
   return request<{ productId: string; status: string }>("/api/products", {
     method: "POST",
     body: JSON.stringify(payload),
+  }).catch(() => {
+    const product = {
+      ...(payload as Record<string, unknown>),
+      _id: `local-${Date.now()}`,
+      userId: (payload as Record<string, unknown>)?.userId ?? "local-user",
+      status: "published",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    } as SellerDashboardProduct;
+    const products = readPublishedProducts();
+    products.unshift(product);
+    writePublishedProducts(products);
+    return { productId: String(product._id), status: "published" };
   });
 }
 
@@ -488,5 +842,22 @@ export function updateSellerProduct(productId: string, payload: unknown) {
       method: "PUT",
       body: JSON.stringify(payload),
     },
-  );
+  ).catch(() => {
+    const products = readPublishedProducts();
+    const nextProducts = products.map((product) =>
+      product._id === productId ? { ...product, ...(payload as Record<string, unknown>), _id: productId, updatedAt: new Date().toISOString(), status: "published" } : product,
+    );
+    if (!nextProducts.some((product) => product._id === productId)) {
+      nextProducts.unshift({
+        ...((payload as Record<string, unknown>) ?? {}),
+        _id: productId,
+        userId: (payload as Record<string, unknown>)?.userId ?? "local-user",
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      } as SellerDashboardProduct);
+    }
+    writePublishedProducts(nextProducts);
+    return { productId, status: "published" };
+  });
 }

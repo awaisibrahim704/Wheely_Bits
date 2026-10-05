@@ -3,21 +3,17 @@ import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
-  Car,
   Check,
   ChevronDown,
   CloudUpload,
   ImagePlus,
   Info,
-  Plus,
   Save,
   Trash2,
   Upload,
-  X,
 } from "lucide-react";
 
 const listingKey = "wheelybits:product-listing-draft";
-type Vehicle = { make: string; model: string };
 type TyreDraft = {
   brand: string;
   productName: string;
@@ -35,7 +31,6 @@ type TyreDraft = {
   manufacturingYear: string;
   dotNumber: string;
   treadPattern: string;
-  vehicles: Vehicle[];
   gallery: string[];
 };
 const defaults: TyreDraft = {
@@ -56,11 +51,6 @@ const defaults: TyreDraft = {
   manufacturingYear: "2024",
   dotNumber: "DOT 6Y 81 4823",
   treadPattern: "Asymmetric Pattern",
-  vehicles: [
-    { make: "BMW 3 Series (G20)", model: "2019-2024 - Front Fitment" },
-    { make: "Volkswagen Golf R / GTI", model: "2015-2023 - OEM Square Spec" },
-    { make: "Audi A4 / S4 (B9)", model: "2017-2024 - All-Wheel Drive" },
-  ],
   gallery: [],
 };
 function readDraft(): Partial<TyreDraft> {
@@ -77,7 +67,6 @@ export default function SellerTyreSpecifications() {
     ...defaults,
     ...readDraft(),
   });
-  const [vehicle, setVehicle] = useState<Vehicle>({ make: "", model: "" });
   const update = <K extends keyof TyreDraft>(field: K, value: TyreDraft[K]) =>
     setDraft((current) => ({ ...current, [field]: value }));
   const save = () =>
@@ -85,20 +74,13 @@ export default function SellerTyreSpecifications() {
       listingKey,
       JSON.stringify({ ...draft, category: "tyres" }),
     );
-  const addVehicle = () => {
-    if (!vehicle.make || !vehicle.model) return;
-    update("vehicles", [...draft.vehicles, vehicle]);
-    setVehicle({ make: "", model: "" });
-  };
   const uploadGallery = (event: React.ChangeEvent<HTMLInputElement>) =>
-    Array.from(event.target.files ?? [])
-      .slice(0, 8 - draft.gallery.length)
-      .forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = () =>
-          update("gallery", [...draft.gallery, String(reader.result)]);
-        reader.readAsDataURL(file);
-      });
+    Array.from(event.target.files ?? []).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () =>
+        update("gallery", [...draft.gallery, String(reader.result)]);
+      reader.readAsDataURL(file);
+    });
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     save();
@@ -308,74 +290,6 @@ export default function SellerTyreSpecifications() {
             </div>
           </SpecSection>
           <SpecSection
-            icon={<Car size={15} />}
-            title="Compatible Vehicles"
-            description="Map this tyre to specific chassis models so buyers find it instantly in vehicle searches."
-          >
-            <div className="seller-vehicle-entry">
-              <small>
-                <Plus size={11} /> Add Compatible Vehicle Entry
-              </small>
-              <div className="seller-spec-grid seller-spec-grid-3">
-                <TextField
-                  label="Vehicle Manufacturer"
-                  value={vehicle.make}
-                  onChange={(value) => setVehicle({ ...vehicle, make: value })}
-                  placeholder="e.g. BMW"
-                />
-                <TextField
-                  label="Vehicle Model"
-                  value={vehicle.model}
-                  onChange={(value) => setVehicle({ ...vehicle, model: value })}
-                  placeholder="e.g. 3 Series / M3"
-                />
-                <TextField
-                  label="Year / Year Range"
-                  value=""
-                  onChange={() => undefined}
-                  placeholder="e.g. 2019-2024"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={addVehicle}
-                className="seller-attach-button"
-              >
-                + Attach Vehicle
-              </button>
-            </div>
-            <label className="seller-spec-label">
-              Currently Attached Vehicles
-            </label>
-            <div className="seller-attached-grid">
-              {draft.vehicles.map((item, index) => (
-                <div
-                  className="seller-attached-vehicle"
-                  key={`${item.make}-${index}`}
-                >
-                  <Car size={14} />
-                  <span>
-                    <strong>{item.make}</strong>
-                    <small>{item.model}</small>
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      update(
-                        "vehicles",
-                        draft.vehicles.filter(
-                          (_, itemIndex) => itemIndex !== index,
-                        ),
-                      )
-                    }
-                  >
-                    <X size={12} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </SpecSection>
-          <SpecSection
             icon={<ImagePlus size={15} />}
             title="Upload Tyre Images"
             description="Upload high-resolution photography showcasing tread pattern, shoulder grooves, and sidewall branding."
@@ -424,7 +338,7 @@ export default function SellerTyreSpecifications() {
               </div>
             )}
             <p className="seller-upload-count">
-              Uploaded Gallery ({draft.gallery.length}/8)
+              Uploaded Gallery ({draft.gallery.length})
             </p>
           </SpecSection>
         </form>

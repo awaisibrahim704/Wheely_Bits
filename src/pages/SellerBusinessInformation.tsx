@@ -20,6 +20,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import { hasSellerProfile } from "../lib/sellerApi";
 
 type BusinessType = "rim" | "auto" | "manufacturer" | "distributor" | "other";
 
@@ -97,6 +98,23 @@ export default function SellerBusinessInformation() {
   useEffect(() => {
     window.localStorage.setItem(draftKey, JSON.stringify(draft));
   }, [draft]);
+
+  useEffect(() => {
+    let active = true;
+
+    const redirectIfSellerExists = async () => {
+      if (!user?.uid) return;
+      const exists = await hasSellerProfile(user.uid);
+      if (active && exists) {
+        navigate("/seller/dashboard", { replace: true });
+      }
+    };
+
+    void redirectIfSellerExists();
+    return () => {
+      active = false;
+    };
+  }, [navigate, user?.uid]);
 
   const updateField = <K extends keyof SellerBusinessDraft>(
     field: K,

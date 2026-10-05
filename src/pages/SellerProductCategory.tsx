@@ -12,6 +12,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const listingKey = "wheelybits:product-listing-draft";
 
@@ -227,6 +228,8 @@ export default function SellerProductCategory() {
 }
 
 function SellerListingNav() {
+  const { user } = useAuth();
+
   return (
     <div className="seller-listing-nav">
       <strong>▣ WHEELY BITS</strong>
@@ -240,7 +243,7 @@ function SellerListingNav() {
         <a>▧ Orders</a>
         <a>▥ Store Profile</a>
       </nav>
-      <small>● alex@wheelybits.com ◯ ◉</small>
+      <small>● {user?.email || "Seller account"} ◯ ◉</small>
     </div>
   );
 }

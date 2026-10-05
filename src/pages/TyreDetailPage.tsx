@@ -35,7 +35,7 @@ export default function TyreDetailPage() {
   const [quantity, setQuantity] = useState("Full Set (4 Tyres)");
   const [isFavorite, setIsFavorite] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [selectedView, setSelectedView] = useState("Default");
+  const [selectedImage, setSelectedImage] = useState("");
 
   useEffect(() => {
     getMarketplace()
@@ -43,15 +43,14 @@ export default function TyreDetailPage() {
       .catch(() => setMarketplace(null));
   }, []);
 
-  const matchedProduct =
-    marketplace?.products.find(
-      (product) =>
-        product._id === id ||
-        (id && product.productName?.toLowerCase().includes(id.toLowerCase().replace(/-/g, " "))) ||
-        (id && id.toLowerCase().includes(product.productName?.toLowerCase() || ""))
-    ) ||
-    marketplace?.products.find((p) => p.category === "tyres") ||
-    marketplace?.products[0];
+  const normalizedId = id?.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const matchedProduct = marketplace?.products.find((product) => {
+    if (product._id === id) return true;
+    const normalizedName = product.productName
+      ?.toLowerCase()
+      .replace(/[^a-z0-9]/g, "");
+    return Boolean(normalizedId && normalizedName === normalizedId);
+  });
 
   const productName = matchedProduct?.productName || "Michelin Pilot Sport 4";
   const brand = matchedProduct?.brand || "Michelin";
@@ -60,8 +59,16 @@ export default function TyreDetailPage() {
   const description =
     matchedProduct?.description ||
     "225 / 45 R18 95Y XL Extra Load Ultra High Performance Summer Tyre";
-  const imageSrc =
-    matchedProduct?.gallery?.[0] || matchedProduct?.aiImage || defaultImage;
+  const galleryImages = Array.isArray(matchedProduct?.gallery)
+    ? [...new Set(matchedProduct.gallery.filter(Boolean))]
+    : [];
+  const allImages =
+    galleryImages.length > 0
+      ? galleryImages
+      : [matchedProduct?.aiImage || defaultImage];
+  const imageSrc = allImages.includes(selectedImage)
+    ? selectedImage
+    : allImages[0];
 
   const sellerName =
     marketplace?.seller?.store?.businessName ||
@@ -74,10 +81,7 @@ export default function TyreDetailPage() {
 
   const singlePriceStr = `Rs. ${priceNum.toLocaleString()}`;
   const setPriceStr = `Rs. ${(priceNum * 4).toLocaleString()}`;
-  const total =
-    quantity === "Single Tyre"
-      ? singlePriceStr
-      : setPriceStr;
+  const total = quantity === "Single Tyre" ? singlePriceStr : setPriceStr;
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -118,28 +122,29 @@ export default function TyreDetailPage() {
               <span className="absolute right-3 top-3 rounded-full bg-[#abcfb2] px-3 py-1 text-[9px] text-[#163722]">
                 ● In Stock ({stockNum} Tyres)
               </span>
-              {selectedView !== "Default" && (
-                <div className="absolute bottom-3 left-3 rounded bg-[#121416]/80 px-3 py-1 text-[9px] text-[#abcfb2]">
-                  Viewing: {selectedView}
+              {allImages.length > 1 && (
+                <div
+                  className="absolute bottom-3 left-3 z-10 flex max-w-[calc(100%-1.5rem)] gap-2 overflow-x-auto rounded-lg bg-[#121416]/75 p-1.5"
+                  aria-label="Product photos"
+                >
+                  {allImages.map((image, index) => (
+                    <button
+                      key={`${image}-${index}`}
+                      type="button"
+                      onClick={() => setSelectedImage(image)}
+                      aria-label={`Show product photo ${index + 1}`}
+                      aria-pressed={imageSrc === image}
+                      className={`h-14 w-16 shrink-0 overflow-hidden rounded-md border-2 ${imageSrc === image ? "border-[#abcfb2]" : "border-white/10"}`}
+                    >
+                      <img
+                        src={image}
+                        alt={`${productName} photo ${index + 1}`}
+                        className="h-full w-full object-cover"
+                      />
+                    </button>
+                  ))}
                 </div>
               )}
-            </div>
-            <div className="mt-2 flex gap-2 overflow-x-auto">
-              {[
-                "Tread Pattern",
-                "Sidewall Macro",
-                "Wet Grip Sipes",
-                "Mounted on Rim",
-                "3D Viewer",
-              ].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => setSelectedView(item)}
-                  className={`h-12 min-w-16 rounded border px-2 text-[8px] ${selectedView === item ? "border-[#abcfb2] bg-[#abcfb2]/20 text-white" : "border-white/10 bg-[#1a1c1e] text-[#c2c8c0]"}`}
-                >
-                  {item}
-                </button>
-              ))}
             </div>
             <div className="mt-3 grid grid-cols-3 gap-2 rounded-xl bg-[#1a1c1e] p-3 text-[8px] text-[#c2c8c0]">
               <span>
@@ -173,10 +178,14 @@ export default function TyreDetailPage() {
               <div className="flex gap-2">
                 <button
                   onClick={() => setIsFavorite(!isFavorite)}
-                  title={isFavorite ? "Remove from Favorites" : "Save to Favorites"}
+                  title={
+                    isFavorite ? "Remove from Favorites" : "Save to Favorites"
+                  }
                   className={`rounded-lg p-2 ${isFavorite ? "bg-[#abcfb2] text-[#163722]" : "bg-[#1a1c1e] text-white"}`}
                 >
-                  <Heart className={`h-4 w-4 ${isFavorite ? "fill-current" : ""}`} />
+                  <Heart
+                    className={`h-4 w-4 ${isFavorite ? "fill-current" : ""}`}
+                  />
                 </button>
                 <button
                   onClick={handleShare}
@@ -193,9 +202,15 @@ export default function TyreDetailPage() {
               </div>
             </div>
             <div className="text-[10px] text-[#d4a373]">
-              ★★★★★ <span className="text-white">{marketplace?.averageRating ? marketplace.averageRating.toFixed(1) : "4.8"}</span>{" "}
+              ★★★★★{" "}
+              <span className="text-white">
+                {marketplace?.averageRating
+                  ? marketplace.averageRating.toFixed(1)
+                  : "4.8"}
+              </span>{" "}
               <span className="text-[#c2c8c0]">
-                · {marketplace?.totalRatings || 4} verified seller reviews · {stockNum} Available
+                · {marketplace?.totalRatings || 4} verified seller reviews ·{" "}
+                {stockNum} Available
               </span>
             </div>
             <div className="rounded-xl bg-[#1a1c1e] p-4">
@@ -281,10 +296,17 @@ export default function TyreDetailPage() {
                 <div>
                   <div className="flex items-center gap-1.5 font-bold text-white">
                     <span>{sellerName}</span>
-                    <span className="rounded bg-[#063a32] px-1.5 py-0.5 text-[8px] text-[#55d6a7]">✓ Verified Seller</span>
+                    <span className="rounded bg-[#063a32] px-1.5 py-0.5 text-[8px] text-[#55d6a7]">
+                      ✓ Verified Seller
+                    </span>
                   </div>
                   <div className="flex items-center gap-1.5 text-[10px] text-[#d4a373] mt-0.5">
-                    <span>★ {marketplace?.averageRating ? marketplace.averageRating.toFixed(1) : "4.8"}</span>
+                    <span>
+                      ★{" "}
+                      {marketplace?.averageRating
+                        ? marketplace.averageRating.toFixed(1)
+                        : "4.8"}
+                    </span>
                     <span className="text-[#c2c8c0]">
                       ({marketplace?.totalRatings || 4} seller reviews)
                     </span>
@@ -452,7 +474,9 @@ export default function TyreDetailPage() {
           <div className="flex-1 text-[9px] text-[#c2c8c0]">
             {productName}
             <br />
-            <span>{stockNum} Tyres available in {sellerAddress} · Fresh DOT Included</span>
+            <span>
+              {stockNum} Tyres available in {sellerAddress} · Fresh DOT Included
+            </span>
           </div>
           <strong className="text-lg text-[#abcfb2]">{total}</strong>
           <Link

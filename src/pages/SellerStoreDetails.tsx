@@ -20,7 +20,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
-import { saveSellerProfile } from "../lib/sellerApi";
+import { hasSellerProfile, saveSellerProfile } from "../lib/sellerApi";
 
 const draftKey = "wheelybits:seller-business-draft";
 const days = [
@@ -100,6 +100,23 @@ export default function SellerStoreDetails() {
       JSON.stringify({ ...readDraft(), ...draft }),
     );
   }, [draft]);
+
+  useEffect(() => {
+    let active = true;
+
+    const redirectIfSellerExists = async () => {
+      if (!user?.uid) return;
+      const exists = await hasSellerProfile(user.uid);
+      if (active && exists) {
+        navigate("/seller/dashboard", { replace: true });
+      }
+    };
+
+    void redirectIfSellerExists();
+    return () => {
+      active = false;
+    };
+  }, [navigate, user?.uid]);
 
   const update = <K extends keyof StoreDraft>(
     field: K,
