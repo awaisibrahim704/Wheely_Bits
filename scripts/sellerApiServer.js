@@ -1,6 +1,7 @@
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
+import { createHash, timingSafeEqual } from "node:crypto";
 import { MongoClient, ObjectId } from "mongodb";
 
 const app = express();
@@ -197,10 +198,14 @@ app.get("/api/health", async (_request, response) => {
 app.get("/api/marketplace", async (_request, response) => {
   try {
     const database = client.db(databaseName);
-    const [sellerRecord, products] = await Promise.all([
+    const [sellerRecord, sellerRecords, products] = await Promise.all([
       database.collection("sellers").findOne({}, { projection: { _id: 0 } }),
+      database.collection("sellers").find({}, {
+        projection: { _id: 0, userId: 1, businessName: 1, store: 1 },
+      }).toArray(),
       database.collection("products").find({ status: "published" }).sort({ createdAt: -1 }).toArray(),
     ]);
+    const sellersById = new Map(sellerRecords.map((seller) => [seller.userId, seller]));
 
     const sellerId = sellerRecord?.userId || null;
     const ratingSummary = sellerId ? await getRatingSummary(database, sellerId) : { averageRating: null, totalRatings: 0 };
@@ -213,6 +218,12 @@ app.get("/api/marketplace", async (_request, response) => {
       products: products.map(({ _id, ...product }) => ({
         _id: _id.toString(),
         ...product,
+        vendorName:
+          sellersById.get(product.userId)?.store?.businessName ||
+          sellersById.get(product.userId)?.businessName,
+        vendorLocation:
+          sellersById.get(product.userId)?.store?.address ||
+          sellersById.get(product.userId)?.store?.city,
         price: Number(product.price) || 0,
         stock: Number(product.stock) || 0,
         gallery: Array.isArray(product.gallery) ? product.gallery : [],
@@ -564,9 +575,23 @@ app.post("/api/community/discussions/:discussionId/replies", async (request, res
 
 // ── Submit Rating ──────────────────────────────────────────────────────────
 app.post("/api/ratings", async (request, response) => {
-  const { sellerId, userId, userName, stars, comment, car } = request.body || {};
+  const { sellerId, userId, userName, stars, comment, car, photos } = request.body || {};
   if (!sellerId || !userId || !stars || stars < 1 || stars > 5) {
     response.status(400).json({ error: "sellerId, userId, and stars (1–5) are required." });
+    return;
+  }
+  if (
+    photos !== undefined &&
+    (!Array.isArray(photos) ||
+      photos.length > 5 ||
+      photos.some(
+        (photo) =>
+          typeof photo !== "string" ||
+          !/^data:image\/(?:jpeg|png|webp);base64,[a-z0-9+/]+=*$/i.test(photo) ||
+          photo.length > 2_000_000,
+      ))
+  ) {
+    response.status(400).json({ error: "Upload up to 5 valid photos, each no larger than 1.5 MB." });
     return;
   }
 
@@ -591,6 +616,7 @@ app.post("/api/ratings", async (request, response) => {
             stars: Math.min(5, Math.max(1, Math.round(stars))),
             comment: comment !== undefined ? comment : existing.comment,
             car: car !== undefined ? car : existing.car,
+            photos: photos !== undefined ? photos : existing.photos || [],
             updatedAt: now,
           },
         },
@@ -603,6 +629,7 @@ app.post("/api/ratings", async (request, response) => {
         stars: Math.min(5, Math.max(1, Math.round(stars))),
         comment: comment || "",
         car: car || "",
+        photos: photos || [],
         createdAt: now,
         updatedAt: now,
       });
@@ -661,7 +688,12 @@ app.get("/api/ratings/:sellerId/:userId", async (request, response) => {
       .findOne({ sellerId: { $in: targetIdentities }, userId });
     response.json({
       rating: rating
-        ? { stars: rating.stars, comment: rating.comment || "", car: rating.car || "" }
+        ? {
+            stars: rating.stars,
+            comment: rating.comment || "",
+            car: rating.car || "",
+            photos: rating.photos || [],
+          }
         : null,
     });
   } catch (error) {
@@ -672,22 +704,35 @@ app.get("/api/ratings/:sellerId/:userId", async (request, response) => {
 
 // ── Inquiries ───────────────────────────────────────────────────────────────
 app.post("/api/inquiries", async (request, response) => {
-  const { sellerId, productId, productName, senderName, senderPhone, car, message } = request.body || {};
-  if (!sellerId || !senderName || !senderPhone || !message) {
-    response.status(400).json({ error: "sellerId, senderName, senderPhone, and message are required." });
+  const { sellerId, productId, productName, senderName, senderPhone, car, message, conversationToken } = request.body || {};
+  if (
+    typeof sellerId !== "string" || !sellerId.trim() ||
+    typeof senderName !== "string" || !senderName.trim() ||
+    typeof senderPhone !== "string" || !senderPhone.trim() ||
+    typeof message !== "string" || !message.trim() || message.length > 500 ||
+    typeof conversationToken !== "string" || !/^[a-f0-9]{64}$/i.test(conversationToken)
+  ) {
+    response.status(400).json({ error: "Seller, name, phone, a message up to 500 characters, and a valid conversation token are required." });
     return;
   }
 
   try {
     const now = new Date();
+    const firstMessage = {
+      sender: "customer",
+      content: message.trim(),
+      createdAt: now,
+    };
     const result = await client.db(databaseName).collection("inquiries").insertOne({
-      sellerId,
+      sellerId: sellerId.trim(),
       productId: productId || null,
       productName: productName || null,
-      senderName,
-      senderPhone,
-      car: car || null,
-      message,
+      senderName: senderName.trim().slice(0, 100),
+      senderPhone: senderPhone.trim().slice(0, 40),
+      car: typeof car === "string" ? car.trim().slice(0, 120) : null,
+      message: message.trim(),
+      messages: [firstMessage],
+      conversationTokenHash: createHash("sha256").update(conversationToken).digest("hex"),
       status: "unread",
       createdAt: now,
       updatedAt: now,
@@ -696,6 +741,125 @@ app.post("/api/inquiries", async (request, response) => {
   } catch (error) {
     console.error("Failed to save inquiry", error);
     response.status(500).json({ error: "Failed to save inquiry." });
+  }
+});
+
+app.get("/api/inquiries/:inquiryId/conversation", async (request, response) => {
+  const { inquiryId } = request.params;
+  const token = request.get("X-Conversation-Token");
+  if (!ObjectId.isValid(inquiryId) || typeof token !== "string" || !/^[a-f0-9]{64}$/i.test(token)) {
+    response.status(400).json({ error: "A valid conversation is required." });
+    return;
+  }
+
+  try {
+    const inquiry = await client.db(databaseName).collection("inquiries").findOne({
+      _id: new ObjectId(inquiryId),
+    });
+    const tokenHash = createHash("sha256").update(token).digest("hex");
+    const storedHash = inquiry?.conversationTokenHash;
+    const validToken = typeof storedHash === "string" &&
+      storedHash.length === tokenHash.length &&
+      timingSafeEqual(Buffer.from(storedHash), Buffer.from(tokenHash));
+    if (!inquiry || !validToken) {
+      response.status(404).json({ error: "Conversation not found or access is unavailable on this device." });
+      return;
+    }
+    const { conversationTokenHash: _tokenHash, ...safeInquiry } = inquiry;
+    response.json({
+      inquiry: {
+        ...safeInquiry,
+        _id: inquiry._id.toString(),
+        messages: inquiry.messages || [{
+          sender: "customer",
+          content: inquiry.message,
+          createdAt: inquiry.createdAt,
+        }],
+      },
+    });
+  } catch (error) {
+    console.error("Failed to load inquiry conversation", error);
+    response.status(500).json({ error: "Failed to load conversation." });
+  }
+});
+
+app.post("/api/inquiries/:inquiryId/conversation", async (request, response) => {
+  const { inquiryId } = request.params;
+  const token = request.get("X-Conversation-Token");
+  const { content } = request.body || {};
+  if (
+    !ObjectId.isValid(inquiryId) ||
+    typeof token !== "string" || !/^[a-f0-9]{64}$/i.test(token) ||
+    typeof content !== "string" || !content.trim() || content.length > 1000
+  ) {
+    response.status(400).json({ error: "A valid conversation and message up to 1,000 characters are required." });
+    return;
+  }
+
+  try {
+    const collection = client.db(databaseName).collection("inquiries");
+    const tokenHash = createHash("sha256").update(token).digest("hex");
+    const inquiry = await collection.findOne({ _id: new ObjectId(inquiryId) });
+    const storedHash = inquiry?.conversationTokenHash;
+    const validToken = typeof storedHash === "string" &&
+      storedHash.length === tokenHash.length &&
+      timingSafeEqual(Buffer.from(storedHash), Buffer.from(tokenHash));
+    if (!inquiry || !validToken) {
+      response.status(404).json({ error: "Conversation not found or access is unavailable on this device." });
+      return;
+    }
+
+    const message = {
+      sender: "customer",
+      content: content.trim(),
+      createdAt: new Date(),
+    };
+    await collection.updateOne(
+      { _id: new ObjectId(inquiryId), conversationTokenHash: tokenHash },
+      { $push: { messages: message }, $set: { status: "unread", updatedAt: message.createdAt } },
+    );
+    response.status(201).json({ message });
+  } catch (error) {
+    console.error("Failed to send customer reply", error);
+    response.status(500).json({ error: "Failed to send reply." });
+  }
+});
+
+app.post("/api/inquiries/:inquiryId/replies", async (request, response) => {
+  const { inquiryId } = request.params;
+  const { userId, content } = request.body || {};
+  if (
+    !ObjectId.isValid(inquiryId) ||
+    typeof userId !== "string" || !userId.trim() ||
+    typeof content !== "string" || !content.trim() || content.length > 1000
+  ) {
+    response.status(400).json({ error: "A valid seller and message up to 1,000 characters are required." });
+    return;
+  }
+
+  try {
+    const database = client.db(databaseName);
+    const sellerIdentities = await getSellerIdentities(database, userId.trim());
+    const message = {
+      sender: "seller",
+      content: content.trim(),
+      createdAt: new Date(),
+    };
+    const result = await database.collection("inquiries").updateOne(
+      {
+        _id: new ObjectId(inquiryId),
+        sellerId: { $in: sellerIdentities.length ? sellerIdentities : [userId.trim()] },
+      },
+      { $push: { messages: message }, $set: { status: "replied", updatedAt: message.createdAt } },
+    );
+    if (!result.matchedCount) {
+      response.status(404).json({ error: "Inquiry not found for this seller." });
+      return;
+    }
+    response.status(201).json({ message });
+  } catch (error) {
+    console.error("Failed to send seller reply", error);
+    response.status(500).json({ error: "Failed to send reply." });
   }
 });
 
@@ -723,6 +887,31 @@ app.put("/api/sellers/:userId", async (request, response) => {
 });
 
 // ── Seller Dashboard ────────────────────────────────────────────────────────
+app.get("/api/sellers/:userId/inquiries", async (request, response) => {
+  const { userId } = request.params;
+  if (!userId) {
+    response.status(400).json({ error: "userId is required." });
+    return;
+  }
+  try {
+    const database = client.db(databaseName);
+    const identities = await getSellerIdentities(database, userId);
+    const inquiries = await database.collection("inquiries")
+      .find({ sellerId: { $in: identities.length ? identities : [userId] } })
+      .sort({ updatedAt: -1 })
+      .toArray();
+    response.json({
+      inquiries: inquiries.map(({ _id, conversationTokenHash: _tokenHash, ...inquiry }) => ({
+        _id: _id.toString(),
+        ...inquiry,
+      })),
+    });
+  } catch (error) {
+    console.error("Failed to refresh seller inquiries", error);
+    response.status(500).json({ error: "Failed to refresh seller inquiries." });
+  }
+});
+
 app.get("/api/sellers/:userId/dashboard", async (request, response) => {
   const { userId } = request.params;
   if (!userId) {
@@ -747,7 +936,10 @@ app.get("/api/sellers/:userId/dashboard", async (request, response) => {
         _id: _id.toString(),
         ...product,
       })),
-      inquiries: inquiries.map(({ _id, ...inquiry }) => ({ _id: _id.toString(), ...inquiry })),
+      inquiries: inquiries.map(({ _id, conversationTokenHash: _tokenHash, ...inquiry }) => ({
+        _id: _id.toString(),
+        ...inquiry,
+      })),
       ratingSummary,
       recentRatings: recentRatings.map(({ _id, ...r }) => ({ _id: _id.toString(), ...r })),
     });
@@ -782,6 +974,23 @@ app.patch("/api/inquiries/:inquiryId", async (request, response) => {
 });
 
 // ── Products ────────────────────────────────────────────────────────────────
+function normalizeProductIdentity(value) {
+  return String(value || "")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+}
+
+function getRimListingKey(product) {
+  if (!/(rim|wheel)/.test(String(product.category || "").toLowerCase())) {
+    return null;
+  }
+
+  const identity = `${normalizeProductIdentity(product.brand)}:${normalizeProductIdentity(product.productName)}`;
+  return `rim:${createHash("sha256").update(identity).digest("hex")}`;
+}
+
 app.post("/api/products", async (request, response) => {
   const { userId, ...product } = request.body || {};
   if (!userId || !product.productName || !product.category) {
@@ -790,16 +999,47 @@ app.post("/api/products", async (request, response) => {
   }
 
   try {
+    const products = client.db(databaseName).collection("products");
+    const listingKey = getRimListingKey(product);
+    if (listingKey) {
+      const existingListings = await products
+        .find(
+          { userId, status: "published", category: { $regex: "(rim|wheel)", $options: "i" } },
+          { projection: { brand: 1, productName: 1 } },
+        )
+        .toArray();
+      const normalizedIdentity =
+        `${normalizeProductIdentity(product.brand)}:${normalizeProductIdentity(product.productName)}`;
+      const isDuplicate = existingListings.some(
+        (existing) =>
+          `${normalizeProductIdentity(existing.brand)}:${normalizeProductIdentity(existing.productName)}` ===
+          normalizedIdentity,
+      );
+      if (isDuplicate) {
+        response.status(409).json({
+          error: "This rim is already published in your listings.",
+        });
+        return;
+      }
+    }
+
     const now = new Date();
-    const result = await client.db(databaseName).collection("products").insertOne({
+    const result = await products.insertOne({
       ...product,
       userId,
+      ...(listingKey ? { listingKey } : {}),
       status: "published",
       createdAt: now,
       updatedAt: now,
     });
     response.status(201).json({ productId: result.insertedId.toString(), status: "published" });
   } catch (error) {
+    if (error?.code === 11000) {
+      response.status(409).json({
+        error: "This rim is already published in your listings.",
+      });
+      return;
+    }
     console.error("Failed to publish product", error);
     response.status(500).json({ error: "Failed to publish product." });
   }
@@ -829,10 +1069,43 @@ app.put("/api/products/:productId", async (request, response) => {
   }
 });
 
+app.delete("/api/products/:productId", async (request, response) => {
+  const { productId } = request.params;
+  const { userId } = request.body || {};
+  if (!userId || !ObjectId.isValid(productId)) {
+    response.status(400).json({
+      error: "A signed-in seller and valid productId are required.",
+    });
+    return;
+  }
+
+  try {
+    const result = await client.db(databaseName).collection("products").deleteOne({
+      _id: new ObjectId(productId),
+      userId,
+    });
+    if (!result.deletedCount) {
+      response.status(404).json({ error: "Product not found." });
+      return;
+    }
+    response.json({ productId, status: "deleted" });
+  } catch (error) {
+    console.error("Failed to delete product", error);
+    response.status(500).json({ error: "Failed to delete product." });
+  }
+});
+
 // ── Start ───────────────────────────────────────────────────────────────────
 async function start() {
   await client.connect();
   await client.db(databaseName).command({ ping: 1 });
+  await client.db(databaseName).collection("products").createIndex(
+    { userId: 1, listingKey: 1 },
+    {
+      unique: true,
+      partialFilterExpression: { listingKey: { $type: "string" } },
+    },
+  );
   app.listen(port, () => console.log(`Seller API listening on http://localhost:${port}`));
 }
 

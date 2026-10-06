@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useState } from 'react';
 import { ArrowRight, CloudUpload, Trash2, Plus, Search, Check, Wrench, X, Rocket, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -135,7 +136,7 @@ export default function CreateBuildLog() {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {/* Placeholder Uploaded Item */}
                     <div className="aspect-video bg-surface-highest rounded-xl overflow-hidden border border-white/10 relative group">
-                      <img 
+                      <FallbackImage
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQJptYgd_riCkgP0g2IZfXXqRN9m25Qc2nElPNvKdBhQM51jjsar7xeq0sXcbA5aeUheYwUOeUrpqrYojEmBTKp7wiPrQqG5Xv5QLonxlMvdW0hL18rjOsmtteAfIuG_7VQxpNdhSurJ3zY6YKUszbCIPHgayOGC7oKZNwsM4Epu9PquYC8ff_4jhUXcGdkHGXbN9KkjkcTtXMaIjdSMgtJXgGpbv07zyexeKEz0TsB2QFILazAnDTv2uXoQjwEnW7aIKlg5fh20hb" 
                         alt="Uploaded Media" 
                         className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" 

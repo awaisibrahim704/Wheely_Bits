@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { Wrench, Handshake, ShoppingBag, Send, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -133,7 +134,7 @@ export default function Contact() {
           </div>
           
           <div className="w-full h-full bg-surface-highest flex items-center justify-center overflow-hidden">
-            <img 
+            <FallbackImage
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCaE_4LA8w8bLNeJgGeWW_36MhezXzCI1Qx_vFeRnOueKWrklJym2fhS4VYYDatkDQo7KvQTwit4T9xr2bCT4kshYlK-TCvNPaucivRuLbf1pVVRiGziglfFvHBh3IgopAns7ezRKV_8Ju8qqKmzLWFD9LRwzyk8OO64Z9KeYrl7R4ZO_nrvHjHjbzaBvfOWSVdP2LNeMjPiR9OKUuTN9d4U9s1cIOnb-ZxXfb47TDYUTi2MwrlKyjB8smyfK3Re8DYvyuxtuO5BqY" 
               alt="Global HQ" 
               className="w-full h-full object-cover grayscale opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700" 

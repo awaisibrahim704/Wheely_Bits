@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useEffect, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +8,6 @@ import {
   Building2,
   Check,
   ChevronDown,
-  ImagePlus,
   Mail,
   MapPin,
   Phone,
@@ -213,15 +213,11 @@ export default function SellerBusinessInformation() {
             </p>
             <div className="flex flex-wrap items-center gap-3 rounded-lg border border-white/10 bg-background/30 p-3">
               <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-background text-on-surface-muted">
-                {draft.logo ? (
-                  <img
-                    src={draft.logo}
-                    alt="Business logo preview"
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <ImagePlus size={20} />
-                )}
+                <FallbackImage
+                  src={draft.logo}
+                  alt="Business logo preview"
+                  className="h-full w-full object-cover"
+                />
               </div>
               <div className="flex flex-wrap gap-2">
                 <label className="seller-button seller-button-muted cursor-pointer">

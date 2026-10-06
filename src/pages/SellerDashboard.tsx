@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import FallbackImage from "../components/FallbackImage";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Bell,
@@ -15,17 +16,25 @@ import {
   MoreVertical,
   MessageCircle,
   Package,
+  Phone,
   Search,
+  Send,
   ShoppingCart,
   Star,
   Store,
+  Trash2,
   ThumbsUp,
   Wrench,
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import {
   getSellerDashboard,
+  getSellerInquiries,
+  deleteSellerProduct,
+  replyToInquiryAsSeller,
   updateInquiryStatus,
+  type InquiryMessage,
+  type SellerInquiry,
   type SellerDashboardData,
   type SellerDashboardProduct,
 } from "../lib/sellerApi";
@@ -125,6 +134,35 @@ export default function SellerDashboard() {
     };
   }, [authLoading, user]);
 
+  useEffect(() => {
+    if (!user) return;
+    let active = true;
+    const refreshMessages = async () => {
+      try {
+        const latest = await getSellerInquiries(user.uid);
+        if (active) {
+          setDashboard((current) =>
+            current ? { ...current, inquiries: latest.inquiries } : current,
+          );
+          setError("");
+        }
+      } catch (requestError) {
+        if (active) {
+          setError(
+            requestError instanceof Error
+              ? requestError.message
+              : "Customer messages could not be refreshed.",
+          );
+        }
+      }
+    };
+    const intervalId = window.setInterval(() => void refreshMessages(), 10000);
+    return () => {
+      active = false;
+      window.clearInterval(intervalId);
+    };
+  }, [user]);
+
   const products = useMemo(
     () => (dashboard?.products ?? []).map(toProduct),
     [dashboard],
@@ -195,6 +233,56 @@ export default function SellerDashboard() {
         inquiry._id === inquiryId ? { ...inquiry, status: "read" } : inquiry,
       ),
     });
+  };
+  const sendInquiryReply = async (inquiryId: string, content: string) => {
+    if (!user) throw new Error("Sign in to reply to a customer.");
+    const { message } = await replyToInquiryAsSeller(
+      inquiryId,
+      user.uid,
+      content,
+    );
+    setDashboard((current) =>
+      current
+        ? {
+            ...current,
+            inquiries: current.inquiries.map((inquiry) =>
+              inquiry._id === inquiryId
+                ? {
+                    ...inquiry,
+                    status: "replied",
+                    messages: [
+                      ...(inquiry.messages?.length
+                        ? inquiry.messages
+                        : [
+                            {
+                              sender: "customer" as const,
+                              content: inquiry.message,
+                              createdAt:
+                                inquiry.createdAt || new Date().toISOString(),
+                            },
+                          ]),
+                      message,
+                    ],
+                  }
+                : inquiry,
+            ),
+          }
+        : current,
+    );
+  };
+  const removeProduct = async (productId: string) => {
+    if (!user) throw new Error("Sign in to delete a product.");
+    await deleteSellerProduct(productId, user.uid);
+    setDashboard((current) =>
+      current
+        ? {
+            ...current,
+            products: current.products.filter(
+              (product) => product._id !== productId,
+            ),
+          }
+        : current,
+    );
   };
 
   return (
@@ -339,29 +427,12 @@ export default function SellerDashboard() {
           ) : (
             <div className="seller-inquiry-list">
               {inquiries.map((inquiry) => (
-                <article key={inquiry._id} className="seller-inquiry-item">
-                  <div>
-                    <strong>{inquiry.senderName}</strong>
-                    <small>
-                      {inquiry.senderPhone} ·{" "}
-                      {inquiry.car || "Vehicle not specified"}
-                    </small>
-                    <p>{inquiry.message}</p>
-                    <small>
-                      {inquiry.productName || "General seller inquiry"} ·{" "}
-                      {inquiry.createdAt
-                        ? new Date(inquiry.createdAt).toLocaleString()
-                        : "Recently"}
-                    </small>
-                  </div>
-                  <button
-                    className="seller-button seller-button-muted"
-                    onClick={() => markInquiryRead(inquiry._id)}
-                    disabled={inquiry.status !== "unread"}
-                  >
-                    {inquiry.status === "unread" ? "Mark Read" : inquiry.status}
-                  </button>
-                </article>
+                <SellerInquiryCard
+                  key={inquiry._id}
+                  inquiry={inquiry}
+                  onReply={sendInquiryReply}
+                  onMarkRead={markInquiryRead}
+                />
               ))}
             </div>
           )}
@@ -668,7 +739,11 @@ export default function SellerDashboard() {
               <span>Actions</span>
             </div>
             {filteredProducts.map((product) => (
-              <ProductRow key={product.id} product={product} />
+              <ProductRow
+                key={product.id}
+                product={product}
+                onDelete={removeProduct}
+              />
             ))}
             {filteredProducts.length === 0 && (
               <div className="seller-empty-products">
@@ -708,6 +783,121 @@ export default function SellerDashboard() {
   );
 }
 
+function SellerInquiryCard({
+  inquiry,
+  onReply,
+  onMarkRead,
+}: {
+  inquiry: SellerInquiry;
+  onReply: (inquiryId: string, content: string) => Promise<void>;
+  onMarkRead: (inquiryId: string) => Promise<void>;
+}) {
+  const [reply, setReply] = useState("");
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const phoneHref = inquiry.senderPhone.replace(/[^\d+]/g, "");
+  const whatsappNumber = inquiry.senderPhone.replace(/\D/g, "");
+  const messages: InquiryMessage[] =
+    inquiry.messages?.length
+      ? inquiry.messages
+      : [
+          {
+            sender: "customer",
+            content: inquiry.message,
+            createdAt: inquiry.createdAt || new Date().toISOString(),
+          },
+        ];
+
+  const submitReply = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!reply.trim()) return;
+    setSending(true);
+    setError("");
+    try {
+      await onReply(inquiry._id, reply.trim());
+      setReply("");
+    } catch (requestError) {
+      setError(
+        requestError instanceof Error
+          ? requestError.message
+          : "Reply could not be sent.",
+      );
+    } finally {
+      setSending(false);
+    }
+  };
+
+  return (
+    <article className="seller-inquiry-item">
+      <div className="seller-inquiry-content">
+        <div className="seller-inquiry-header">
+          <div>
+            <strong>{inquiry.senderName}</strong>
+            <small>
+              {inquiry.car || "Vehicle not specified"} ·{" "}
+              {inquiry.productName || "General seller inquiry"}
+            </small>
+          </div>
+          <button
+            type="button"
+            className="seller-button seller-button-muted"
+            onClick={() => void onMarkRead(inquiry._id)}
+            disabled={inquiry.status !== "unread"}
+          >
+            {inquiry.status === "unread" ? "Mark Read" : inquiry.status}
+          </button>
+        </div>
+        <a className="seller-inquiry-phone" href={`tel:${phoneHref}`}>
+          <Phone size={13} /> {inquiry.senderPhone} · Call customer
+        </a>
+        {whatsappNumber && (
+          <a
+            className="seller-inquiry-whatsapp"
+            href={`https://wa.me/${whatsappNumber}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            WhatsApp
+          </a>
+        )}
+        <div className="seller-inquiry-messages">
+          {messages.map((message, index) => (
+            <div
+              key={`${message.createdAt}-${index}`}
+              className={`seller-inquiry-message seller-inquiry-message-${message.sender}`}
+            >
+              <small>{message.sender === "seller" ? "You" : inquiry.senderName}</small>
+              <p>{message.content}</p>
+              <time>{new Date(message.createdAt).toLocaleString()}</time>
+            </div>
+          ))}
+        </div>
+        <form className="seller-inquiry-reply" onSubmit={submitReply}>
+          <label htmlFor={`reply-${inquiry._id}`}>Reply to customer</label>
+          <textarea
+            id={`reply-${inquiry._id}`}
+            value={reply}
+            onChange={(event) => setReply(event.target.value)}
+            maxLength={1000}
+            rows={3}
+            placeholder="Write a reply..."
+            required
+          />
+          {error && (
+            <p role="alert" className="seller-inquiry-error">
+              {error}
+            </p>
+          )}
+          <button type="submit" disabled={sending || !reply.trim()}>
+            <Send size={13} />
+            {sending ? "Sending..." : "Send reply"}
+          </button>
+        </form>
+      </div>
+    </article>
+  );
+}
+
 function Stat({
   label,
   value,
@@ -733,8 +923,17 @@ function Stat({
   );
 }
 
-function ProductRow({ product }: { product: Product }) {
+function ProductRow({
+  product,
+  onDelete,
+}: {
+  product: Product;
+  onDelete: (productId: string) => Promise<void>;
+}) {
   const navigate = useNavigate();
+  const [actionsOpen, setActionsOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
   const categoryClass =
     product.category === "Performance Tyres"
       ? "tyre"
@@ -744,14 +943,14 @@ function ProductRow({ product }: { product: Product }) {
   const galleryImages =
     product.gallery.length > 0
       ? product.gallery.slice(0, 3)
-      : [product.image].filter(Boolean);
+      : [product.image];
 
   return (
     <div className="seller-product-row">
       <div className="seller-product-name">
         <div className="seller-product-gallery">
           {galleryImages.map((image, index) => (
-            <img key={`${image}-${index}`} src={image} alt="" />
+            <FallbackImage key={`${image}-${index}`} src={image} alt="" />
           ))}
         </div>
         <span>
@@ -804,9 +1003,52 @@ function ProductRow({ product }: { product: Product }) {
         >
           <Edit3 size={12} /> Edit
         </button>
-        <button aria-label="More actions">
+        <button
+          type="button"
+          aria-label={`More actions for ${product.name}`}
+          aria-expanded={actionsOpen}
+          onClick={() => setActionsOpen((open) => !open)}
+        >
           <MoreVertical size={13} />
         </button>
+        {actionsOpen && (
+          <span className="seller-row-action-menu">
+            <button
+              type="button"
+              disabled={deleting}
+              onClick={async () => {
+                if (
+                  !window.confirm(
+                    `Delete "${product.name}"? This cannot be undone.`,
+                  )
+                ) {
+                  return;
+                }
+                setDeleting(true);
+                setDeleteError("");
+                try {
+                  await onDelete(product.id);
+                } catch (error) {
+                  setDeleteError(
+                    error instanceof Error
+                      ? error.message
+                      : "Product could not be deleted.",
+                  );
+                } finally {
+                  setDeleting(false);
+                }
+              }}
+            >
+              <Trash2 size={12} />
+              {deleting ? "Deleting..." : "Delete product"}
+            </button>
+            {deleteError && (
+              <small role="alert" className="seller-row-delete-error">
+                {deleteError}
+              </small>
+            )}
+          </span>
+        )}
       </span>
     </div>
   );

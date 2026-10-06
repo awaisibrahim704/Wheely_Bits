@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Brain, Box, SlidersHorizontal, Palette } from "lucide-react";
@@ -23,7 +24,7 @@ export default function Home() {
       <section className="relative min-h-screen flex items-center justify-center">
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           {BACKGROUND_IMAGES.map((src, idx) => (
-            <img
+            <FallbackImage
               key={idx}
               src={src}
               alt={`Car background ${idx + 1}`}

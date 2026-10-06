@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { Link } from 'react-router-dom';
 import { User, Settings, Shield, Bell, ArrowLeft } from 'lucide-react';
 
@@ -43,7 +44,7 @@ export default function MyProfile() {
           
           <div className="bg-surface-high/60 backdrop-blur-md rounded-3xl border border-white/5 p-8">
             <div className="flex items-center gap-6 mb-8">
-              <img 
+              <FallbackImage
                 src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=200&auto=format&fit=crop" 
                 alt="Profile avatar" 
                 className="w-24 h-24 rounded-full border-4 border-surface-highest object-cover"

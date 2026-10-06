@@ -113,11 +113,26 @@
   .seller-textarea { width: 100%; min-height: 112px; resize: vertical; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; outline: 0; background: rgba(255,255,255,.025); padding: 12px; color: var(--color-on-surface); font-size: .8rem; line-height: 1.5; }
   .seller-textarea:focus { border-color: var(--color-primary-brand); box-shadow: 0 0 0 3px rgba(143,179,151,.12); }
   .seller-inquiry-list { display: grid; gap: 10px; }
-  .seller-inquiry-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; border: 1px solid rgba(255,255,255,.08); border-radius: 8px; background: rgba(255,255,255,.025); padding: 14px; }
-  .seller-inquiry-item strong, .seller-inquiry-item small, .seller-inquiry-item p { display: block; }
+  .seller-inquiry-item { display: flex; min-width: 0; align-items: flex-start; gap: 16px; border: 1px solid rgba(255,255,255,.08); border-radius: 8px; background: rgba(255,255,255,.025); padding: 14px; }
+  .seller-inquiry-content { width: 100%; min-width: 0; }
+  .seller-inquiry-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .seller-inquiry-item strong, .seller-inquiry-item small { display: block; }
   .seller-inquiry-item strong { color: var(--color-on-surface); font-size: .78rem; }
   .seller-inquiry-item small { margin-top: 3px; color: var(--color-on-surface-muted); font-size: .64rem; }
-  .seller-inquiry-item p { margin-top: 8px; color: var(--color-on-surface-muted); font-size: .72rem; line-height: 1.45; }
+  .seller-inquiry-phone, .seller-inquiry-whatsapp { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; margin-right: 12px; color: var(--color-primary); font-size: .68rem; }
+  .seller-inquiry-phone:hover, .seller-inquiry-whatsapp:hover { text-decoration: underline; }
+  .seller-inquiry-messages { display: grid; gap: 7px; margin-top: 12px; }
+  .seller-inquiry-message { width: fit-content; max-width: min(90%, 640px); border: 1px solid rgba(255,255,255,.07); border-radius: 8px; background: rgba(255,255,255,.035); padding: 9px 11px; }
+  .seller-inquiry-message-seller { justify-self: end; border-color: rgba(143,179,151,.16); background: rgba(143,179,151,.07); }
+  .seller-inquiry-message p { margin-top: 5px; color: var(--color-on-surface); font-size: .72rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .seller-inquiry-message time { display: block; margin-top: 5px; color: var(--color-on-surface-muted); font-size: .56rem; text-align: right; }
+  .seller-inquiry-reply { display: grid; justify-items: start; gap: 7px; margin-top: 13px; }
+  .seller-inquiry-reply label { color: var(--color-on-surface-muted); font-size: .66rem; }
+  .seller-inquiry-reply textarea { width: 100%; resize: vertical; border: 1px solid rgba(255,255,255,.1); border-radius: 7px; outline: 0; background: rgba(0,0,0,.16); padding: 9px; color: var(--color-on-surface); font-size: .72rem; }
+  .seller-inquiry-reply textarea:focus { border-color: var(--color-primary-brand); }
+  .seller-inquiry-reply button { display: inline-flex; align-items: center; gap: 6px; border-radius: 6px; background: var(--color-primary-brand); padding: 7px 10px; color: var(--color-on-primary); font-size: .66rem; font-weight: 600; }
+  .seller-inquiry-reply button:disabled { opacity: .5; }
+  .seller-inquiry-error { color: #f08b8b; font-size: .68rem; }
   .seller-step { display: flex; min-width: 0; align-items: center; gap: 8px; color: var(--color-on-surface-muted); }
   .seller-step > span { display: grid; width: 28px; height: 28px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: rgba(255,255,255,.08); color: var(--color-outline); font-size: .75rem; }
   .seller-step div { min-width: 0; }
@@ -233,9 +248,14 @@
   .seller-stock-out-of-stock { background: rgba(180,60,80,.14); color: #e8909b; }
   .seller-status-active { border-color: rgba(40,180,120,.35); background: rgba(40,180,120,.1); color: #6ed5a8; }
   .seller-status-inactive { background: rgba(255,255,255,.08); color: var(--color-on-surface-muted); }
-  .seller-row-actions { display: flex; gap: 5px; }
+  .seller-row-actions { position: relative; display: flex; gap: 5px; }
   .seller-row-actions button { display: inline-flex; align-items: center; gap: 4px; border: 1px solid rgba(255,255,255,.1); border-radius: 5px; background: rgba(255,255,255,.04); padding: 5px 7px; color: var(--color-on-surface); font-size: .54rem; }
   .seller-row-actions button:hover { border-color: var(--color-primary-brand); }
+  .seller-row-action-menu { position: absolute; z-index: 5; top: calc(100% + 4px); right: 0; display: grid; min-width: 140px; gap: 4px; border: 1px solid rgba(255,255,255,.12); border-radius: 7px; background: #1e2022; padding: 5px; box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+  .seller-row-actions .seller-row-action-menu button { width: 100%; border: 0; justify-content: flex-start; color: #f08b8b; }
+  .seller-row-actions .seller-row-action-menu button:hover:not(:disabled) { background: rgba(220,80,80,.12); }
+  .seller-row-actions .seller-row-action-menu button:disabled { opacity: .6; }
+  .seller-row-delete-error { max-width: 200px; color: #f08b8b; line-height: 1.4; }
   .seller-products-footer { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; color: var(--color-on-surface-muted); font-size: .55rem; }
   .seller-products-footer > div { display: flex; align-items: center; gap: 3px; }
   .seller-products-footer button { display: inline-flex; align-items: center; gap: 2px; border-radius: 5px; padding: 6px 8px; color: var(--color-on-surface-muted); font-size: .55rem; }
@@ -387,7 +407,7 @@
   .seller-preview-main { display: grid; grid-template-columns: 1fr 1.08fr; gap: 28px; padding: 24px; }
   .seller-preview-media { min-width: 0; }
   .seller-preview-image { display: grid; min-height: 300px; place-items: center; overflow: hidden; border: 1px solid rgba(255,255,255,.1); border-radius: 8px; background: #080a0b; }
-  .seller-preview-image > img { width: 100%; height: 100%; max-height: 360px; object-fit: contain; }
+  .seller-preview-image > img, .seller-preview-image > div { width: 100%; height: 100%; max-height: 360px; object-fit: contain; }
   .seller-preview-product-icon { display: grid; width: 220px; height: 220px; place-items: center; border: 8px solid #252b2e; border-radius: 50%; color: var(--color-primary); box-shadow: inset 0 0 0 2px #667277, 0 0 0 2px #101314; }
   .seller-preview-product-icon.tyre { border-radius: 50%; color: #838d8e; }
   .seller-preview-thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }

@@ -1,9 +1,9 @@
+import FallbackImage from "../components/FallbackImage";
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
-  Check,
   MapPin,
   Phone,
   Send,
@@ -25,6 +25,7 @@ const prompts = [
 ];
 
 export default function ContactSeller() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [marketplace, setMarketplace] = useState<MarketplaceData | null>(null);
   const [senderName, setSenderName] = useState(user?.displayName || "");
@@ -33,7 +34,6 @@ export default function ContactSeller() {
   const [message, setMessage] = useState(
     'Hello AutoMax Wheels team, I am interested in this set of OZ Racing Ultraleggera 18" rims for my Civic RS. Could you confirm if hub rings are included?',
   );
-  const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   useEffect(() => {
@@ -64,7 +64,11 @@ export default function ContactSeller() {
     setSubmitting(true);
     setSubmitError("");
     try {
-      await createInquiry({
+      const conversationToken = Array.from(
+        window.crypto.getRandomValues(new Uint8Array(32)),
+        (byte) => byte.toString(16).padStart(2, "0"),
+      ).join("");
+      const result = await createInquiry({
         sellerId: marketplace.sellerId,
         productId: selectedProduct?._id,
         productName: selectedProduct?.productName,
@@ -72,8 +76,20 @@ export default function ContactSeller() {
         senderPhone,
         car,
         message,
+        conversationToken,
       });
-      setSent(true);
+      let tokenStorageFailed = false;
+      try {
+        window.localStorage.setItem(
+          `wheelybits:inquiry-token:${result.inquiryId}`,
+          conversationToken,
+        );
+      } catch {
+        tokenStorageFailed = true;
+      }
+      navigate(`/inquiries/${encodeURIComponent(result.inquiryId)}`, {
+        state: { conversationToken, tokenStorageFailed },
+      });
     } catch (error) {
       setSubmitError(
         error instanceof Error ? error.message : "Message could not be sent.",
@@ -167,7 +183,7 @@ export default function ContactSeller() {
               </span>
             </section>
             <section className="flex flex-wrap items-center gap-4 rounded-xl bg-[#1a1c1e] p-3">
-              <img
+              <FallbackImage
                 src="https://images.unsplash.com/photo-1600712242805-9f72877b0492?auto=format&fit=crop&w=300&q=85"
                 alt="OZ Racing Ultraleggera"
                 className="h-16 w-20 rounded-lg object-cover"
@@ -219,8 +235,15 @@ export default function ContactSeller() {
                   <input
                     value={senderPhone}
                     onChange={(event) => setSenderPhone(event.target.value)}
+                    type="tel"
+                    autoComplete="tel"
+                    maxLength={40}
+                    required
                     className="mt-1 w-full rounded bg-[#202325] p-3 text-[10px] text-white outline-none"
                   />
+                  <small className="mt-1 block text-[8px] text-[#c2c8c0]">
+                    Shared with the seller so they can call or WhatsApp you.
+                  </small>
                 </label>
                 <label className="text-[9px] text-[#c2c8c0]">
                   Select Your Car
@@ -259,12 +282,6 @@ export default function ContactSeller() {
                   className="mt-1 min-h-28 w-full rounded bg-[#202325] p-3 text-[10px] leading-5 text-white outline-none"
                 />
               </label>
-              {sent && (
-                <p className="rounded bg-[#315141] p-3 text-[10px] text-[#abcfb2]">
-                  <Check className="mr-1 inline h-3 w-3" /> Message sent to
-                  AutoMax Wheels.
-                </p>
-              )}
               {submitError && (
                 <p className="rounded bg-[#5b302a] p-3 text-[10px] text-[#ffc4ba]">
                   {submitError}

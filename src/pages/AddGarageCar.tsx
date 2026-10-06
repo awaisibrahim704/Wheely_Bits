@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useEffect, useRef, useState } from "react";
 import type { DragEvent, FormEvent, ReactNode } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -532,7 +533,7 @@ export default function AddGarageCar() {
                     key={photo.id}
                     className="relative overflow-hidden rounded-xl border border-white/10 bg-background"
                   >
-                    <img
+                    <FallbackImage
                       src={photo.previewUrl}
                       alt={`Preview of ${photo.file?.name ?? `${draft.make} ${draft.model} photo`}`}
                       className="h-28 w-full object-cover sm:h-32"

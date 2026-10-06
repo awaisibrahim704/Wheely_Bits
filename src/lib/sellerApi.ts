@@ -1,12 +1,26 @@
 const sellerApiUrl = import.meta.env.VITE_SELLER_API_URL || "http://localhost:4000";
 
+class SellerApiError extends Error {
+  readonly status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+  }
+}
+
 async function request<T>(path: string, options: RequestInit): Promise<T> {
   const response = await fetch(`${sellerApiUrl}${path}`, {
     ...options,
     headers: { "Content-Type": "application/json", ...(options.headers || {}) },
   });
   const body = (await response.json().catch(() => ({}))) as { error?: string } & T;
-  if (!response.ok) throw new Error(body.error || "The seller data could not be saved.");
+  if (!response.ok) {
+    throw new SellerApiError(
+      body.error || `Seller API request failed (HTTP ${response.status}).`,
+      response.status,
+    );
+  }
   return body;
 }
 
@@ -60,6 +74,8 @@ export type SellerDashboardProduct = {
   description?: string;
   gallery?: string[];
   aiImage?: string;
+  vendorName?: string;
+  vendorLocation?: string;
   status?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -73,6 +89,7 @@ export type SellerRating = {
   stars: number;
   comment?: string;
   car?: string;
+  photos?: string[];
   createdAt?: string;
   updatedAt?: string;
 };
@@ -257,6 +274,7 @@ export function saveLocalRating(payload: {
   stars: number;
   comment?: string;
   car?: string;
+  photos?: string[];
 }): RatingSummary {
   const current = getLocalRatings(payload.sellerId);
   const now = new Date().toISOString();
@@ -271,6 +289,7 @@ export function saveLocalRating(payload: {
             stars: payload.stars,
             comment: payload.comment || "",
             car: payload.car || r.car,
+            photos: payload.photos ?? r.photos,
             userName: payload.userName || r.userName,
             updatedAt: now,
           }
@@ -285,6 +304,7 @@ export function saveLocalRating(payload: {
       stars: payload.stars,
       comment: payload.comment || "",
       car: payload.car,
+      photos: payload.photos || [],
       createdAt: now,
       updatedAt: now,
     };
@@ -310,6 +330,13 @@ export type SellerInquiry = {
   message: string;
   status: "unread" | "read" | "replied";
   createdAt?: string;
+  messages?: InquiryMessage[];
+};
+
+export type InquiryMessage = {
+  sender: "customer" | "seller";
+  content: string;
+  createdAt: string;
 };
 
 export type SellerDashboardData = {
@@ -492,7 +519,19 @@ export async function getMarketplace(): Promise<MarketplaceData> {
     const summary = computeRatingSummary(localRatings);
     return {
       ...data,
-      products: keepLatestProducts(data.products ?? []),
+      products: keepLatestProducts(data.products ?? []).map((product) => ({
+        ...product,
+        vendorName:
+          product.vendorName ||
+          (product.userId === data.sellerId
+            ? data.seller?.store?.businessName || data.seller?.businessName
+            : undefined),
+        vendorLocation:
+          product.vendorLocation ||
+          (product.userId === data.sellerId
+            ? data.seller?.store?.address || data.seller?.store?.city
+            : undefined),
+      })),
       averageRating: data.averageRating ?? summary.averageRating,
       totalRatings: data.totalRatings || summary.totalRatings,
     };
@@ -689,6 +728,7 @@ export function createInquiry(payload: {
   senderPhone: string;
   car?: string;
   message: string;
+  conversationToken: string;
 }) {
   return request<{ inquiryId: string; status: string }>("/api/inquiries", {
     method: "POST",
@@ -696,11 +736,54 @@ export function createInquiry(payload: {
   });
 }
 
+export function getInquiryConversation(inquiryId: string, token: string) {
+  return request<{ inquiry: SellerInquiry }>(
+    `/api/inquiries/${encodeURIComponent(inquiryId)}/conversation`,
+    { method: "GET", headers: { "X-Conversation-Token": token } },
+  );
+}
+
+export function replyToInquiryAsCustomer(
+  inquiryId: string,
+  token: string,
+  content: string,
+) {
+  return request<{ message: InquiryMessage }>(
+    `/api/inquiries/${encodeURIComponent(inquiryId)}/conversation`,
+    {
+      method: "POST",
+      headers: { "X-Conversation-Token": token },
+      body: JSON.stringify({ content }),
+    },
+  );
+}
+
+export function replyToInquiryAsSeller(
+  inquiryId: string,
+  userId: string,
+  content: string,
+) {
+  return request<{ message: InquiryMessage }>(
+    `/api/inquiries/${encodeURIComponent(inquiryId)}/replies`,
+    {
+      method: "POST",
+      body: JSON.stringify({ userId, content }),
+    },
+  );
+}
+
 export function updateInquiryStatus(inquiryId: string, userId: string, status: SellerInquiry["status"]) {
   return request<{ inquiryId: string; status: string }>(`/api/inquiries/${encodeURIComponent(inquiryId)}`, {
     method: "PATCH",
     body: JSON.stringify({ userId, status }),
   });
+}
+
+export function getSellerInquiries(userId: string) {
+  return request<{ inquiries: SellerInquiry[] }>(
+    `/api/sellers/${encodeURIComponent(userId)}/inquiries`,
+    { method: "GET" },
+  );
 }
 
 export async function getSellerDashboard(userId: string): Promise<SellerDashboardData> {
@@ -778,6 +861,7 @@ export async function submitRating(payload: {
   stars: number;
   comment?: string;
   car?: string;
+  photos?: string[];
 }): Promise<RatingSummary & { success: boolean }> {
   // Update local storage first
   const localSummary = saveLocalRating(payload);
@@ -787,7 +871,14 @@ export async function submitRating(payload: {
       body: JSON.stringify(payload),
     });
     return res;
-  } catch {
+  } catch (error) {
+    if (payload.photos?.length) {
+      throw new Error(
+        error instanceof Error
+          ? `Your review photos could not be uploaded: ${error.message}`
+          : "Your review photos could not be uploaded.",
+      );
+    }
     return {
       ...localSummary,
       success: true,
@@ -798,9 +889,9 @@ export async function submitRating(payload: {
 export async function getMyRating(
   sellerId: string,
   userId: string,
-): Promise<{ rating: { stars: number; comment: string; car?: string } | null }> {
+): Promise<{ rating: { stars: number; comment: string; car?: string; photos?: string[] } | null }> {
   try {
-    const res = await request<{ rating: { stars: number; comment: string; car?: string } | null }>(
+    const res = await request<{ rating: { stars: number; comment: string; car?: string; photos?: string[] } | null }>(
       `/api/ratings/${encodeURIComponent(sellerId)}/${encodeURIComponent(userId)}`,
       { method: "GET" },
     );
@@ -811,28 +902,66 @@ export async function getMyRating(
   const ratings = getLocalRatings(sellerId);
   const found = ratings.find((r) => r.userId === userId);
   return {
-    rating: found ? { stars: found.stars, comment: found.comment || "", car: found.car } : null,
+    rating: found
+      ? {
+          stars: found.stars,
+          comment: found.comment || "",
+          car: found.car,
+          photos: found.photos || [],
+        }
+      : null,
   };
 }
 
 export function publishSellerProduct(payload: unknown) {
+  const productPayload = payload as Partial<SellerDashboardProduct>;
+  const isRim =
+    /(rim|wheel)/.test(productPayload.category?.toLowerCase() || "");
+  const normalizedIdentity = getRimListingIdentity(productPayload);
+  const localProducts = readPublishedProducts();
+
+  if (
+    isRim &&
+    localProducts.some(
+      (product) =>
+        product.userId === productPayload.userId &&
+        getRimListingIdentity(product) === normalizedIdentity,
+    )
+  ) {
+    return Promise.reject(
+      new Error("This rim is already published in your listings."),
+    );
+  }
+
   return request<{ productId: string; status: string }>("/api/products", {
     method: "POST",
     body: JSON.stringify(payload),
-  }).catch(() => {
+  }).catch((error: unknown) => {
+    if (error instanceof SellerApiError) throw error;
+
     const product = {
       ...(payload as Record<string, unknown>),
       _id: `local-${Date.now()}`,
-      userId: (payload as Record<string, unknown>)?.userId ?? "local-user",
+      userId: productPayload.userId ?? "local-user",
       status: "published",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     } as SellerDashboardProduct;
-    const products = readPublishedProducts();
-    products.unshift(product);
-    writePublishedProducts(products);
+    localProducts.unshift(product);
+    writePublishedProducts(localProducts);
     return { productId: String(product._id), status: "published" };
   });
+}
+
+function getRimListingIdentity(product: Partial<SellerDashboardProduct>) {
+  const normalize = (value: string | number | undefined) =>
+    String(value ?? "")
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "");
+
+  return `${normalize(product.brand)}:${normalize(product.productName)}`;
 }
 
 export function updateSellerProduct(productId: string, payload: unknown) {
@@ -860,4 +989,58 @@ export function updateSellerProduct(productId: string, payload: unknown) {
     writePublishedProducts(nextProducts);
     return { productId, status: "published" };
   });
+}
+
+export async function deleteSellerProduct(productId: string, userId: string) {
+  if (!productId || !userId) {
+    throw new Error("A product and signed-in seller are required.");
+  }
+
+  const localProducts = readPublishedProducts();
+  const localProduct = localProducts.find(
+    (product) => product._id === productId && product.userId === userId,
+  );
+
+  if (productId.startsWith("local-")) {
+    if (!localProduct) {
+      throw new Error("This local product could not be found.");
+    }
+    writePublishedProducts(
+      localProducts.filter((product) => product._id !== productId),
+    );
+    return { productId, status: "deleted" };
+  }
+
+  try {
+    const result = await request<{ productId: string; status: string }>(
+      `/api/products/${encodeURIComponent(productId)}`,
+      {
+        method: "DELETE",
+        body: JSON.stringify({ userId }),
+      },
+    );
+    if (localProduct) {
+      writePublishedProducts(
+        localProducts.filter((product) => product._id !== productId),
+      );
+    }
+    return result;
+  } catch (error) {
+    if (error instanceof SellerApiError) {
+      if (
+        error.status === 404 &&
+        error.message === "Seller API request failed (HTTP 404)."
+      ) {
+        throw new Error(
+          "The seller API has not loaded the delete route yet. Restart the seller API and try again.",
+        );
+      }
+      throw error;
+    }
+    if (!localProduct) throw error;
+    writePublishedProducts(
+      localProducts.filter((product) => product._id !== productId),
+    );
+    return { productId, status: "deleted" };
+  }
 }

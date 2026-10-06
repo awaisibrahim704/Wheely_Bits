@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { Link } from 'react-router-dom';
 import { Search, MapPin, Star, ShieldCheck, ArrowRight, ArrowLeft } from 'lucide-react';
 
@@ -80,7 +81,7 @@ export default function RimVendor() {
             className={`bg-surface-high/60 backdrop-blur-md rounded-3xl border overflow-hidden flex flex-col md:flex-row transition-all duration-300 hover:border-white/20 hover:shadow-xl group ${vendor.featured ? 'border-primary-brand/50 shadow-[0_0_30px_rgba(171,207,178,0.1)]' : 'border-white/5'}`}
           >
             <div className="md:w-1/3 aspect-video md:aspect-auto relative overflow-hidden">
-              <img 
+              <FallbackImage
                 src={vendor.image} 
                 alt={vendor.name} 
                 className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500 group-hover:scale-105"

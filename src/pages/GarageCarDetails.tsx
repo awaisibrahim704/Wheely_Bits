@@ -1,8 +1,8 @@
+import FallbackImage from "../components/FallbackImage";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft,
-  ArrowUpRight,
   Check,
   CircleGauge,
   Image as ImageIcon,
@@ -150,12 +150,15 @@ export default function GarageCarDetails() {
 
       <section className="relative isolate mb-5 overflow-hidden rounded-2xl border border-white/5 bg-surface-high">
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-surface-highest via-surface-high to-surface-low" />
-        {heroImage && (
-          <img
-            src={heroImage}
-            alt={`${car.year} ${car.make} ${car.model}`}
-            className="absolute inset-0 -z-10 h-full w-full object-cover object-center"
-          />
+        <FallbackImage
+          src={heroImage}
+          alt={`${car.year} ${car.make} ${car.model}`}
+          className="absolute inset-0 -z-10 h-full w-full object-cover object-center"
+        />
+        {!heroImage && (
+          <span className="absolute bottom-3 right-3 z-10 rounded bg-background/80 px-2 py-1 text-xs text-on-surface-muted">
+            Photo not uploaded
+          </span>
         )}
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-background via-background/75 to-background/10 sm:via-background/55" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-background/80 via-transparent to-background/10" />
@@ -219,7 +222,7 @@ export default function GarageCarDetails() {
 
       <nav
         aria-label="Car actions"
-        className="mb-6 grid grid-cols-1 gap-2 rounded-2xl border border-white/5 bg-surface-high/50 p-3 sm:grid-cols-2 xl:grid-cols-4"
+        className="mb-6 grid grid-cols-1 gap-2 rounded-2xl border border-white/5 bg-surface-high/50 p-3 sm:grid-cols-2"
       >
         <Link
           to={browseWithCar("/studio")}
@@ -227,20 +230,6 @@ export default function GarageCarDetails() {
         >
           <Sparkles className="h-4 w-4" aria-hidden="true" />
           Customize This Car
-        </Link>
-        <Link
-          to={browseWithCar("/rim")}
-          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/10 px-3 text-sm font-semibold text-on-surface transition hover:border-primary-brand/40 hover:bg-white/5"
-        >
-          <Settings2 className="h-4 w-4 text-primary-brand" aria-hidden="true" />
-          Try Different Rims
-        </Link>
-        <Link
-          to={browseWithCar("/vendors?category=tyres")}
-          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/10 px-3 text-sm font-semibold text-on-surface transition hover:border-primary-brand/40 hover:bg-white/5"
-        >
-          <ArrowUpRight className="h-4 w-4 text-primary-brand" aria-hidden="true" />
-          Explore Tyres
         </Link>
         <Link
           to={detailsUrl}
@@ -308,57 +297,6 @@ export default function GarageCarDetails() {
           </section>
         </div>
 
-        <div className="space-y-5 lg:col-span-2">
-          <section className="rounded-2xl border border-white/5 bg-surface-high/45 p-5 sm:p-7">
-            <div className="mb-5 flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-brand/10 text-primary-brand">
-                <CircleGauge className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <div>
-                <h2 className="font-semibold text-on-surface">
-                  Wheels & Tyres
-                </h2>
-                <p className="text-xs text-on-surface-muted">
-                  Current fitment setup
-                </p>
-              </div>
-            </div>
-            <dl className="space-y-3">
-              <div className="rounded-xl border border-white/5 bg-background/50 p-4">
-                <dt className="text-[10px] font-semibold uppercase tracking-wider text-secondary-brand">
-                  Rim setup
-                </dt>
-                <dd className="mt-1.5 whitespace-pre-line text-sm leading-relaxed text-on-surface">
-                  {car.rimDetails || "No rim details added yet."}
-                </dd>
-              </div>
-              <div className="rounded-xl border border-white/5 bg-background/50 p-4">
-                <dt className="text-[10px] font-semibold uppercase tracking-wider text-secondary-brand">
-                  Tyre setup
-                </dt>
-                <dd className="mt-1.5 whitespace-pre-line text-sm leading-relaxed text-on-surface">
-                  {car.tyreDetails || "No tyre details added yet."}
-                </dd>
-              </div>
-            </dl>
-            <div className="mt-4 flex flex-col gap-2">
-              <Link
-                to={browseWithCar("/rim")}
-                className="inline-flex min-h-10 items-center justify-between gap-2 rounded-lg border border-white/10 px-3 text-xs font-semibold text-on-surface transition hover:border-primary-brand/40 hover:text-primary-brand"
-              >
-                Try Different Rims
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-              <Link
-                to={browseWithCar("/vendors?category=tyres")}
-                className="inline-flex min-h-10 items-center justify-between gap-2 rounded-lg border border-white/10 px-3 text-xs font-semibold text-on-surface transition hover:border-primary-brand/40 hover:text-primary-brand"
-              >
-                Explore Tyres
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-            </div>
-          </section>
-        </div>
       </div>
 
       <section className="mt-5 rounded-2xl border border-white/5 bg-surface-high/45 p-5 sm:p-7">
@@ -371,7 +309,7 @@ export default function GarageCarDetails() {
             <p className="text-xs text-on-surface-muted">
               {images.length
                 ? `${images.length} ${images.length === 1 ? "photo" : "photos"}`
-                : "No photos have been added"}
+                : "Photo not uploaded"}
             </p>
           </div>
         </div>
@@ -383,7 +321,7 @@ export default function GarageCarDetails() {
               className="relative overflow-hidden rounded-xl border border-white/10 bg-background sm:col-span-2"
               aria-label="View cover photo"
             >
-              <img
+              <FallbackImage
                 src={images[0]}
                 alt={`${car.make} ${car.model} cover`}
                 className="h-64 w-full object-cover sm:h-[340px]"
@@ -405,7 +343,7 @@ export default function GarageCarDetails() {
                   }`}
                   aria-label={`View photo ${index + 2}`}
                 >
-                  <img
+                  <FallbackImage
                     src={image}
                     alt={`${car.make} ${car.model} photo ${index + 2}`}
                     className="h-28 w-full object-cover sm:h-[calc((340px-0.75rem)/2)]"
@@ -416,10 +354,7 @@ export default function GarageCarDetails() {
           </div>
         ) : (
           <div className="flex min-h-36 flex-col items-center justify-center rounded-xl border border-dashed border-white/10 text-center">
-            <ImageIcon className="h-7 w-7 text-on-surface-muted/50" aria-hidden="true" />
-            <p className="mt-2 text-sm text-on-surface-muted">
-              Add photos to your car profile.
-            </p>
+            <p className="text-sm text-on-surface-muted">Photo not uploaded</p>
           </div>
         )}
         <p className="sr-only" aria-live="polite">

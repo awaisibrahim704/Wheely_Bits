@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ShieldCheck, CheckCircle2, Star, SlidersHorizontal, Sparkles } from 'lucide-react';
 
@@ -100,7 +101,7 @@ export default function RimDetail() {
         {/* Left Column: Image Preview */}
         <div className="lg:col-span-7 flex flex-col gap-6">
           <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-surface-high border border-white/10 shadow-2xl group">
-            <img 
+            <FallbackImage
               src={rim.image} 
               alt={`${rim.brand} ${rim.model}`}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 

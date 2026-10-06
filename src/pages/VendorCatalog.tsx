@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -621,7 +622,7 @@ export default function VendorCatalog() {
                   className="overflow-hidden rounded-xl bg-[#1a1c1e] shadow-lg transition hover:-translate-y-0.5 hover:ring-1 hover:ring-[#8fb397]/50"
                 >
                   <div className="relative h-36 bg-[#293031]">
-                    <img
+                    <FallbackImage
                       src={product.image}
                       alt={product.name}
                       className="h-full w-full object-cover opacity-85"

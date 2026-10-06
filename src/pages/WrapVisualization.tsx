@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, RotateCw, Maximize, Palette, Droplet } from 'lucide-react';
@@ -27,7 +28,7 @@ export default function WrapVisualization() {
               filter: `drop-shadow(0 40px 50px rgba(0,0,0,0.6))`
             }}
           >
-            <img 
+            <FallbackImage
               src="https://images.unsplash.com/photo-1614200187524-dc4b892acf16?q=80&w=2000&auto=format&fit=crop" 
               alt="Wrap Visualization" 
               className="w-full h-full object-contain mix-blend-screen opacity-90 transition-transform duration-1000" 

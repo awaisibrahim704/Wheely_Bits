@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CarFront, Plus, Search } from "lucide-react";
@@ -26,16 +27,11 @@ function CarCard({ car }: { car: GarageCar }) {
         <div className="absolute inset-0 flex items-center justify-center text-white/20">
           <CarFront className="h-14 w-14" strokeWidth={1} aria-hidden="true" />
         </div>
-        {coverImage && (
-          <img
-            src={coverImage}
-            alt={`${car.year} ${car.make} ${car.model}`}
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-            onError={(event) => {
-              event.currentTarget.style.display = "none";
-            }}
-          />
-        )}
+        <FallbackImage
+          src={coverImage}
+          alt={`${car.year} ${car.make} ${car.model}`}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-black/15" />
         <span
           className={`absolute left-3 top-3 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest ${

@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, RotateCw, Maximize, Share2, Info } from 'lucide-react';
@@ -16,7 +17,7 @@ export default function RimVisualization() {
         
         {/* Mock 3D Car Image */}
         <div className="absolute inset-0 flex items-center justify-center p-12 pt-24">
-          <img 
+          <FallbackImage
             src="https://images.unsplash.com/photo-1614200187524-dc4b892acf16?q=80&w=2000&auto=format&fit=crop" 
             alt="3D Visualization" 
             className="w-full h-full max-w-6xl object-contain mix-blend-screen opacity-90 drop-shadow-2xl transition-transform duration-1000 scale-105" 

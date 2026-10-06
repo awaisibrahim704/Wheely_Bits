@@ -1,9 +1,9 @@
+import FallbackImage from "../components/FallbackImage";
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Camera,
   Heart,
-  Image,
   MessageSquare,
   Plus,
   Send,
@@ -400,7 +400,7 @@ export default function Community() {
               {images.length > 0 ? (
                 <div className="min-h-40 flex-1 space-y-2">
                   <div className="relative h-32 overflow-hidden rounded-lg border border-white/10 bg-background">
-                    <img
+                    <FallbackImage
                       src={images[0]}
                       alt="First photo, shown on the post card"
                       className="h-full w-full object-cover"
@@ -415,7 +415,7 @@ export default function Community() {
                         key={index}
                         className="relative h-12 w-12 shrink-0 overflow-hidden rounded border border-white/10"
                       >
-                        <img
+                        <FallbackImage
                           src={photo}
                           alt={`Selected photo ${index + 1}`}
                           className="h-full w-full object-cover"
@@ -439,9 +439,8 @@ export default function Community() {
                   </div>
                 </div>
               ) : (
-                <div className="flex min-h-40 flex-1 flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-white/15 bg-background/40 text-center text-sm text-on-surface-muted">
-                  <Image size={22} />
-                  <span>Your photo preview</span>
+                <div className="flex min-h-40 flex-1 items-center justify-center rounded-lg border border-dashed border-white/15 bg-background/40 text-center text-sm text-on-surface-muted">
+                  <span>Photo not uploaded</span>
                 </div>
               )}
               <button
@@ -478,7 +477,7 @@ export default function Community() {
                       to={`/community/thread/${encodeURIComponent(post.id)}`}
                       className="group relative block aspect-[4/3] bg-background"
                     >
-                      <img
+                      <FallbackImage
                         src={post.images[0]}
                         alt={`Photo shared by ${post.author}`}
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"

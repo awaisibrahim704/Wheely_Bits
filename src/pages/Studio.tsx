@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Settings, Layers, Camera, Maximize, RotateCw, Undo, ChevronLeft, Droplet, Sun, Shield } from 'lucide-react';
@@ -165,7 +166,7 @@ export default function Studio() {
               }}
             >
               {/* Note: Using a transparent PNG of a car would be ideal here. Using a high-quality placeholder for now. */}
-              <img 
+              <FallbackImage
                 src="https://images.unsplash.com/photo-1614200187524-dc4b892acf16?q=80&w=2000&auto=format&fit=crop" 
                 alt="3D Vehicle Visualization" 
                 className="w-full h-full object-contain mix-blend-screen opacity-90 scale-x-[-1]" 

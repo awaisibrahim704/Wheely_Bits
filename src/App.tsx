@@ -25,6 +25,7 @@ import VendorDirectory from "./pages/VendorDirectory";
 import VendorDetail from "./pages/VendorDetail";
 import VendorCatalog from "./pages/VendorCatalog";
 import ContactSeller from "./pages/ContactSeller";
+import InquiryConversation from "./pages/InquiryConversation";
 import ScheduleInstallation from "./pages/ScheduleInstallation";
 import BookingConfirmed from "./pages/BookingConfirmed";
 import SellerBusinessInformation from "./pages/SellerBusinessInformation";
@@ -145,6 +146,7 @@ function App() {
             <Route path="/vendors/:id" element={<VendorDetail />} />
             <Route path="/vendors/:id/catalog" element={<VendorCatalog />} />
             <Route path="/vendors/:id/contact" element={<ContactSeller />} />
+            <Route path="/inquiries/:id" element={<InquiryConversation />} />
             <Route
               path="/booking/schedule"
               element={<ScheduleInstallation />}

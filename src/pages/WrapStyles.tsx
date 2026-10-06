@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { Link } from 'react-router-dom';
 import { ArrowRight, Palette, Shield, Sparkles } from 'lucide-react';
 
@@ -59,7 +60,7 @@ export default function WrapStyles() {
                 {/* Image Background */}
                 <div className="absolute inset-0 z-0">
                   <div className="absolute inset-0 bg-gradient-to-b from-surface-highest/80 via-surface-highest/40 to-surface-highest/95 z-10 group-hover:from-surface-highest/60 group-hover:to-surface-highest/90 transition-colors duration-500"></div>
-                  <img 
+                  <FallbackImage
                     src={style.image} 
                     alt={style.title} 
                     className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"

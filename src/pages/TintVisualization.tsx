@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Sun, Moon, Info } from 'lucide-react';
@@ -14,7 +15,7 @@ export default function TintVisualization() {
       
       {/* Simulation Environment Background */}
       <div className="absolute inset-0 z-0 transition-colors duration-1000">
-        <img 
+        <FallbackImage
           src={timeOfDay === 'day' 
             ? 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2000&auto=format&fit=crop' // Sunny road
             : 'https://images.unsplash.com/photo-1506527506979-994df5877c48?q=80&w=2000&auto=format&fit=crop' // Night city

@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -184,21 +185,27 @@ export default function CommunityThread() {
               </div>
 
               <div className="space-y-3 px-3 pb-4 sm:space-y-5 sm:px-7 sm:pb-7">
-                {post.images.map((image, index) => (
-                  <figure
-                    key={`${post.id}-photo-${index}`}
-                    className="overflow-hidden rounded-xl border border-white/10 bg-background/60"
-                  >
-                    <img
-                      src={image}
-                      alt={`Photo ${index + 1} shared by ${post.author}`}
-                      className="max-h-[80vh] w-full object-contain"
-                    />
-                    <figcaption className="px-3 py-2 text-xs text-on-surface-muted">
-                      {index + 1} of {post.images.length}
-                    </figcaption>
-                  </figure>
-                ))}
+                {post.images.length ? (
+                  post.images.map((image, index) => (
+                    <figure
+                      key={`${post.id}-photo-${index}`}
+                      className="overflow-hidden rounded-xl border border-white/10 bg-background/60"
+                    >
+                      <FallbackImage
+                        src={image}
+                        alt={`Photo ${index + 1} shared by ${post.author}`}
+                        className="max-h-[80vh] w-full object-contain"
+                      />
+                      <figcaption className="px-3 py-2 text-xs text-on-surface-muted">
+                        {index + 1} of {post.images.length}
+                      </figcaption>
+                    </figure>
+                  ))
+                ) : (
+                  <p className="rounded-xl border border-dashed border-white/10 py-8 text-center text-sm text-on-surface-muted">
+                    Photo not uploaded
+                  </p>
+                )}
               </div>
 
               <footer className="flex items-center gap-5 border-t border-white/10 px-5 py-4 sm:px-7">

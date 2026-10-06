@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { Link } from 'react-router-dom';
 import { BookOpen, Search, ArrowRight, PlayCircle, FileText, ArrowLeft } from 'lucide-react';
 
@@ -85,7 +86,7 @@ export default function EducationHub() {
               className="group flex flex-col bg-surface-high/60 backdrop-blur-md rounded-3xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-white/20 hover:shadow-xl"
             >
               <div className="aspect-[4/3] relative overflow-hidden">
-                <img 
+                <FallbackImage
                   src={guide.image} 
                   alt={guide.title} 
                   className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-transform duration-700 group-hover:scale-105"

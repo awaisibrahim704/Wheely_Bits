@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import {
@@ -5,6 +6,7 @@ import {
   ArrowLeft,
   ArrowRight,
   Bookmark,
+  Camera,
   Check,
   ChevronDown,
   Edit,
@@ -18,6 +20,7 @@ import {
   Sparkles,
   Star,
   ThumbsUp,
+  X,
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import {
@@ -51,33 +54,69 @@ const quickReviewTags = [
   "Careful Packaging",
 ];
 
-const matchesProductCategory = (
-  product: Product,
-  selectedCategory: "All" | "Rims" | "Tyres",
-) => {
-  if (selectedCategory === "All") return true;
+async function encodeReviewPhoto(file: File): Promise<string> {
+  if (!file.type.startsWith("image/")) {
+    throw new Error(`${file.name} is not an image.`);
+  }
+  if (file.size > 10 * 1024 * 1024) {
+    throw new Error(`${file.name} is larger than 10 MB.`);
+  }
+
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, 1400 / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+  canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+  const context = canvas.getContext("2d");
+  if (!context) {
+    bitmap.close();
+    throw new Error(`${file.name} could not be processed.`);
+  }
+  context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close();
+  const encoded = canvas.toDataURL("image/jpeg", 0.78);
+  if (encoded.length > 2_000_000) {
+    throw new Error(`${file.name} could not be compressed enough to upload.`);
+  }
+  return encoded;
+}
+
+type ProductCategory = "All" | "Rims" | "Tyres" | "Other Products";
+
+const getProductCategory = (product: Product): Exclude<ProductCategory, "All"> => {
+  const category = (product.category || "").toLowerCase().replace(/[^a-z]/g, "");
+  if (/^(tyres?|tires?)$/.test(category)) return "Tyres";
+  if (/^(rims?|wheels?)$/.test(category)) return "Rims";
+  if (/^(other|autopart)/.test(category)) return "Other Products";
 
   const haystack =
     `${product.name} ${product.brand} ${product.type} ${product.category ?? ""}`.toLowerCase();
 
-  const hasRimSignals =
-    /(rim|wheel|wheelset|monoblock|forged|flow-formed|flow formed|concave|mesh|spoke|split|track spec|racing)/.test(
-      haystack,
-    );
-  const hasTyreSignals =
-    /(tyre|tire|pilot|neova|advan|michelin|yokohama|continental|pirelli|bridgestone|kumho|goodyear)/.test(
+  const hasTireSpecification = /\b\d{3}\/\d{2,3}\s?(?:zr?|r)\s?\d{2}\b/i.test(haystack);
+  const hasTireSignal =
+    /(tyre|tire|pilot sport|neova|advan|ps4s|price\s*\/\s*tyre)/.test(haystack) ||
+    hasTireSpecification;
+  const hasWheelSignal =
+    /(rim|wheel|wheelset|monoblock|forged|flow[- ]formed|concave|mesh|spoke|split|pcd)/.test(
       haystack,
     );
 
-  if (selectedCategory === "Rims") return hasRimSignals && !hasTyreSignals;
-  if (selectedCategory === "Tyres") return hasTyreSignals;
+  if (hasTireSignal && !hasWheelSignal) return "Tyres";
+  if (hasWheelSignal && !hasTireSignal) return "Rims";
 
-  return true;
+  if (hasTireSignal) {
+    return "Tyres";
+  }
+  if (hasWheelSignal) return "Rims";
+  return "Other Products";
 };
+
+const matchesProductCategory = (product: Product, selectedCategory: ProductCategory) =>
+  selectedCategory === "All" || getProductCategory(product) === selectedCategory;
 
 const getProductCategoryCount = (
   items: Product[],
-  selectedCategory: "All" | "Rims" | "Tyres",
+  selectedCategory: ProductCategory,
 ) =>
   selectedCategory === "All"
     ? items.length
@@ -155,9 +194,7 @@ export default function VendorDetail() {
   const { user } = useAuth();
   const [marketplace, setMarketplace] = useState<MarketplaceData | null>(null);
   const [query, setQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<
-    "All" | "Rims" | "Tyres"
-  >("All");
+  const [selectedCategory, setSelectedCategory] = useState<ProductCategory>("All");
   const [sort, setSort] = useState("Popularity");
   const [activeTab, setActiveTab] = useState<"products" | "reviews" | "about">(
     "products",
@@ -171,6 +208,8 @@ export default function VendorDetail() {
   const [myRating, setMyRating] = useState<number>(0); // 0 = not yet rated
   const [myComment, setMyComment] = useState("");
   const [myCar, setMyCar] = useState("");
+  const [reviewPhotos, setReviewPhotos] = useState<string[]>([]);
+  const [photoUploading, setPhotoUploading] = useState(false);
   const [guestName, setGuestName] = useState("");
   const [hoverStar, setHoverStar] = useState(0);
   const [ratingSubmitting, setRatingSubmitting] = useState(false);
@@ -228,6 +267,7 @@ export default function VendorDetail() {
             setMyRating(data.rating.stars);
             setMyComment(data.rating.comment || "");
             if (data.rating.car) setMyCar(data.rating.car);
+            setReviewPhotos(data.rating.photos || []);
           }
         })
         .catch(() => {});
@@ -274,6 +314,7 @@ export default function VendorDetail() {
         stars: myRating,
         comment: myComment.trim(),
         car: myCar.trim(),
+        photos: reviewPhotos,
       });
       setRatingSummary({
         averageRating: result.averageRating,
@@ -499,7 +540,7 @@ export default function VendorDetail() {
         </div>
         <section className="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#1a1c1e] shadow-2xl">
           <div className="relative h-52 overflow-hidden">
-            <img
+            <FallbackImage
               src={bannerImage}
               alt={`${sellerName} showroom`}
               className="h-full w-full object-cover opacity-60"
@@ -729,7 +770,9 @@ export default function VendorDetail() {
                 </div>
                 <div className="flex gap-1 text-[8px]">
                   <button
+                    type="button"
                     onClick={() => setSelectedCategory("All")}
+                    aria-pressed={selectedCategory === "All"}
                     className={`rounded-full px-2 py-1.5 font-bold transition ${
                       selectedCategory === "All"
                         ? "bg-[#abcfb2] text-[#163722]"
@@ -739,7 +782,9 @@ export default function VendorDetail() {
                     All ({getProductCategoryCount(liveProducts, "All")})
                   </button>
                   <button
+                    type="button"
                     onClick={() => setSelectedCategory("Rims")}
+                    aria-pressed={selectedCategory === "Rims"}
                     className={`rounded-full px-2 py-1.5 font-bold transition ${
                       selectedCategory === "Rims"
                         ? "bg-[#abcfb2] text-[#163722]"
@@ -749,7 +794,9 @@ export default function VendorDetail() {
                     Rims ({getProductCategoryCount(liveProducts, "Rims")})
                   </button>
                   <button
+                    type="button"
                     onClick={() => setSelectedCategory("Tyres")}
+                    aria-pressed={selectedCategory === "Tyres"}
                     className={`rounded-full px-2 py-1.5 font-bold transition ${
                       selectedCategory === "Tyres"
                         ? "bg-[#abcfb2] text-[#163722]"
@@ -757,6 +804,19 @@ export default function VendorDetail() {
                     }`}
                   >
                     Tyres ({getProductCategoryCount(liveProducts, "Tyres")})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCategory("Other Products")}
+                    aria-pressed={selectedCategory === "Other Products"}
+                    className={`rounded-full px-2 py-1.5 font-bold transition ${
+                      selectedCategory === "Other Products"
+                        ? "bg-[#abcfb2] text-[#163722]"
+                        : "bg-[#282a2c] text-[#c2c8c0] hover:bg-[#333537]"
+                    }`}
+                  >
+                    Other Products (
+                    {getProductCategoryCount(liveProducts, "Other Products")})
                   </button>
                 </div>
               </div>
@@ -810,11 +870,14 @@ export default function VendorDetail() {
               <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 {visibleProducts.map((product) => (
                   <article
-                    key={product.name}
+                    key={
+                      product.id ||
+                      `${product.name}-${product.brand}-${product.category || ""}-${product.price}`
+                    }
                     className="overflow-hidden rounded-xl bg-[#1a1c1e] transition hover:-translate-y-0.5 hover:ring-1 hover:ring-[#8fb397]/50"
                   >
                     <div className="relative h-32 bg-[#292d2e]">
-                      <img
+                      <FallbackImage
                         src={product.image}
                         alt={product.name}
                         className="h-full w-full object-cover opacity-85"
@@ -847,9 +910,7 @@ export default function VendorDetail() {
                       <strong className="mt-1 block text-lg text-white">
                         {product.price}
                       </strong>
-                      {product.category === "tyres" ||
-                      product.name.toLowerCase().includes("pilot") ||
-                      product.name.toLowerCase().includes("advan") ? (
+                      {getProductCategory(product) === "Tyres" ? (
                         <Link
                           to={`/tyre/detail/${encodeURIComponent(product.id || "michelin-ps4s")}`}
                           className="mt-3 block w-full rounded-lg bg-[#333537] py-2 text-center text-[10px] font-semibold text-white hover:bg-[#abcfb2] hover:text-[#163722]"
@@ -857,12 +918,20 @@ export default function VendorDetail() {
                           View Details & Fit{" "}
                           <ArrowRight className="ml-1 inline h-3 w-3" />
                         </Link>
-                      ) : (
+                      ) : getProductCategory(product) === "Rims" ? (
                         <Link
                           to={`/rim/detail/${encodeURIComponent(product.id || "vossen-hf5")}`}
                           className="mt-3 block w-full rounded-lg bg-[#333537] py-2 text-center text-[10px] font-semibold text-white hover:bg-[#abcfb2] hover:text-[#163722]"
                         >
                           View Details & Fit{" "}
+                          <ArrowRight className="ml-1 inline h-3 w-3" />
+                        </Link>
+                      ) : (
+                        <Link
+                          to={`/vendors/${encodeURIComponent(activeVendorId)}/contact`}
+                          className="mt-3 block w-full rounded-lg bg-[#333537] py-2 text-center text-[10px] font-semibold text-white hover:bg-[#abcfb2] hover:text-[#163722]"
+                        >
+                          Contact Seller{" "}
                           <ArrowRight className="ml-1 inline h-3 w-3" />
                         </Link>
                       )}
@@ -873,8 +942,10 @@ export default function VendorDetail() {
             )}
             <div className="flex items-center justify-between py-6 text-[10px] text-[#c2c8c0]">
               <span>
-                Showing {visibleProducts.length ? 1 : 0}â€“
-                {visibleProducts.length} of {liveProducts.length} products
+                Showing {visibleProducts.length} of {getProductCategoryCount(
+                  liveProducts,
+                  selectedCategory,
+                )} {selectedCategory === "All" ? "products" : selectedCategory.toLowerCase()}
               </span>
               <button className="rounded-lg bg-[#1a1c1e] px-3 py-2 text-[#abcfb2]">
                 Load More Products{" "}
@@ -1062,6 +1133,86 @@ export default function VendorDetail() {
                       placeholder="Share your experience with fitment laser balancing, wheel authentic certificates, delivery speed..."
                       className="w-full rounded-lg border border-white/10 bg-[#1a1c1e] p-3 text-xs text-white placeholder:text-[#c2c8c0]/50 focus:border-[#abcfb2] focus:outline-none"
                     />
+                  </div>
+
+                  <div className="mt-4">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div>
+                        <p className="text-xs font-medium text-[#c2c8c0]">
+                          Photos of your car
+                        </p>
+                        <p className="mt-1 text-[10px] text-[#c2c8c0]/70">
+                          Add up to 5 photos (JPEG, PNG, or WebP; max 10 MB each).
+                          Photos appear with your public review.
+                        </p>
+                      </div>
+                      <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-white/10 bg-[#1a1c1e] px-3 py-2 text-[10px] font-semibold text-[#abcfb2] transition hover:border-[#abcfb2]/50">
+                        <Camera className="h-3.5 w-3.5" />
+                        {photoUploading ? "Processing..." : "Add photos"}
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          multiple
+                          disabled={photoUploading || reviewPhotos.length >= 5}
+                          onChange={async (event) => {
+                            const input = event.currentTarget;
+                            const files = Array.from(input.files || []).slice(
+                              0,
+                              5 - reviewPhotos.length,
+                            );
+                            input.value = "";
+                            if (!files.length) return;
+                            setPhotoUploading(true);
+                            setRatingError("");
+                            try {
+                              const encodedPhotos = await Promise.all(
+                                files.map(encodeReviewPhoto),
+                              );
+                              setReviewPhotos((current) =>
+                                [...current, ...encodedPhotos].slice(0, 5),
+                              );
+                            } catch (error) {
+                              setRatingError(
+                                error instanceof Error
+                                  ? error.message
+                                  : "A photo could not be processed.",
+                              );
+                            } finally {
+                              setPhotoUploading(false);
+                            }
+                          }}
+                          className="sr-only"
+                        />
+                      </label>
+                    </div>
+                    {reviewPhotos.length > 0 && (
+                      <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5">
+                        {reviewPhotos.map((photo, index) => (
+                          <div
+                            key={`${photo.slice(0, 48)}-${index}`}
+                            className="relative overflow-hidden rounded-lg border border-white/10"
+                          >
+                            <FallbackImage
+                              src={photo}
+                              alt={`Your car review photo ${index + 1}`}
+                              className="h-24 w-full object-cover"
+                            />
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setReviewPhotos((current) =>
+                                  current.filter((_, photoIndex) => photoIndex !== index),
+                                )
+                              }
+                              aria-label={`Remove car photo ${index + 1}`}
+                              className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-black/75 text-white hover:bg-black"
+                            >
+                              <X className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   {/* Quick experience tags */}
@@ -1344,6 +1495,27 @@ export default function VendorDetail() {
                           </p>
                         )}
 
+                        {review.photos && review.photos.length > 0 && (
+                          <div className="mt-3 grid max-w-2xl grid-cols-2 gap-2 pl-12 sm:grid-cols-3">
+                            {review.photos.map((photo, index) => (
+                              <a
+                                key={`${photo.slice(0, 48)}-${index}`}
+                                href={photo}
+                                target="_blank"
+                                rel="noreferrer"
+                                aria-label={`Open car photo ${index + 1} from ${review.userName}'s review`}
+                                className="overflow-hidden rounded-lg border border-white/10"
+                              >
+                                <FallbackImage
+                                  src={photo}
+                                  alt={`Car photo ${index + 1} from ${review.userName}'s review`}
+                                  className="h-32 w-full object-cover transition hover:scale-105"
+                                />
+                              </a>
+                            ))}
+                          </div>
+                        )}
+
                         {isMyOwn && (
                           <div className="mt-2 text-right pl-12">
                             <button
@@ -1353,6 +1525,7 @@ export default function VendorDetail() {
                                 setMyRating(review.stars);
                                 setMyComment(review.comment || "");
                                 if (review.car) setMyCar(review.car);
+                                setReviewPhotos(review.photos || []);
                                 window.scrollTo({
                                   top:
                                     document.getElementById("reviews-section")

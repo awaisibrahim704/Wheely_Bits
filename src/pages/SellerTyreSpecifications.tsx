@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
@@ -316,7 +317,7 @@ export default function SellerTyreSpecifications() {
               <div className="seller-gallery-grid">
                 {draft.gallery.map((image, index) => (
                   <div className="seller-gallery-image" key={image}>
-                    <img src={image} alt={`Tyre gallery ${index + 1}`} />
+                    <FallbackImage src={image} alt={`Tyre gallery ${index + 1}`} />
                     <button
                       type="button"
                       onClick={() =>
@@ -338,7 +339,9 @@ export default function SellerTyreSpecifications() {
               </div>
             )}
             <p className="seller-upload-count">
-              Uploaded Gallery ({draft.gallery.length})
+              {draft.gallery.length
+                ? `Uploaded Gallery (${draft.gallery.length})`
+                : "Photo not uploaded"}
             </p>
           </SpecSection>
         </form>

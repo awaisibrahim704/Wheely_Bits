@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -10,8 +11,6 @@ import {
 } from "lucide-react";
 import { getMarketplace, type MarketplaceData } from "../lib/sellerApi";
 
-const defaultImage =
-  "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=1200&q=90";
 const specs = [
   ["TYRE WIDTH", "225 mm", "Section footprint width"],
   ["ASPECT RATIO", "45 %", "Sidewall height to width"],
@@ -65,10 +64,12 @@ export default function TyreDetailPage() {
   const allImages =
     galleryImages.length > 0
       ? galleryImages
-      : [matchedProduct?.aiImage || defaultImage];
+      : matchedProduct?.aiImage
+        ? [matchedProduct.aiImage]
+        : [];
   const imageSrc = allImages.includes(selectedImage)
     ? selectedImage
-    : allImages[0];
+    : allImages[0] || undefined;
 
   const sellerName =
     marketplace?.seller?.store?.businessName ||
@@ -107,7 +108,7 @@ export default function TyreDetailPage() {
         <section className="grid gap-5 lg:grid-cols-[1.18fr_0.82fr]">
           <div>
             <div className="relative overflow-hidden rounded-xl bg-[#1b2223] shadow-2xl">
-              <img
+              <FallbackImage
                 src={imageSrc}
                 alt={productName}
                 className="h-[330px] w-full object-cover sm:h-[410px]"
@@ -136,7 +137,7 @@ export default function TyreDetailPage() {
                       aria-pressed={imageSrc === image}
                       className={`h-14 w-16 shrink-0 overflow-hidden rounded-md border-2 ${imageSrc === image ? "border-[#abcfb2]" : "border-white/10"}`}
                     >
-                      <img
+                      <FallbackImage
                         src={image}
                         alt={`${productName} photo ${index + 1}`}
                         className="h-full w-full object-cover"
@@ -445,7 +446,7 @@ export default function TyreDetailPage() {
                 key={title}
                 className="overflow-hidden rounded-xl bg-[#1a1c1e]"
               >
-                <img
+                <FallbackImage
                   src={imageSrc}
                   alt={title}
                   className="h-28 w-full object-cover"
@@ -466,7 +467,7 @@ export default function TyreDetailPage() {
           </div>
         </section>
         <div className="sticky bottom-3 mt-8 flex flex-wrap items-center gap-3 rounded-xl bg-[#222627] p-3 shadow-2xl">
-          <img
+          <FallbackImage
             src={imageSrc}
             alt={productName}
             className="h-9 w-10 rounded object-cover"

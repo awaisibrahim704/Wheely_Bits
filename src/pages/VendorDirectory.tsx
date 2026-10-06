@@ -277,9 +277,6 @@ export default function VendorDirectory() {
     <div className="min-h-screen bg-[#121416] px-4 pb-16 text-[#e2e2e5] sm:px-6 lg:px-8">
       {/* ── Hero Search ── */}
       <section className="mx-auto max-w-[1120px] pt-8 text-center sm:pt-10">
-        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#8fb397]/20 bg-[#8fb397]/[0.08] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#abcfb2]">
-          <Check className="h-3 w-3" /> Verified automotive network
-        </div>
         <h1 className="text-3xl font-bold tracking-[-0.04em] text-white sm:text-4xl">
           Find Automotive Shops
         </h1>

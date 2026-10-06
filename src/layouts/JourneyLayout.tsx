@@ -23,8 +23,10 @@ export default function JourneyLayout() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <TopNavBar />
-      <ProgressStepper steps={steps} currentStep={currentStep} />
-      <main className="flex-1">
+      {!path.includes('rim') && (
+        <ProgressStepper steps={steps} currentStep={currentStep} />
+      )}
+      <main className={`flex-1 ${path.includes('rim') ? 'pt-16' : ''}`}>
         <Outlet />
       </main>
       <Footer />

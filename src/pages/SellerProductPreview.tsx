@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import FallbackImage from "../components/FallbackImage";
+import { useMemo, useRef, useState } from "react";
 import {
   Eye,
   MapPin,
@@ -6,7 +7,6 @@ import {
   Pencil,
   Rocket,
   ShieldCheck,
-  Wrench,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -55,6 +55,7 @@ export default function SellerProductPreview() {
   const [published, setPublished] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [publishError, setPublishError] = useState("");
+  const publishInProgress = useRef(false);
   const editingProductId = window.localStorage.getItem(
     "wheelybits:editing-product-id",
   );
@@ -88,16 +89,14 @@ export default function SellerProductPreview() {
   const activeGalleryImage =
     galleryImages[selectedGalleryIndex] ?? galleryImages[0] ?? "";
   const publish = async () => {
+    if (publishInProgress.current || published) return;
     if (!user?.uid) {
       setPublishError("You must be signed in before publishing a product.");
       return;
     }
+    publishInProgress.current = true;
     setPublishing(true);
     setPublishError("");
-    window.localStorage.setItem(
-      listingKey,
-      JSON.stringify({ ...draft, status: "published" }),
-    );
     try {
       if (editingProductId) {
         await updateSellerProduct(editingProductId, {
@@ -108,6 +107,10 @@ export default function SellerProductPreview() {
       } else {
         await publishSellerProduct({ ...draft, userId: user.uid });
       }
+      window.localStorage.setItem(
+        listingKey,
+        JSON.stringify({ ...draft, status: "published" }),
+      );
       setPublished(true);
     } catch (publishErrorValue) {
       setPublishError(
@@ -116,6 +119,7 @@ export default function SellerProductPreview() {
           : "Product could not be published.",
       );
     } finally {
+      publishInProgress.current = false;
       setPublishing(false);
     }
   };
@@ -161,11 +165,7 @@ export default function SellerProductPreview() {
           <div className="seller-preview-main">
             <div className="seller-preview-media">
               <div className="seller-preview-image">
-                {activeGalleryImage ? (
-                  <img src={activeGalleryImage} alt={productName} />
-                ) : (
-                  <PreviewProductIcon tyre={isTyre} />
-                )}
+                <FallbackImage src={activeGalleryImage} alt={productName} />
               </div>
               {galleryImages.length > 0 && (
                 <div className="seller-preview-thumbs">
@@ -180,7 +180,7 @@ export default function SellerProductPreview() {
                           : ""
                       }
                     >
-                      <img
+                      <FallbackImage
                         src={image}
                         alt={`${productName} gallery ${index + 1}`}
                       />
@@ -275,7 +275,7 @@ export default function SellerProductPreview() {
           <span>By publishing, you agree to Wheely Bits Merchant Policy</span>
           <button
             type="button"
-            disabled={publishing}
+            disabled={publishing || published}
             onClick={publish}
             className="seller-button seller-button-primary"
           >
@@ -310,13 +310,6 @@ function PreviewNav({ customerView }: { customerView: boolean }) {
         <a>Orders</a>
       </nav>
       <small>{customerView ? "Customer View" : "Draft Auto-Saved"}　 AP</small>
-    </div>
-  );
-}
-function PreviewProductIcon({ tyre }: { tyre: boolean }) {
-  return (
-    <div className={`seller-preview-product-icon ${tyre ? "tyre" : "rim"}`}>
-      <Wrench size={70} strokeWidth={1} />
     </div>
   );
 }

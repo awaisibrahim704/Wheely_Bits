@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
@@ -288,7 +289,7 @@ export default function SellerProductSpecifications() {
               <div className="seller-gallery-grid">
                 {draft.gallery.map((image, index) => (
                   <div className="seller-gallery-image" key={image}>
-                    <img src={image} alt={`Rim gallery ${index + 1}`} />
+                    <FallbackImage src={image} alt={`Rim gallery ${index + 1}`} />
                     <button
                       type="button"
                       onClick={() =>
@@ -310,7 +311,9 @@ export default function SellerProductSpecifications() {
               </div>
             )}
             <p className="seller-upload-count">
-              Uploaded Gallery ({draft.gallery.length}/8)
+              {draft.gallery.length
+                ? `Uploaded Gallery (${draft.gallery.length}/8)`
+                : "Photo not uploaded"}
             </p>
           </SpecSection>
           <SpecSection
@@ -330,15 +333,15 @@ export default function SellerProductSpecifications() {
             <div className="seller-ai-preview">
               <div>
                 {draft.aiImage ? (
-                  <img src={draft.aiImage} alt="AI visualization preview" />
+                  <FallbackImage src={draft.aiImage} alt="AI visualization preview" />
                 ) : (
-                  <ImagePlus size={28} />
+                  <span>Photo not uploaded</span>
                 )}
               </div>
               <section>
                 <p>
                   Current File:{" "}
-                  {draft.aiImage ? "rim-front-facing.png" : "No image selected"}
+                  {draft.aiImage ? "rim-front-facing.png" : "Photo not uploaded"}
                 </p>
                 <small>
                   {draft.aiImage

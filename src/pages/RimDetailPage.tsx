@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -11,8 +12,6 @@ import {
 } from "lucide-react";
 import { getMarketplace, type MarketplaceData } from "../lib/sellerApi";
 
-const defaultWheelImage =
-  "https://images.unsplash.com/photo-1600712242805-9f72877b0492?auto=format&fit=crop&w=1200&q=90";
 const specs = [
   ["WHEEL DIAMETER", '18"', "Inches"],
   ["RIM WIDTH (J)", "8.0 J", "Ideal 225-245 tyres"],
@@ -25,12 +24,6 @@ const specs = [
   ["ORIGIN", "Italy", "San Marino"],
   ["STRUCTURAL WARRANTY", "2 Years", "Wheely Bits backed"],
 ];
-const reviews = [
-  "Honda Civic RS (2020) - ET35",
-  "Toyota Corolla Altis (2022) - ET35",
-  "Civic Type R Track Setup - ET35",
-];
-
 export default function RimDetailPage() {
   const { id } = useParams<{ id?: string }>();
   const [marketplace, setMarketplace] = useState<MarketplaceData | null>(null);
@@ -57,9 +50,7 @@ export default function RimDetailPage() {
             product.productName?.toLowerCase().replace(/[^a-z0-9]/g, "") ===
             id?.toLowerCase().replace(/[^a-z0-9]/g, ""),
         ) ||
-        marketplace?.products.find((product) =>
-          ["rims", "wheels"].includes(product.category?.toLowerCase() || ""),
-        )
+        undefined
       : undefined);
 
   const productName = matchedProduct?.productName || "OZ Racing Ultraleggera";
@@ -75,19 +66,28 @@ export default function RimDetailPage() {
   const allImages =
     galleryImages.length > 0
       ? galleryImages
-      : [matchedProduct?.aiImage || defaultWheelImage];
+      : matchedProduct?.aiImage
+        ? [matchedProduct.aiImage]
+        : [];
   const imageSrc = allImages.includes(selectedImage)
     ? selectedImage
-    : allImages[0];
+    : allImages[0] || undefined;
 
+  const sellerId = matchedProduct?.userId || marketplace?.sellerId || "automax-wheels";
   const sellerName =
-    marketplace?.seller?.store?.businessName ||
-    marketplace?.seller?.businessName ||
-    "AutoMax Wheels";
+    matchedProduct?.vendorName ||
+    (matchedProduct?.userId === marketplace?.sellerId
+      ? marketplace?.seller?.store?.businessName ||
+        marketplace?.seller?.businessName
+      : undefined) ||
+    "Marketplace Vendor";
   const sellerAddress =
-    marketplace?.seller?.store?.address ||
-    marketplace?.seller?.store?.city ||
-    "Sector G-8/1, Islamabad";
+    matchedProduct?.vendorLocation ||
+    (matchedProduct?.userId === marketplace?.sellerId
+      ? marketplace?.seller?.store?.address ||
+        marketplace?.seller?.store?.city
+      : undefined) ||
+    "Location unavailable";
 
   const singlePriceStr = `Rs. ${priceNum.toLocaleString()}`;
   const setPriceStr = `Rs. ${(priceNum * 4).toLocaleString()}`;
@@ -109,7 +109,7 @@ export default function RimDetailPage() {
             <span className="mx-2 text-white/30">›</span> {productName}
           </span>
           <Link
-            to="/vendors/automax-wheels/catalog"
+            to={`/vendors/${encodeURIComponent(sellerId)}/catalog`}
             className="rounded-full bg-[#1a1c1e] px-3 py-2"
           >
             <ArrowLeft className="mr-1 inline h-3 w-3" /> Back to Shop Catalog
@@ -118,7 +118,7 @@ export default function RimDetailPage() {
         <section className="grid gap-5 lg:grid-cols-[1.18fr_0.82fr]">
           <div>
             <div className="relative overflow-hidden rounded-xl bg-[#1b2223] shadow-2xl">
-              <img
+              <FallbackImage
                 src={imageSrc}
                 alt={productName}
                 className="h-[360px] w-full object-cover sm:h-[440px]"
@@ -141,7 +141,7 @@ export default function RimDetailPage() {
                       aria-pressed={imageSrc === image}
                       className={`h-14 w-16 shrink-0 overflow-hidden rounded-md border-2 ${imageSrc === image ? "border-[#abcfb2]" : "border-white/10"}`}
                     >
-                      <img
+                      <FallbackImage
                         src={image}
                         alt={`${productName} photo ${index + 1}`}
                         className="h-full w-full object-cover"
@@ -293,11 +293,11 @@ export default function RimDetailPage() {
               </Link>
               <div className="mt-3 flex gap-2">
                 <Link
-                  to="/vendors/automax-wheels/contact"
+                  to={`/vendors/${encodeURIComponent(sellerId)}/contact`}
                   className="flex-1 rounded-lg bg-[#333537] py-2 text-center text-[9px] text-white hover:bg-[#abcfb2] hover:text-[#163722]"
                 >
                   <MessageCircle className="mr-1 inline h-3 w-3 text-[#abcfb2]" />{" "}
-                  Inquire with AutoMax
+                  Inquire with {sellerName}
                 </Link>
                 <a
                   href="tel:+923001234567"
@@ -336,13 +336,13 @@ export default function RimDetailPage() {
               </div>
               <div className="flex items-center gap-1.5">
                 <Link
-                  to="/vendors/automax-wheels#reviews-section"
+                  to={`/vendors/${encodeURIComponent(sellerId)}#reviews-section`}
                   className="rounded-lg bg-[#282a2c] px-3 py-1.5 text-[10px] font-semibold text-[#abcfb2] hover:bg-[#abcfb2] hover:text-[#163722] transition"
                 >
                   View Reviews
                 </Link>
                 <Link
-                  to="/vendors/automax-wheels#reviews-section"
+                  to={`/vendors/${encodeURIComponent(sellerId)}#reviews-section`}
                   className="rounded-lg bg-[#abcfb2] px-3 py-1.5 text-[10px] font-bold text-[#163722] hover:bg-[#8fb397] transition"
                 >
                   Rate Seller
@@ -350,7 +350,7 @@ export default function RimDetailPage() {
               </div>
             </div>
             <p className="text-[9px] text-[#c2c8c0]">
-              AM AutoMax Wheels · Verified Dealer{" "}
+              {sellerName} · Verified Dealer{" "}
               <span className="float-right text-[#abcfb2]">
                 ● Replies in ~12 mins
               </span>
@@ -460,10 +460,8 @@ export default function RimDetailPage() {
                 AMW
               </span>
               <div>
-                <h2 className="font-bold text-white">AutoMax Wheels</h2>
-                <p className="text-[8px] text-[#c2c8c0]">
-                  Sector G-8/1, Blue Area, Islamabad
-                </p>
+                <h2 className="font-bold text-white">{sellerName}</h2>
+                <p className="text-[8px] text-[#c2c8c0]">{sellerAddress}</p>
               </div>
               <span className="ml-auto text-[9px] text-[#c2c8c0]">
                 ★ 4.8 (124 reviews)
@@ -505,48 +503,8 @@ export default function RimDetailPage() {
             </div>
           </div>
         </section>
-        <section className="mt-8">
-          <div className="flex items-end justify-between">
-            <div>
-              <p className="text-[9px] uppercase text-[#abcfb2]">
-                CUSTOMER SHOWCASE
-              </p>
-              <h2 className="text-xl font-bold text-white">
-                Installed Fitment Reviews
-              </h2>
-            </div>
-            <button className="rounded bg-[#1a1c1e] px-3 py-2 text-[9px]">
-              Submit Your Vehicle Photos
-            </button>
-          </div>
-          <div className="mt-4 grid gap-3 md:grid-cols-3">
-            {reviews.map((title) => (
-              <article
-                key={title}
-                className="overflow-hidden rounded-xl bg-[#1a1c1e]"
-              >
-                <img
-                  src={imageSrc}
-                  alt={title}
-                  className="h-28 w-full object-cover"
-                />
-                <div className="p-3">
-                  <h3 className="text-[9px] text-white">{title}</h3>
-                  <p className="mt-2 text-[10px] text-[#d4a373]">★★★★★</p>
-                  <p className="mt-2 text-[9px] leading-4 text-[#c2c8c0]">
-                    “Direct flush stance without any fender rolling. Steering
-                    response feels instantaneous.”
-                  </p>
-                  <p className="mt-2 text-[8px] text-[#abcfb2]">
-                    ✓ Verified Buyer
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
         <div className="sticky bottom-3 mt-8 flex flex-wrap items-center gap-3 rounded-xl bg-[#222627] p-3 shadow-2xl">
-          <img
+          <FallbackImage
             src={imageSrc}
             alt={productName}
             className="h-9 w-10 rounded object-cover"

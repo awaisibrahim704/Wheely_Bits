@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { ArrowLeft, Verified, Eye, ChevronUp, ChevronDown, Reply, Share2, Flag, ThumbsUp, Paperclip, Image as ImageIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -40,7 +41,7 @@ export default function DiscussionThread() {
           <article className="bg-surface-high/60 backdrop-blur-md rounded-xl p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 relative overflow-hidden border border-white/5 shadow-lg">
             <div className="hidden md:flex flex-col items-center gap-2 w-20 flex-shrink-0">
               <div className="w-16 h-16 rounded-xl overflow-hidden border border-outline-subtle">
-                <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVzo7yHUn2ljIJqRNZlZVjIdzF3WlLE7aD85foDRvob54XsRi9dJc1YmH-ZB8Hwf1BrF88hu5Gml8O7YRX5rkVa8e0nuH-fNKu_qt0CyZ2MqRQ0ctxqtCre-mox194aZkSzSS97tCExSzBtJUxDW2IpVU5sFjzsKKtjPNZPDNSuC1gxWUvIcY0jfVg5QQQ-S76p_VV8oQj0dpYqRUZ2UxNk4mLeqzUNou6G5krZIpnW-jwNb5nF-LiliqKnU1FZYe0tu-WL8VIHDnh" alt="StanceBoi" />
+                <FallbackImage className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVzo7yHUn2ljIJqRNZlZVjIdzF3WlLE7aD85foDRvob54XsRi9dJc1YmH-ZB8Hwf1BrF88hu5Gml8O7YRX5rkVa8e0nuH-fNKu_qt0CyZ2MqRQ0ctxqtCre-mox194aZkSzSS97tCExSzBtJUxDW2IpVU5sFjzsKKtjPNZPDNSuC1gxWUvIcY0jfVg5QQQ-S76p_VV8oQj0dpYqRUZ2UxNk4mLeqzUNou6G5krZIpnW-jwNb5nF-LiliqKnU1FZYe0tu-WL8VIHDnh" alt="StanceBoi" />
               </div>
               <div className="text-center">
                 <div className="text-xs font-bold text-primary-brand">@StanceBoi</div>
@@ -67,11 +68,11 @@ export default function DiscussionThread() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 <div className="aspect-[4/3] rounded-xl overflow-hidden border border-white/10 group cursor-zoom-in relative">
                   <div className="absolute inset-0 bg-background/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 relative z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA0yfJiSwXYQEQFORxvHtBS0OI7_XT6ovVHnU_3HjajzSD-01k8rx1g_A0WKJhLfUxDDXT66QtS8f-49A7-muAsVdiqDKuhHwbNiicaXEDVpDEVC8aa2Zq9ugXVBtyLlDiyDGVm3llM6uh1hnuy78499t8wOLKCBZcA__RCfgFqF0QKcT-CUh7KHOuqxVfKVUwgBeCbSmuaHA_jdpg_fZsU6DLxwylSjdP5ovWjpONv-Y5ukRGM45hMfiCQDcXkExejRcbiv_vJQd3" alt="Rubbing 1" />
+                  <FallbackImage className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 relative z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA0yfJiSwXYQEQFORxvHtBS0OI7_XT6ovVHnU_3HjajzSD-01k8rx1g_A0WKJhLfUxDDXT66QtS8f-49A7-muAsVdiqDKuhHwbNiicaXEDVpDEVC8aa2Zq9ugXVBtyLlDiyDGVm3llM6uh1hnuy78499t8wOLKCBZcA__RCfgFqF0QKcT-CUh7KHOuqxVfKVUwgBeCbSmuaHA_jdpg_fZsU6DLxwylSjdP5ovWjpONv-Y5ukRGM45hMfiCQDcXkExejRcbiv_vJQd3" alt="Rubbing 1" />
                 </div>
                 <div className="aspect-[4/3] rounded-xl overflow-hidden border border-white/10 group cursor-zoom-in relative">
                   <div className="absolute inset-0 bg-background/20 group-hover:bg-transparent transition-colors z-10"></div>
-                  <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 relative z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6_d-O-19u3EFtRSuacRwN_GOAFmTCOyBxdCsUqQhO6bkZ8PETUIp2leYyPfN62yFpiQdJlFMuTZOGWw4A55X7SgMbBRg9aUrs94egv28-Z-ErxMM3e9nazuyZSef9AHnURog8LSaAKkeAvIXF_pSmVBAKIgu-1FZiBeR68xQivOwcRz_SkNs6dUlfkxkDr8DtwY___f48-AzQ-Gv2Dxg0V-dnG1tQfJyrpVYtZyt91IGP3gy18eC0gVqSFQyDZam0ES7_5VM2kKez" alt="Rubbing 2" />
+                  <FallbackImage className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 relative z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6_d-O-19u3EFtRSuacRwN_GOAFmTCOyBxdCsUqQhO6bkZ8PETUIp2leYyPfN62yFpiQdJlFMuTZOGWw4A55X7SgMbBRg9aUrs94egv28-Z-ErxMM3e9nazuyZSef9AHnURog8LSaAKkeAvIXF_pSmVBAKIgu-1FZiBeR68xQivOwcRz_SkNs6dUlfkxkDr8DtwY___f48-AzQ-Gv2Dxg0V-dnG1tQfJyrpVYtZyt91IGP3gy18eC0gVqSFQyDZam0ES7_5VM2kKez" alt="Rubbing 2" />
                 </div>
               </div>
               
@@ -93,7 +94,7 @@ export default function DiscussionThread() {
           <article className="bg-surface-high/60 backdrop-blur-md rounded-xl p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 border border-primary-brand/30 shadow-[0_0_20px_rgba(171,207,178,0.1)] relative">
             <div className="hidden md:flex flex-col items-center gap-2 w-20 flex-shrink-0">
               <div className="w-16 h-16 rounded-xl overflow-hidden border-2 border-primary-brand relative">
-                <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEIwjjWlzDA1qIjqoPRGtel4gOU_Eg7UFTBOVZ3qMXS5NVGazMgOEy5rLVTw0hQRlEcQtt-pJ-MulIxXKa9S3YIOz-daqf8NETwUZQQBM_9lTmtB9jtrnMYECfAJXKbD6WHnVWnNjVBDrR6mSoIlhmvquVJa5uNfiQp69vQS8kqIdkugiOkMT_zWtNRlkOBNLA-ybDSqkt8X_7TqmDDLm-M1QzTwjE7liH89qSrag5BkQ-v1Gp34_s_9FuCSn6OUwtsc9oYvaGwBsr" alt="FitmentExpert" />
+                <FallbackImage className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEIwjjWlzDA1qIjqoPRGtel4gOU_Eg7UFTBOVZ3qMXS5NVGazMgOEy5rLVTw0hQRlEcQtt-pJ-MulIxXKa9S3YIOz-daqf8NETwUZQQBM_9lTmtB9jtrnMYECfAJXKbD6WHnVWnNjVBDrR6mSoIlhmvquVJa5uNfiQp69vQS8kqIdkugiOkMT_zWtNRlkOBNLA-ybDSqkt8X_7TqmDDLm-M1QzTwjE7liH89qSrag5BkQ-v1Gp34_s_9FuCSn6OUwtsc9oYvaGwBsr" alt="FitmentExpert" />
                 <div className="absolute bottom-0 right-0 bg-primary-brand text-on-primary p-0.5 rounded-tl-md">
                   <Verified className="w-3 h-3" />
                 </div>
@@ -139,7 +140,7 @@ export default function DiscussionThread() {
           <article className="bg-surface-high/40 backdrop-blur-md rounded-xl p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 border border-white/5 opacity-90">
             <div className="hidden md:flex flex-col items-center gap-2 w-20 flex-shrink-0">
               <div className="w-16 h-16 rounded-xl overflow-hidden border border-outline-subtle">
-                <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVCmgnBHGzTgem-J3NVRAnuO9PIXHz2OP4jhe6JjtPSsK_hD62MXjQ5CrJp60Ofaly8aBOR0XGQ0hZOs6ZjGJNm6v6CGm_S13ptJxdBgKv5c_0gK3V50TLegfw8GNF98kFIL-AwZHc1sXytGVG2yghyKkCbPNFDZYxeiYrBBmgmWOHjkwFch4DMFFeVBtuByg-KWy87ZhJRdzX9bCSW5ehBTg42v9MuUtdTUXZ5XCeEQQuB3ITqXGlWvWqJJXDL_fvlUXV5IisBKBN" alt="DriftKing99" />
+                <FallbackImage className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVCmgnBHGzTgem-J3NVRAnuO9PIXHz2OP4jhe6JjtPSsK_hD62MXjQ5CrJp60Ofaly8aBOR0XGQ0hZOs6ZjGJNm6v6CGm_S13ptJxdBgKv5c_0gK3V50TLegfw8GNF98kFIL-AwZHc1sXytGVG2yghyKkCbPNFDZYxeiYrBBmgmWOHjkwFch4DMFFeVBtuByg-KWy87ZhJRdzX9bCSW5ehBTg42v9MuUtdTUXZ5XCeEQQuB3ITqXGlWvWqJJXDL_fvlUXV5IisBKBN" alt="DriftKing99" />
               </div>
               <div className="text-center">
                 <div className="text-xs font-bold text-on-surface">@DriftKing99</div>

@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Target, AlertCircle } from 'lucide-react';
 
@@ -41,7 +42,7 @@ export default function RimOverview() {
             </div>
 
             <div className="relative flex-grow rounded-2xl overflow-hidden border border-white/10 mt-auto aspect-video md:aspect-auto">
-              <img 
+              <FallbackImage
                 src="https://images.unsplash.com/photo-1503376760367-11eb8516886e?q=80&w=1200&auto=format&fit=crop" 
                 alt="Detected Vehicle" 
                 className="w-full h-full object-cover opacity-80"

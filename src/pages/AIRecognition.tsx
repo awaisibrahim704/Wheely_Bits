@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Camera, X, Zap, CheckCircle2, ChevronRight } from 'lucide-react';
@@ -25,7 +26,7 @@ export default function AIRecognition() {
       
       {/* Simulated Camera Feed Background */}
       <div className="absolute inset-0 z-0">
-        <img 
+        <FallbackImage
           src="https://images.unsplash.com/photo-1590362891991-f776e747a588?q=80&w=2000&auto=format&fit=crop" 
           alt="Wheel Camera Feed" 
           className={`w-full h-full object-cover transition-all duration-1000 ${scanning ? 'scale-110 brightness-75' : 'scale-100 brightness-50'}`} 

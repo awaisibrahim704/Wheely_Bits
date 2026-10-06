@@ -1,3 +1,4 @@
+import FallbackImage from "../components/FallbackImage";
 import { Heart, Share2, ChevronRight, Eye, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -133,7 +134,7 @@ export default function BuildLog() {
               <div className="space-y-6">
                 <div className="flex gap-4">
                   <div className="w-10 h-10 rounded-full bg-surface-highest shrink-0 overflow-hidden">
-                    <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5a-pwqExixUKkOr60Hg4Q-gR6qSNpHXhens0aavIQ1JetHt4kWALJEeUZZzzKJnPQr_wokW0HWA7CB242mOagOVbrlswm8WuvrT8WpDfZE9mmLaVUbxKhpynKlhFg2_TDqc3LTmnqsw2S6-_nBgPGdIDdV6SLUe8_rVlwGV5vHJvX1B8LACWXZ8nvn9liA-xZuHViE7sjKa6WxbVNT5MQmee9T9yZmXQSvoLV6yMAOmdcDjkzTntHaG31RUW2e4vjoLXVU56lpXnH" alt="Marcus V." />
+                    <FallbackImage className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5a-pwqExixUKkOr60Hg4Q-gR6qSNpHXhens0aavIQ1JetHt4kWALJEeUZZzzKJnPQr_wokW0HWA7CB242mOagOVbrlswm8WuvrT8WpDfZE9mmLaVUbxKhpynKlhFg2_TDqc3LTmnqsw2S6-_nBgPGdIDdV6SLUe8_rVlwGV5vHJvX1B8LACWXZ8nvn9liA-xZuHViE7sjKa6WxbVNT5MQmee9T9yZmXQSvoLV6yMAOmdcDjkzTntHaG31RUW2e4vjoLXVU56lpXnH" alt="Marcus V." />
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-on-surface">Marcus V.</p>
@@ -144,7 +145,7 @@ export default function BuildLog() {
                 
                 <div className="flex gap-4">
                   <div className="w-10 h-10 rounded-full bg-surface-highest shrink-0 overflow-hidden">
-                    <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRbH80wz8qLUdELqID0RlZCJiTDjLGBtzbwDvxjs9mMVNKU8T-Hk0us5E9_lF3narvQxyeGUr3cg4i4WJXKHeE5w7iTdbOuHPKCqMocLl8BZJJuSsvb-Hqjdc83FJEYS7XIOZOEIfbdpMm7v-6BjIozQyF0_Ev1sLxLNkusPbgrMo8xa661Pdkg0hS9FMB5WezVl_S4WqNAMd-2rm5sBlO3l77x3KGi2APT0ZbWjeUI-WsE6NALPdnj2spRmjGq2JQNsqeU-Jb7UbF" alt="Sarah Forge" />
+                    <FallbackImage className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRbH80wz8qLUdELqID0RlZCJiTDjLGBtzbwDvxjs9mMVNKU8T-Hk0us5E9_lF3narvQxyeGUr3cg4i4WJXKHeE5w7iTdbOuHPKCqMocLl8BZJJuSsvb-Hqjdc83FJEYS7XIOZOEIfbdpMm7v-6BjIozQyF0_Ev1sLxLNkusPbgrMo8xa661Pdkg0hS9FMB5WezVl_S4WqNAMd-2rm5sBlO3l77x3KGi2APT0ZbWjeUI-WsE6NALPdnj2spRmjGq2JQNsqeU-Jb7UbF" alt="Sarah Forge" />
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-on-surface">Sarah Forge</p>
