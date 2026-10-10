@@ -343,7 +343,7 @@ export default function BookingConfirmed() {
                       </span>
                     </div>
                     {car && <p className="mt-1 text-xs text-[#abcfb2]">🏎 Vehicle: {car}</p>}
-                    {comment && <p className="mt-2 text-xs text-[#e2e2e5] italic">&ldquo;{comment}&rdquo;</p>}
+                    {comment && <p className="description-copy mt-2 text-[#e2e2e5] italic">&ldquo;{comment}&rdquo;</p>}
                   </div>
                   <button
                     type="button"

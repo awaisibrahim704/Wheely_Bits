@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowLeft, Settings2, ShieldAlert } from 'lucide-react';
+import { ArrowRight, ArrowLeft, ShieldAlert } from 'lucide-react';
 
 export default function RimFitment() {
   const [diameter, setDiameter] = useState(20);
@@ -31,8 +31,6 @@ export default function RimFitment() {
         {/* Left: Interactive Diagram */}
         <div className="w-full lg:w-1/2 bg-surface-high/60 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-white/5 shadow-2xl relative overflow-hidden flex flex-col items-center justify-center min-h-[500px]">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary-brand/10 blur-[100px] rounded-full pointer-events-none"></div>
-          
-          <Settings2 className="w-16 h-16 text-primary-brand/40 mb-8 animate-pulse" />
           
           <div className="relative w-64 h-64 border-2 border-primary-brand/30 rounded-full flex items-center justify-center border-dashed">
             <div className="absolute w-full h-[1px] bg-primary-brand/30"></div>

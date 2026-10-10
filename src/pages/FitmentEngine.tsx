@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ChevronLeft, Info, Settings2, SlidersHorizontal, ArrowRight, Activity, AlertTriangle } from 'lucide-react';
+import { ChevronLeft, Info, SlidersHorizontal, ArrowRight, Activity, AlertTriangle } from 'lucide-react';
 
 export default function FitmentEngine() {
   const navigate = useNavigate();
@@ -44,7 +44,6 @@ export default function FitmentEngine() {
               {/* Abstract suspension geometry diagram */}
               <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at center, transparent 30%, #000 100%), linear-gradient(0deg, #121416 0%, transparent 100%)' }}></div>
               <div className="relative z-10 text-center">
-                <Settings2 className="w-24 h-24 text-primary-brand/40 mx-auto mb-6 animate-pulse" />
                 <h3 className="text-2xl font-light text-on-surface mb-2 font-mono">X-Axis Offset: {offset}mm</h3>
                 <p className="text-on-surface-muted font-mono">Diameter: {diameter}" | Width: {width}"</p>
                 
@@ -166,7 +165,7 @@ export default function FitmentEngine() {
               <AlertTriangle className="w-5 h-5 text-secondary-brand shrink-0" />
               <div>
                 <h4 className="text-xs font-bold text-secondary-brand uppercase tracking-widest mb-1">Fender Clearance</h4>
-                <p className="text-xs text-on-surface-muted leading-relaxed">Aggressive offset and width may require fender rolling or aggressive camber settings on this chassis.</p>
+                <p className="description-copy text-on-surface-muted">Aggressive offset and width may require fender rolling or aggressive camber settings on this chassis.</p>
               </div>
             </div>
           )}

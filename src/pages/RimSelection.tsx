@@ -1,7 +1,7 @@
 import FallbackImage from "../components/FallbackImage";
 import { useEffect, useMemo, useState } from 'react';
 import { Camera, ArrowRight, MapPin } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getMarketplace, type MarketplaceData, type SellerDashboardProduct } from '../lib/sellerApi';
 
 function isRimListing(product: SellerDashboardProduct) {
@@ -25,6 +25,7 @@ export default function RimSelection() {
   const [loading, setLoading] = useState(true);
   const [marketplaceError, setMarketplaceError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
   useEffect(() => {
     getMarketplace()
       .then(setMarketplace)
@@ -69,9 +70,9 @@ export default function RimSelection() {
               return (
                 <article
                   key={rim._id}
-                  className="bg-surface-high/60 backdrop-blur-md rounded-3xl overflow-hidden transition-all duration-300 group flex flex-col border border-white/10 hover:border-primary-brand/50 hover:shadow-xl"
+                  className="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-[#1a1c1e] transition hover:-translate-y-0.5 hover:border-primary-brand/50 hover:shadow-xl"
                 >
-                  <div className="relative h-64 overflow-hidden bg-surface-highest">
+                  <div className="relative h-40 overflow-hidden bg-surface-highest">
                     <FallbackImage
                       key={image || rim._id}
                       src={image}
@@ -82,26 +83,29 @@ export default function RimSelection() {
                       {Number(rim.stock || 0) > 0 ? 'In stock' : 'Check availability'}
                     </span>
                   </div>
-                  <div className="p-6 flex flex-col flex-grow justify-between space-y-4">
+                  <div className="flex flex-1 flex-col p-4">
                     <div>
                       <span className="text-xs font-semibold text-primary-brand uppercase tracking-wider">
                         {rim.brand || getRimType(rim)}
                       </span>
-                      <h2 className="text-xl font-bold mt-0.5">{title}</h2>
-                      <p className="text-sm text-on-surface-muted mt-1 line-clamp-2">
-                        {rim.description || getRimType(rim)}
-                      </p>
-                      <p className="mt-3 flex items-center gap-1 text-xs text-on-surface-muted">
-                        <MapPin className="h-3.5 w-3.5" />
+                        <h2 className="mt-2 min-h-10 text-base font-bold leading-5 text-white">
+                          {title}
+                        </h2>
+                        <p className="mt-1 min-h-12 line-clamp-2 text-sm leading-6 text-on-surface-muted">
+                          {rim.description || getRimType(rim)}
+                        </p>
+                        <p className="mt-3 flex items-center gap-1 text-xs text-on-surface-muted">
+                          <MapPin className="h-3.5 w-3.5" />
                         {rim.vendorName || 'Marketplace vendor'}
                         {rim.vendorLocation ? ` · ${rim.vendorLocation}` : ''}
                       </p>
                     </div>
-                    <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                    <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/5 pt-4">
                       <span className="text-lg font-extrabold text-primary-brand">{priceLabel}</span>
                       <Link
                         to={`/rim/detail/${encodeURIComponent(rim._id)}`}
-                        className="flex items-center gap-1 text-sm font-bold text-on-surface hover:text-primary-brand transition-colors"
+                        state={{ from: `${location.pathname}${location.search}${location.hash}` }}
+                        className="flex items-center gap-1 text-xs font-bold text-on-surface hover:text-primary-brand transition-colors"
                       >
                         Details <ArrowRight className="w-4 h-4" />
                       </Link>

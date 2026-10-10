@@ -677,7 +677,7 @@ export default function SellerDashboard() {
                           </div>
 
                           {review.comment && (
-                            <p className="mt-2 pl-9 text-[11px] leading-relaxed text-[#c2c8c0]">
+                            <p className="description-copy mt-2 pl-9 text-[#c2c8c0]">
                               {review.comment}
                             </p>
                           )}

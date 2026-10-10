@@ -6,7 +6,6 @@ import {
   ArrowLeft,
   CarFront,
   Check,
-  ImagePlus,
   Minus,
   Plus,
   Upload,
@@ -109,21 +108,23 @@ function Section({
   subtitle,
   children,
 }: {
-  icon: ReactNode;
+  icon?: ReactNode;
   title: string;
   subtitle?: string;
   children: ReactNode;
 }) {
   return (
     <section className="rounded-2xl border border-white/5 bg-surface-high/45 p-5 sm:p-7">
-      <div className="mb-5 flex items-start gap-3">
-        <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-brand/10 text-primary-brand">
-          {icon}
-        </span>
+      <div className={`mb-5 ${icon ? "flex items-start gap-3" : ""}`}>
+        {icon && (
+          <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-brand/10 text-primary-brand">
+            {icon}
+          </span>
+        )}
         <div>
           <h2 className="font-semibold text-on-surface">{title}</h2>
           {subtitle && (
-            <p className="mt-0.5 text-xs leading-relaxed text-on-surface-muted">
+            <p className="description-copy mt-0.5 text-on-surface-muted">
               {subtitle}
             </p>
           )}
@@ -480,7 +481,6 @@ export default function AddGarageCar() {
       ) : (
       <form onSubmit={saveCar} className="space-y-5">
         <Section
-          icon={<ImagePlus className="h-5 w-5" aria-hidden="true" />}
           title="Car Photos"
           subtitle={`Upload up to ${MAX_PHOTOS} images. JPG, PNG, or WEBP up to 15 MB each.`}
         >

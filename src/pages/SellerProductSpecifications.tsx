@@ -7,7 +7,6 @@ import {
   Check,
   ChevronDown,
   CloudUpload,
-  ImagePlus,
   Info,
   Save,
   Sparkles,
@@ -263,7 +262,6 @@ export default function SellerProductSpecifications() {
             </div>
           </SpecSection>
           <SpecSection
-            icon={<ImagePlus size={15} />}
             title="Upload Rim Images"
             description="Upload multiple high-resolution photos showcasing face finish, concave profile, and barrel stampings."
             note="PNG, JPG, WEBP up to 25MB"
@@ -419,7 +417,7 @@ function SpecSection({
   note,
   children,
 }: {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   title: string;
   description: string;
   note?: string;
@@ -428,7 +426,7 @@ function SpecSection({
   return (
     <section className="seller-spec-section">
       <header>
-        <span>{icon}</span>
+        {icon && <span>{icon}</span>}
         <div>
           <h2>{title}</h2>
           <p>{description}</p>

@@ -1,6 +1,6 @@
 import FallbackImage from "../components/FallbackImage";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -28,6 +28,7 @@ const specs = [
 
 export default function TyreDetailPage() {
   const { id } = useParams<{ id?: string }>();
+  const location = useLocation();
   const [marketplace, setMarketplace] = useState<MarketplaceData | null>(null);
   const [make, setMake] = useState("Toyota");
   const [model, setModel] = useState("Corolla");
@@ -72,9 +73,16 @@ export default function TyreDetailPage() {
     : allImages[0] || undefined;
 
   const sellerName =
+    matchedProduct?.vendorName ||
     marketplace?.seller?.store?.businessName ||
     marketplace?.seller?.businessName ||
     "AutoMax Wheels";
+  const sellerId =
+    matchedProduct?.userId || marketplace?.sellerId || "automax-wheels";
+  const catalogPath =
+    location.state?.from?.startsWith("/") && !location.state.from.startsWith("//")
+      ? location.state.from
+      : `/vendors/${encodeURIComponent(sellerId)}/catalog`;
   const sellerAddress =
     marketplace?.seller?.store?.address ||
     marketplace?.seller?.store?.city ||
@@ -99,7 +107,7 @@ export default function TyreDetailPage() {
             <strong className="text-white">{productName}</strong>
           </span>
           <Link
-            to="/vendors/automax-wheels/catalog"
+            to={catalogPath}
             className="rounded-full bg-[#1a1c1e] px-3 py-2"
           >
             <ArrowLeft className="mr-1 inline h-3 w-3" /> Back to Shop Catalog
@@ -174,7 +182,7 @@ export default function TyreDetailPage() {
                 <h1 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
                   {productName}
                 </h1>
-                <p className="text-[10px] text-[#c2c8c0]">{description}</p>
+                <p className="description-copy text-[#c2c8c0]">{description}</p>
               </div>
               <div className="flex gap-2">
                 <button
@@ -344,7 +352,7 @@ export default function TyreDetailPage() {
           <h2 className="mt-1 text-xl font-bold text-white">
             Vehicle Fitment & Rolling Radius Verification
           </h2>
-          <p className="text-[10px] text-[#c2c8c0]">
+          <p className="mt-2 text-sm leading-6 text-[#c2c8c0]">
             Wheely Bits verifies load rating, aspect, speedometer calibration
             and clearance against chassis specifications.
           </p>
@@ -381,26 +389,30 @@ export default function TyreDetailPage() {
               </select>
             </label>
           </div>
-          <p className="mt-3 rounded bg-[#315141] p-2 text-[9px] text-[#abcfb2]">
+          <p className="mt-3 rounded bg-[#315141] p-3 text-xs leading-5 text-[#abcfb2]">
             ✓ GUARANTEED FIT · 0.0% Speed Error · Tested on 18x8.0 ET+40 with
             zero fender scrub.
           </p>
         </section>
         <section className="mt-8">
-          <p className="text-[9px] uppercase text-[#abcfb2]">
-            ENGINEERED PERFORMANCE
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#abcfb2]">
+            ENGINEERING METRICS
           </p>
-          <h2 className="text-xl font-bold text-white">
-            Tyre Technical Specifications Grid
+          <h2 className="mt-1 text-2xl font-bold text-white">
+            Technical Specifications
           </h2>
-          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {specs.map(([label, value, note]) => (
-              <div key={label} className="rounded-lg bg-[#1a1c1e] p-3">
-                <p className="text-[7px] text-[#c2c8c0]">{label}</p>
+              <div key={label} className="min-h-24 rounded-xl bg-[#1a1c1e] p-4">
+                <p className="text-[10px] font-medium uppercase tracking-wide text-[#c2c8c0]">
+                  {label}
+                </p>
                 <strong className="mt-1 block text-base text-white">
                   {value}
                 </strong>
-                <small className="text-[8px] text-[#c2c8c0]">{note}</small>
+                <small className="description-copy mt-1 block text-[#c2c8c0]">
+                  {note}
+                </small>
               </div>
             ))}
           </div>
@@ -411,7 +423,7 @@ export default function TyreDetailPage() {
             <p className="text-[8px] text-[#c2c8c0]">
               Sector G-8/1, Blue Area, Islamabad · ★ 4.8 (124 reviews)
             </p>
-            <p className="mt-4 text-[10px] text-[#c2c8c0]">
+            <p className="description-copy mt-4 text-[#c2c8c0]">
               Official Michelin distributor offering genuine Pilot Sport rubber
               with touchless mounting, balancing and fresh DOT stock.
             </p>
@@ -420,50 +432,13 @@ export default function TyreDetailPage() {
             <h2 className="text-lg font-bold text-white">
               100% Fitment & Fresh DOT Guarantee
             </h2>
-            <p className="mt-2 text-[10px] leading-5 text-[#c2c8c0]">
+            <p className="description-copy mt-2 text-[#c2c8c0]">
               Every tyre purchased through Wheely Bits includes replacement if a
               defect or speedometer deviation occurs within 1,000 km.
             </p>
             <p className="mt-3 text-[9px] text-[#abcfb2]">
               Read Full Tyre Guarantee Terms →
             </p>
-          </div>
-        </section>
-        <section className="mt-8">
-          <p className="text-[9px] uppercase text-[#abcfb2]">
-            REAL DRIVERS · REAL FEEDBACK
-          </p>
-          <h2 className="text-xl font-bold text-white">
-            Customer Fitment Showcase & Reviews
-          </h2>
-          <div className="mt-4 grid gap-3 md:grid-cols-3">
-            {[
-              "Toyota Corolla Altis Grande (2021)",
-              "Honda Civic RS Turbo (2020)",
-              "Toyota Camry Hybrid (2020)",
-            ].map((title) => (
-              <article
-                key={title}
-                className="overflow-hidden rounded-xl bg-[#1a1c1e]"
-              >
-                <FallbackImage
-                  src={imageSrc}
-                  alt={title}
-                  className="h-28 w-full object-cover"
-                />
-                <div className="p-3">
-                  <h3 className="text-[9px] text-white">{title}</h3>
-                  <p className="mt-2 text-[10px] text-[#d4a373]">★★★★★</p>
-                  <p className="mt-2 text-[9px] text-[#c2c8c0]">
-                    “Turn-in response is sharp and predictable. Fresh tyres
-                    transformed the car in wet and dry conditions.”
-                  </p>
-                  <p className="mt-2 text-[8px] text-[#abcfb2]">
-                    ✓ Verified Buyer
-                  </p>
-                </div>
-              </article>
-            ))}
           </div>
         </section>
         <div className="sticky bottom-3 mt-8 flex flex-wrap items-center gap-3 rounded-xl bg-[#222627] p-3 shadow-2xl">

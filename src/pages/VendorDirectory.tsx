@@ -6,7 +6,6 @@ import {
   Filter,
   MapPin,
   Search,
-  Settings2,
   Store,
 } from "lucide-react";
 import {
@@ -306,10 +305,7 @@ export default function VendorDirectory() {
         </div>
         {/* Category pill tabs */}
         <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-white/[0.08] px-1 pt-3 text-[10px]">
-          <span className="mr-1 text-[#c2c8c0]">
-            <Settings2 className="mr-1 inline h-3 w-3" />
-            Category:
-          </span>
+          <span className="mr-1 text-[#c2c8c0]">Category:</span>
           {[
             "All Categories",
             "Rims & Forged Wheels",
@@ -453,7 +449,7 @@ export default function VendorDirectory() {
                     </span>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-1">
-                        <h2 className="text-xs font-bold leading-tight text-white">
+                        <h2 className="text-base font-bold leading-5 text-white">
                           {vendor.name}
                         </h2>
                         <Link
@@ -465,13 +461,13 @@ export default function VendorDirectory() {
                           {vendor.reviewsCount ? `(${vendor.reviewsCount})` : ""}
                         </Link>
                       </div>
-                      <p className="mt-1 truncate text-[9px] text-[#c2c8c0]">
+                      <p className="mt-1 truncate text-xs text-[#c2c8c0]">
                         <MapPin className="mr-1 inline h-3 w-3" />
                         {vendor.location}
                       </p>
                     </div>
                   </div>
-                  <div className="mt-3 flex flex-wrap items-center gap-1 text-[8px] text-[#c2c8c0]">
+                  <div className="mt-3 flex flex-wrap items-center gap-1 text-xs text-[#c2c8c0]">
                     {vendor.services.map((service) => (
                       <span
                         key={service}
@@ -482,10 +478,10 @@ export default function VendorDirectory() {
                     ))}
                     <span className="ml-auto">{vendor.products} Products</span>
                   </div>
-                  <p className="mt-3 h-8 overflow-hidden text-[9px] leading-4 text-[#c2c8c0]">
+                  <p className="mt-3 min-h-12 line-clamp-2 text-sm leading-6 text-[#c2c8c0]">
                     {vendor.description}
                   </p>
-                  <div className="mt-4 flex items-center justify-between gap-2 border-t border-white/[0.08] pt-3 text-[8px] text-[#abcfb2]">
+                  <div className="mt-4 flex items-center justify-between gap-2 border-t border-white/[0.08] pt-3 text-xs text-[#abcfb2]">
                     <span>
                       ⌁{" "}
                       {vendor.id === "aura-custom"

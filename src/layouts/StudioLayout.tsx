@@ -1,9 +1,12 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Home } from 'lucide-react';
 
 export default function StudioLayout() {
+  const { pathname } = useLocation();
+  const isRimScanner = pathname === '/ai-recognition';
+
   return (
-    <div className="h-screen w-full bg-background overflow-hidden flex flex-col">
+    <div className={`${isRimScanner ? 'min-h-screen overflow-x-hidden' : 'h-screen overflow-hidden'} w-full bg-background flex flex-col`}>
       <header className="h-14 bg-surface-low border-b border-outline-subtle flex items-center px-4 justify-between shrink-0">
         <Link to="/" className="text-on-surface-muted hover:text-primary transition-colors flex items-center gap-2">
           <Home className="w-4 h-4" />
@@ -14,7 +17,7 @@ export default function StudioLayout() {
         </div>
         <div className="w-24"></div> {/* Spacer for center alignment */}
       </header>
-      <main className="flex-1 overflow-hidden relative">
+      <main className={`flex-1 relative ${isRimScanner ? '' : 'overflow-hidden'}`}>
         <Outlet />
       </main>
     </div>

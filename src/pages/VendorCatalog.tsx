@@ -1,6 +1,6 @@
 import FallbackImage from "../components/FallbackImage";
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -160,6 +160,7 @@ const demoProducts: CatalogProduct[] = [
 ];
 
 export default function VendorCatalog() {
+  const location = useLocation();
   const [marketplace, setMarketplace] = useState<MarketplaceData | null>(null);
   const [marketplaceError, setMarketplaceError] = useState("");
   const [query, setQuery] = useState("");
@@ -619,9 +620,9 @@ export default function VendorCatalog() {
               {visibleProducts.map((product) => (
                 <article
                   key={product.id || product.name}
-                  className="overflow-hidden rounded-xl bg-[#1a1c1e] shadow-lg transition hover:-translate-y-0.5 hover:ring-1 hover:ring-[#8fb397]/50"
+                  className="flex flex-col overflow-hidden rounded-xl bg-[#1a1c1e] shadow-lg transition hover:-translate-y-0.5 hover:ring-1 hover:ring-[#8fb397]/50"
                 >
-                  <div className="relative h-36 bg-[#293031]">
+                  <div className="relative h-40 bg-[#293031]">
                     <FallbackImage
                       src={product.image}
                       alt={product.name}
@@ -639,30 +640,31 @@ export default function VendorCatalog() {
                       <Heart className="h-4 w-4" />
                     </button>
                   </div>
-                  <div className="p-3">
-                    <div className="flex justify-between gap-2 text-[8px] uppercase text-[#8fb397]">
+                  <div className="flex flex-1 flex-col p-4">
+                    <div className="flex justify-between gap-2 text-xs uppercase text-[#8fb397]">
                       <span>{product.brand}</span>
                       <span>{product.kind}</span>
                     </div>
-                    <h2 className="mt-2 min-h-8 text-sm font-bold leading-4 text-white">
+                    <h2 className="mt-2 min-h-10 text-base font-bold leading-5 text-white">
                       {product.name}
                     </h2>
-                    <p className="mt-2 text-[8px] text-[#c2c8c0]">
+                    <p className="mt-1 min-h-12 line-clamp-2 text-sm leading-6 text-[#c2c8c0]">
                       SPEC: {product.spec}
                     </p>
-                    <p className="mt-2 text-[8px] text-[#c2c8c0]">
+                    <p className="mt-2 text-xs text-[#c2c8c0]">
                       ▣ AutoMax Wheels (Islamabad)
                     </p>
-                    <strong className="mt-4 block text-lg text-white">
+                    <strong className="mt-3 block text-lg text-white">
                       {product.price}{" "}
-                      <small className="text-[8px] font-normal text-[#c2c8c0]">
+                      <small className="text-xs font-normal text-[#c2c8c0]">
                         /set (4 rims)
                       </small>
                     </strong>
                     {product.kind === "Tyre" ? (
                       <Link
                         to={`/tyre/detail/${encodeURIComponent(product.id || "michelin-ps4s")}`}
-                        className="mt-2 block w-full rounded-lg bg-[#abcfb2] py-2 text-center text-[9px] font-semibold text-[#163722]"
+                        state={{ from: `${location.pathname}${location.search}${location.hash}` }}
+                        className="mt-auto block w-full rounded-lg bg-[#abcfb2] py-2.5 text-center text-xs font-semibold text-[#163722]"
                       >
                         View Details{" "}
                         <ArrowRight className="ml-1 inline h-3 w-3" />
@@ -671,13 +673,14 @@ export default function VendorCatalog() {
                       product.name.includes("HF-5") ? (
                       <Link
                         to={`/rim/detail/${encodeURIComponent(product.id || "vossen-hf5")}`}
-                        className="mt-2 block w-full rounded-lg bg-[#abcfb2] py-2 text-center text-[9px] font-semibold text-[#163722]"
+                        state={{ from: `${location.pathname}${location.search}${location.hash}` }}
+                        className="mt-auto block w-full rounded-lg bg-[#abcfb2] py-2.5 text-center text-xs font-semibold text-[#163722]"
                       >
                         View Details{" "}
                         <ArrowRight className="ml-1 inline h-3 w-3" />
                       </Link>
                     ) : (
-                      <button className="mt-2 w-full rounded-lg bg-[#abcfb2] py-2 text-[9px] font-semibold text-[#163722]">
+                      <button className="mt-auto w-full rounded-lg bg-[#abcfb2] py-2.5 text-xs font-semibold text-[#163722]">
                         View Details{" "}
                         <ArrowRight className="ml-1 inline h-3 w-3" />
                       </button>

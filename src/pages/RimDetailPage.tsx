@@ -1,6 +1,6 @@
 import FallbackImage from "../components/FallbackImage";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -26,6 +26,7 @@ const specs = [
 ];
 export default function RimDetailPage() {
   const { id } = useParams<{ id?: string }>();
+  const location = useLocation();
   const [marketplace, setMarketplace] = useState<MarketplaceData | null>(null);
   const [vehicle, setVehicle] = useState("Honda Civic");
   const [year, setYear] = useState("2016-2021");
@@ -74,6 +75,10 @@ export default function RimDetailPage() {
     : allImages[0] || undefined;
 
   const sellerId = matchedProduct?.userId || marketplace?.sellerId || "automax-wheels";
+  const catalogPath =
+    location.state?.from?.startsWith("/") && !location.state.from.startsWith("//")
+      ? location.state.from
+      : `/vendors/${encodeURIComponent(sellerId)}/catalog`;
   const sellerName =
     matchedProduct?.vendorName ||
     (matchedProduct?.userId === marketplace?.sellerId
@@ -109,7 +114,7 @@ export default function RimDetailPage() {
             <span className="mx-2 text-white/30">›</span> {productName}
           </span>
           <Link
-            to={`/vendors/${encodeURIComponent(sellerId)}/catalog`}
+            to={catalogPath}
             className="rounded-full bg-[#1a1c1e] px-3 py-2"
           >
             <ArrowLeft className="mr-1 inline h-3 w-3" /> Back to Shop Catalog
@@ -190,7 +195,7 @@ export default function RimDetailPage() {
                 <h1 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
                   {productName}
                 </h1>
-                <p className="text-[10px] text-[#c2c8c0]">{description}</p>
+                <p className="text-sm leading-6 text-[#c2c8c0]">{description}</p>
               </div>
               <div className="flex gap-2">
                 <button
@@ -366,7 +371,7 @@ export default function RimDetailPage() {
               <h2 className="mt-1 text-xl font-bold text-white">
                 Vehicle Fitment & Stance Verification
               </h2>
-              <p className="text-[10px] text-[#c2c8c0]">
+              <p className="mt-2 text-sm leading-6 text-[#c2c8c0]">
                 Wheely Bits inputs hub bore, PCD, offset, pitch and caliper
                 clearance against genuine manufacturer chassis data.
               </p>
@@ -410,7 +415,7 @@ export default function RimDetailPage() {
               </select>
             </label>
           </div>
-          <div className="mt-3 grid gap-3 text-[9px] text-[#c2c8c0] md:grid-cols-4">
+          <div className="mt-3 grid gap-3 text-sm leading-6 text-[#c2c8c0] md:grid-cols-4">
             {[
               "Honda Civic (2016-2021)",
               "Toyota Corolla (2018-2023)",
@@ -418,7 +423,7 @@ export default function RimDetailPage() {
               "Toyota Camry (2018+)",
             ].map((item) => (
               <p key={item}>
-                <span className="text-white">{item}</span>
+                <span className="font-semibold text-white">{item}</span>
                 <br />
                 Direct OEM flush fitment.
                 <br />
@@ -430,25 +435,29 @@ export default function RimDetailPage() {
         <section className="mt-8">
           <div className="flex items-end justify-between">
             <div>
-              <p className="text-[9px] uppercase text-[#abcfb2]">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#abcfb2]">
                 ENGINEERING METRICS
               </p>
-              <h2 className="text-xl font-bold text-white">
+              <h2 className="mt-1 text-2xl font-bold text-white">
                 Technical Specifications
               </h2>
             </div>
-            <span className="text-[8px] text-[#c2c8c0]">
+            <span className="text-xs text-[#c2c8c0]">
               Verified by TUV Rheinland & JWL VIA Lab testing
             </span>
           </div>
-          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {specs.map(([label, value, note]) => (
-              <div key={label} className="rounded-lg bg-[#1a1c1e] p-3">
-                <p className="text-[7px] text-[#c2c8c0]">{label}</p>
+              <div key={label} className="min-h-24 rounded-xl bg-[#1a1c1e] p-4">
+                <p className="text-[10px] font-medium uppercase tracking-wide text-[#c2c8c0]">
+                  {label}
+                </p>
                 <strong className="mt-1 block text-base text-white">
                   {value}
                 </strong>
-                <small className="text-[8px] text-[#c2c8c0]">{note}</small>
+                <small className="description-copy mt-1 block text-[#c2c8c0]">
+                  {note}
+                </small>
               </div>
             ))}
           </div>
@@ -491,12 +500,12 @@ export default function RimDetailPage() {
             <h2 className="text-lg font-bold text-white">
               🛡 Wheely Bits Fitment Guarantee
             </h2>
-            <p className="mt-2 text-[10px] leading-5 text-[#c2c8c0]">
+            <p className="description-copy mt-2 text-[#c2c8c0]">
               Every set purchased through our marketplace is protected. If the
               rim interferes with OEM brakes, suspension strut, or fender arch,
               we handle free returns and re-exchange.
             </p>
-            <div className="mt-3 rounded bg-[#282a2c] p-3 text-[9px] leading-5 text-[#c2c8c0]">
+            <div className="description-copy mt-3 rounded bg-[#282a2c] p-3 text-[#c2c8c0]">
               ✓ 2-Year Manufacturer Structural Integrity Guarantee
               <br />✓ Free Hub-Centric Rings and Extended Lug Bolts included
               <br />✓ Transit damage fully insured door-to-door

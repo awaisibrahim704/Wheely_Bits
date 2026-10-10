@@ -52,6 +52,11 @@
 }
 
 @layer utilities {
+  .description-copy {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
   .animate-shimmer-text {
     background: linear-gradient(to right, var(--color-primary-brand) 20%, var(--color-primary) 40%, var(--color-primary) 60%, var(--color-primary-brand) 80%);
     background-size: 200% auto;
@@ -107,7 +112,7 @@
   .seller-type:hover, .seller-type-active { border-color: var(--color-primary-brand); background: rgba(143,179,151,.08); }
   .seller-type strong, .seller-type small { display: block; }
   .seller-type strong { color: var(--color-on-surface); font-size: .76rem; }
-  .seller-type small { margin-top: 3px; font-size: .65rem; line-height: 1.35; }
+  .seller-type small { display: block; margin-top: 3px; color: var(--color-on-surface-muted); font-size: .875rem; line-height: 1.5; }
   .seller-radio { display: flex; width: 12px; height: 12px; flex: 0 0 auto; align-items: center; justify-content: center; margin-top: 2px; border: 1px solid var(--color-outline); border-radius: 50%; }
   .seller-radio span { width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); }
   .seller-textarea { width: 100%; min-height: 112px; resize: vertical; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; outline: 0; background: rgba(255,255,255,.025); padding: 12px; color: var(--color-on-surface); font-size: .8rem; line-height: 1.5; }
@@ -124,7 +129,7 @@
   .seller-inquiry-messages { display: grid; gap: 7px; margin-top: 12px; }
   .seller-inquiry-message { width: fit-content; max-width: min(90%, 640px); border: 1px solid rgba(255,255,255,.07); border-radius: 8px; background: rgba(255,255,255,.035); padding: 9px 11px; }
   .seller-inquiry-message-seller { justify-self: end; border-color: rgba(143,179,151,.16); background: rgba(143,179,151,.07); }
-  .seller-inquiry-message p { margin-top: 5px; color: var(--color-on-surface); font-size: .72rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .seller-inquiry-message p { margin-top: 5px; color: var(--color-on-surface); font-size: .875rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
   .seller-inquiry-message time { display: block; margin-top: 5px; color: var(--color-on-surface-muted); font-size: .56rem; text-align: right; }
   .seller-inquiry-reply { display: grid; justify-items: start; gap: 7px; margin-top: 13px; }
   .seller-inquiry-reply label { color: var(--color-on-surface-muted); font-size: .66rem; }
@@ -435,7 +440,7 @@
   .seller-preview-price span { color: var(--color-on-surface-muted); font-size: .5rem; }
   .seller-preview-details h3 { display: flex; justify-content: space-between; margin-top: 16px; color: var(--color-on-surface); font-size: .6rem; text-transform: uppercase; letter-spacing: .08em; }
   .seller-preview-details h3 small { color: var(--color-primary); font-size: .48rem; font-weight: 400; }
-  .seller-preview-description { margin-top: 8px; color: var(--color-on-surface-muted); font-size: .75rem; line-height: 1.7; }
+  .seller-preview-description { margin-top: 8px; color: var(--color-on-surface-muted); font-size: .875rem; line-height: 1.5; }
   .seller-preview-spec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 9px; }
   .seller-preview-spec-grid div { border: 1px solid rgba(255,255,255,.09); border-radius: 5px; padding: 9px; }
   .seller-preview-spec-grid small, .seller-preview-spec-grid strong { display: block; }

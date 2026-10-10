@@ -17,6 +17,29 @@ to choose a community display name, and topic owners can replace an old
 
 The API exposes `GET /api/health`, `PUT /api/sellers/:userId`, and `POST /api/products`. Seller profiles are stored in the `sellers` collection and published listings in the `products` collection.
 
+## AI Rim Scanner
+
+The AI Rim Scan button on the Rim Selection page opens the image scanner. The scanner uploads a photo to the EfficientNet-B0/FAISS service in `backend/`.
+
+Start the AI service in a separate terminal:
+
+```powershell
+cd D:\wheely_bits\backend
+.\venv\Scripts\python.exe .\server.py
+```
+
+If the backend virtual environment is not present, create it and install the backend dependencies first:
+
+```powershell
+cd D:\wheely_bits\backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python .\server.py
+```
+
+Then start the frontend with `npm run dev` from the repository root. The frontend uses `VITE_RIM_SCAN_API_URL` (default `http://localhost:8000`) to reach the model service. Check that the model service is ready at `http://localhost:8000/health`.
+
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:

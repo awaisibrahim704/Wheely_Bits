@@ -143,7 +143,7 @@ export default function ContactSeller() {
                   {title}
                 </small>
                 <strong className="block text-xs text-white">{value}</strong>
-                <small className="text-[8px] text-[#c2c8c0]">{note}</small>
+                <small className="description-copy text-[#c2c8c0]">{note}</small>
               </span>
             </div>
           ))}

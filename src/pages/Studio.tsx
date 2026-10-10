@@ -1,7 +1,7 @@
 import FallbackImage from "../components/FallbackImage";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Settings, Layers, Camera, Maximize, RotateCw, Undo, ChevronLeft, Droplet, Sun, Shield } from 'lucide-react';
+import { Layers, Camera, Maximize, RotateCw, Undo, ChevronLeft, Droplet, Sun, Shield } from 'lucide-react';
 
 export default function Studio() {
   const [activeTab, setActiveTab] = useState('paint');
@@ -113,7 +113,6 @@ export default function Studio() {
 
           {activeTab === 'wheels' && (
             <div className="flex flex-col items-center justify-center h-full text-on-surface-muted space-y-4 animate-fade-in">
-              <Settings className="w-12 h-12 opacity-50" />
               <p className="text-sm text-center">Select wheels from the catalog to preview on your build.</p>
               <Link to="/rim" className="px-6 py-2 bg-surface-highest border border-white/10 rounded-lg text-sm font-bold text-on-surface hover:bg-white/5 transition-colors">
                 Browse Wheels

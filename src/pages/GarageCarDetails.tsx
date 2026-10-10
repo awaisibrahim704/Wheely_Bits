@@ -7,7 +7,6 @@ import {
   CircleGauge,
   Image as ImageIcon,
   Pencil,
-  Settings2,
   ShieldCheck,
   Sparkles,
   Wrench,
@@ -243,10 +242,7 @@ export default function GarageCarDetails() {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
         <div className="space-y-5 lg:col-span-3">
           <section className="rounded-2xl border border-white/5 bg-surface-high/45 p-5 sm:p-7">
-            <div className="mb-5 flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-brand/10 text-primary-brand">
-                <Settings2 className="h-5 w-5" aria-hidden="true" />
-              </span>
+            <div className="mb-5">
               <div>
                 <h2 className="font-semibold text-on-surface">
                   Vehicle Specifications

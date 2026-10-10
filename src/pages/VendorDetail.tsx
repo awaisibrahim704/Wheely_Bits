@@ -728,7 +728,7 @@ export default function VendorDetail() {
                 <h2 className="text-sm font-bold text-white mb-2">
                   About {sellerName} & Workshop Bay
                 </h2>
-                <p className="text-xs text-[#c2c8c0] leading-relaxed mb-4">
+                <p className="description-copy text-[#c2c8c0] mb-4">
                   {description}
                 </p>
                 <div className="grid sm:grid-cols-2 gap-4 border-t border-white/[0.08] pt-4">
@@ -736,7 +736,7 @@ export default function VendorDetail() {
                     <h3 className="text-xs font-bold text-[#abcfb2] mb-1">
                       Laser Fitment & Service Bay
                     </h3>
-                    <p className="text-[11px] text-[#c2c8c0] leading-relaxed">
+                    <p className="description-copy text-[#c2c8c0]">
                       {aboutBay}
                     </p>
                   </div>
@@ -874,9 +874,9 @@ export default function VendorDetail() {
                       product.id ||
                       `${product.name}-${product.brand}-${product.category || ""}-${product.price}`
                     }
-                    className="overflow-hidden rounded-xl bg-[#1a1c1e] transition hover:-translate-y-0.5 hover:ring-1 hover:ring-[#8fb397]/50"
+                    className="flex flex-col overflow-hidden rounded-xl bg-[#1a1c1e] transition hover:-translate-y-0.5 hover:ring-1 hover:ring-[#8fb397]/50"
                   >
-                    <div className="relative h-32 bg-[#292d2e]">
+                    <div className="relative h-40 bg-[#292d2e]">
                       <FallbackImage
                         src={product.image}
                         alt={product.name}
@@ -893,18 +893,18 @@ export default function VendorDetail() {
                         ))}
                       </div>
                     </div>
-                    <div className="p-3">
-                      <div className="flex justify-between gap-2 text-[8px] uppercase text-[#b7bdb8]">
+                    <div className="flex flex-1 flex-col p-4">
+                      <div className="flex justify-between gap-2 text-xs uppercase text-[#b7bdb8]">
                         <span>{product.brand}</span>
                         <span>{product.category || "Featured"}</span>
                       </div>
-                      <h3 className="mt-2 text-sm font-bold text-white">
+                      <h3 className="mt-2 min-h-10 text-base font-bold leading-5 text-white">
                         {product.name}
                       </h3>
-                      <p className="mt-1 h-7 text-[8px] leading-relaxed text-[#c2c8c0]">
+                      <p className="mt-1 min-h-12 line-clamp-2 text-sm leading-6 text-[#c2c8c0]">
                         {product.type}
                       </p>
-                      <p className="mt-3 text-[8px] uppercase text-[#c2c8c0]">
+                      <p className="mt-3 text-xs uppercase text-[#c2c8c0]">
                         {product.stock}
                       </p>
                       <strong className="mt-1 block text-lg text-white">
@@ -913,7 +913,8 @@ export default function VendorDetail() {
                       {getProductCategory(product) === "Tyres" ? (
                         <Link
                           to={`/tyre/detail/${encodeURIComponent(product.id || "michelin-ps4s")}`}
-                          className="mt-3 block w-full rounded-lg bg-[#333537] py-2 text-center text-[10px] font-semibold text-white hover:bg-[#abcfb2] hover:text-[#163722]"
+                          state={{ from: `${location.pathname}${location.search}${location.hash}` }}
+                          className="mt-auto block w-full rounded-lg bg-[#333537] py-2.5 text-center text-xs font-semibold text-white hover:bg-[#abcfb2] hover:text-[#163722]"
                         >
                           View Details & Fit{" "}
                           <ArrowRight className="ml-1 inline h-3 w-3" />
@@ -921,7 +922,8 @@ export default function VendorDetail() {
                       ) : getProductCategory(product) === "Rims" ? (
                         <Link
                           to={`/rim/detail/${encodeURIComponent(product.id || "vossen-hf5")}`}
-                          className="mt-3 block w-full rounded-lg bg-[#333537] py-2 text-center text-[10px] font-semibold text-white hover:bg-[#abcfb2] hover:text-[#163722]"
+                          state={{ from: `${location.pathname}${location.search}${location.hash}` }}
+                          className="mt-auto block w-full rounded-lg bg-[#333537] py-2.5 text-center text-xs font-semibold text-white hover:bg-[#abcfb2] hover:text-[#163722]"
                         >
                           View Details & Fit{" "}
                           <ArrowRight className="ml-1 inline h-3 w-3" />
@@ -929,7 +931,7 @@ export default function VendorDetail() {
                       ) : (
                         <Link
                           to={`/vendors/${encodeURIComponent(activeVendorId)}/contact`}
-                          className="mt-3 block w-full rounded-lg bg-[#333537] py-2 text-center text-[10px] font-semibold text-white hover:bg-[#abcfb2] hover:text-[#163722]"
+                          className="mt-auto block w-full rounded-lg bg-[#333537] py-2.5 text-center text-xs font-semibold text-white hover:bg-[#abcfb2] hover:text-[#163722]"
                         >
                           Contact Seller{" "}
                           <ArrowRight className="ml-1 inline h-3 w-3" />
@@ -1490,7 +1492,7 @@ export default function VendorDetail() {
                         </div>
 
                         {review.comment && (
-                          <p className="mt-3 text-[11px] leading-5 text-[#e2e2e5] pl-12">
+                          <p className="description-copy mt-3 pl-12 text-[#e2e2e5]">
                             {review.comment}
                           </p>
                         )}
@@ -1566,8 +1568,8 @@ function InfoPanel({
   return (
     <section className="rounded-xl bg-[#1a1c1e] p-5">
       <h2 className="mb-3 text-xs font-bold text-white">About {sellerName}</h2>
-      <p className="text-[10px] leading-5 text-[#c2c8c0]">{description}</p>
-      <p className="mt-3 text-[10px] leading-5 text-[#c2c8c0]">{aboutBay}</p>
+      <p className="description-copy text-[#c2c8c0]">{description}</p>
+      <p className="description-copy mt-3 text-[#c2c8c0]">{aboutBay}</p>
       <div className="mt-3 flex flex-wrap gap-1 text-[8px]">
         {features.map((feature) => (
           <span

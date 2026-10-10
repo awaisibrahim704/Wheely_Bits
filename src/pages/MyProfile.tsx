@@ -1,6 +1,6 @@
 import FallbackImage from "../components/FallbackImage";
 import { Link } from 'react-router-dom';
-import { User, Settings, Shield, Bell, ArrowLeft } from 'lucide-react';
+import { User, Shield, Bell, ArrowLeft } from 'lucide-react';
 
 export default function MyProfile() {
   return (
@@ -32,8 +32,7 @@ export default function MyProfile() {
               <Bell className="w-5 h-5" />
               Notifications
             </button>
-            <button className="flex items-center gap-3 w-full p-3 rounded-xl hover:bg-white/5 text-on-surface-muted hover:text-on-surface transition-colors font-bold text-sm">
-              <Settings className="w-5 h-5" />
+            <button className="w-full p-3 rounded-xl text-left hover:bg-white/5 text-on-surface-muted hover:text-on-surface transition-colors font-bold text-sm">
               Preferences
             </button>
           </div>
@@ -53,7 +52,7 @@ export default function MyProfile() {
                 <button className="bg-surface-highest border border-white/10 text-on-surface px-4 py-2 rounded-lg text-sm font-bold hover:bg-white/5 transition-colors mb-2">
                   Change Avatar
                 </button>
-                <p className="text-xs text-on-surface-muted">JPG, GIF or PNG. Max size of 2MB.</p>
+                <p className="description-copy text-on-surface-muted">JPG, GIF or PNG. Max size of 2MB.</p>
               </div>
             </div>
 
